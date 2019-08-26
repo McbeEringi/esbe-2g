@@ -1,0 +1,68 @@
+{
+ "namespace": "tabbed_upsell",
+
+ "esbe_his": {
+  "type": "label",
+  "text":
+"§btwitter§r: @McbeEringi
+§aURL§r: sites.google.com/view/mcbeeringi/esbe-2g
+
+2.1
+ AmbientOcclusionを追加
+ 光源の演出を少し弱く
+ 水の色を濃く
+ 無駄なコードの削減
+2.0
+ 空の色の大幅な改良
+ 雲に影を追加
+ 夜間の雲を少し明るく
+ 日光下での松明の光をさらに弱く
+ 光源がより輝いて見えるように
+ タイトルUIの改良
+ URLの更新
+1.2
+ 水中に射し込む光の描写を追加
+ アップデート内容がアプリ内で見れるように
+ コードの整理
+1.1
+ 水面の描写がより遠くまで見えるように
+ 水の色の調整
+ 水の色の天候による変化が控えめに
+ 水面の太陽の反射を若干弱めに
+ 夜の色味の調整
+1.0
+ 水面反射の追加
+ 水の色が強すぎる問題を修正
+ 遠くの水に境目が見える問題を修正
+ win10の夕焼け時の雲の色が強すぎる問題を修正
+ ノイズ生成関数のhファイル化(容量削減)
+ ノイズの値域の修正
+0.3
+ フラットシェーディング追加(高画質時のみ)
+ エンティティの描写の追加
+ 強度の高いレッドストーンが揺れるバグを修正
+ 水の検知コードの改良
+ 水準備
+ タイトル画面のクレジット部分のuiを変更
+ 雲の量をほんの少し増加
+ コードの削減
+0.2
+ 雲やオーロラなど空全般の要素を追加
+ 夜をより暗く
+ 葉と水面の揺れに不規則性を追加(?)
+ 一部端末で葉の揺れがカクつく問題を修正
+0.1
+ 作った(松明,トーンマップ(夕焼け込み),影,水面&葉の揺れ,星,空準備)\n "
+ },
+
+ "scroll@common.scrolling_panel": {
+  "$show_background": false,
+  "$scrolling_content": "tabbed_upsell.esbe_his"
+ },
+
+ "tabbed_upseel_screen_panel@common_dialogs.main_panel_no_buttons": {
+  "size": ["80%" ,"80%" ],
+  "$text_name": "§bESBE_2G §aseries",
+  "$child_control": "tabbed_upsell.scroll"
+ }
+}
