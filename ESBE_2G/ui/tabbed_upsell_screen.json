@@ -7,6 +7,9 @@
 "§btwitter§r: @McbeEringi
 §aURL§r: sites.google.com/view/mcbeeringi/esbe-2g
 
+2.2.1
+ 昼間&夕焼けの色の調整
+ 樹氷バイオームの葉が水として検知される問題を修正
 2.1
  AmbientOcclusionを追加
  光源の演出を少し弱く

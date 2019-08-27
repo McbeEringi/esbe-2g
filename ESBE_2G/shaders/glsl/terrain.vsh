@@ -111,6 +111,7 @@ highp float hTime = TIME;
 #endif
 
 ///// blended layer (mostly water) magic
+#ifndef ALPHA_TEST
 	if(color.a < 0.95 && color.a > 0.05 && color.g > color.r) {
 		#ifdef FANCY	/////enhance water
 			float cameraDist = pow(cameraDepth / FAR_CHUNKS_DISTANCE,2.);
@@ -132,11 +133,11 @@ highp float hTime = TIME;
 		POS3 wp = worldPos.xyz + VIEW_POS;
 		gl_Position.y += sin(hTime*3.5+2.*wp.x+2.*wp.z+wp.y)*.05*fract(POSITION.y)*random(wp.x+wp.y+wp.z)*(1.-alphaFadeOut);
 	}
-
 if(bool(step(FOG_CONTROL.x,.0001))){
 	POS3 uwp = worldPos.xyz + VIEW_POS;
 	gl_Position.x += sin(hTime*3.5+2.*uwp.x+2.*uwp.z+uwp.y)*.02;
 }
+#endif
 
 #ifndef BYPASS_PIXEL_SHADER
 	#ifndef FOG

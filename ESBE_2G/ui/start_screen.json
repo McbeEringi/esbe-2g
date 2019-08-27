@@ -8,7 +8,7 @@
 		"orientation": "horizontal",
 		"controls": [
 			{"ico": {"type": "image","texture": "pack_icon","size": [ 20, 20 ]}},
-			{"ver": {"type": "label","text": "§b ESBE_2G\n§a v2.1"}}
+			{"ver": {"type": "label","text": "§b ESBE_2G\n§a v2.2.1"}}
 		]
 	},
 
