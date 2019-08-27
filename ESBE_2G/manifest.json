@@ -2,7 +2,7 @@
 	"format_version": 1,
 	"header": {
 		"description": "EntropyShader for BE 2Gen\nby @McbeEringi",
-		"name": "ESBE_2G v2.2.1",
+		"name": "ESBE_2G v2.2",
 		"uuid": "F64B9CD6-C979-45D0-B79A-421C7B7F5CC3",
 		"version": [0, 2, 2],
 		"min_engine_version": [1, 8, 0]
