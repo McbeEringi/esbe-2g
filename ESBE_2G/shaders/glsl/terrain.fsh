@@ -78,7 +78,7 @@ vec4 water(vec4 col,float weather,highp float time){
 	float cosT = 1.-dot(normalize(abs(wPos)).y,1.);
 
 	vec3 p = cPos;
-	p.xz = p.xz*vec2(1.0,0.5)//縦横比 aspect ratio
+	p.xz = p.xz*vec2(1.0,0.4)//縦横比 aspect ratio
 		+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))/4.+.5;//[0.0~1.0]
 

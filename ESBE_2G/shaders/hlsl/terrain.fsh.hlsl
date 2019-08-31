@@ -57,7 +57,7 @@ float4 water(float4 col,float3 p,float3 look,float weather,float sun){
 	sun = smoothstep(.5,.75,sun);
 	float cosT = 1.-dot(normalize(abs(look)).y,1.);
 
-	p.xz = p.xz*float2(1.0,0.5)//縦横比 aspect ratio
+	p.xz = p.xz*float2(1.0,0.4)//縦横比 aspect ratio
 		+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-TIME*.5)+snoise(float2(p.x-TIME,(p.z+TIME)*.5)))/4.+.5;//[0.0~1.0]
 
