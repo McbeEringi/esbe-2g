@@ -85,10 +85,10 @@ vec4 water(vec4 col,float weather,highp float time){
 	//highp vec2 skp = (wPos.xz+n*2.*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
 	vec2 skp = wPos.xz*cosT*.1;
 	float skn = snoise(vec2(skp.x-time*.1,skp.y))/2.+.5;//[0.0~1.0]
-	vec4 col2 = col*mix(1.2,1.5,skn);//almost C_REF in ESBE1G
+	vec4 col2 = col*mix(1.2,1.5,skn*sun);//almost C_REF in ESBE1G
 	vec4 col3 = mix(col*1.1,vec4(1.),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*sun*weather*.9);
 
-	vec4 diffuse = mix(col,mix(col2,col3,smoothstep(.5,.9,n)),n);
+	vec4 diffuse = mix(col,mix(col2,col3,smoothstep(.5,.9,n)),smoothstep(0.,.5,n)*mix(.5,1.,cosT));
 	return mix(col,diffuse,min(1.,cosT+.5));
 }
 
