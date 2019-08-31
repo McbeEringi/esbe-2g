@@ -67,8 +67,8 @@ float4 water(float4 col,float3 p,float3 look,float weather,float sun){
 	float4 col2 = col*lerp(1.2,1.5,skn*sun);//almost C_REF in ESBE1G
 	float4 col3 = lerp(col*1.1,float4(1.,1.,1.,1.),smoothstep(3.+abs(look.y)*.3,0.,abs(look.z))*sun*weather*.9);
 
-	float4 diffuse = lerp(col,lerp(col2,col3,smoothstep(.5,.9,n)),smoothstep(0.,.5,n)*lerp(.5,1.,cosT));
-	return lerp(col,diffuse,min(1.,cosT+.5));
+	float4 diffuse = lerp(col,lerp(col2,col3,smoothstep(.5,.9,n)),smoothstep(0.,.5,n));
+	return lerp(col,diffuse,max(.3,cosT));
 }
 
 ROOT_SIGNATURE
