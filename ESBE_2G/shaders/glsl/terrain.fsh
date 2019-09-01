@@ -176,7 +176,7 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 
 //ESBE_shadow
 float ao = 1.;
-if(color.g==color.b)ao = smoothstep(.48*daylight.y,.52*daylight.y,color.g);
+if(color.r==color.g && color.g==color.b)ao = smoothstep(.48*daylight.y,.52*daylight.y,color.g);
 
 diffuse.rgb *= 1.-mix(/*影の濃さ*/0.5,0.0,min(sunlight,ao))*(1.-uv1.x)*daylight.x;
 #ifdef FANCY//FLAT_SHADING

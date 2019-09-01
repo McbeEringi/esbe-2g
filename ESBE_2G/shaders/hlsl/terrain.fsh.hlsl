@@ -153,7 +153,7 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 
 //ESBE_shadow
 float ao = 1.;
-if(PSInput.color.g==PSInput.color.b)ao = smoothstep(.48*daylight.y,.52*daylight.y,PSInput.color.g);
+if(PSInput.color.r==PSInput.color.g && PSInput.color.g==PSInput.color.b)ao = smoothstep(.48*daylight.y,.52*daylight.y,PSInput.color.g);
 
 diffuse.rgb *= 1.-lerp(/*影の濃さ*/0.5,0.0,min(sunlight,ao))*(1.-PSInput.uv1.x)*daylight.x;
 #ifdef FANCY//FLAT_SHADING
