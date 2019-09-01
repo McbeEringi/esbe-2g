@@ -161,7 +161,6 @@ float uw = step(FOG_CONTROL.x,.0001);
 vec3 ambient = mix(mix(mix(/*雨*/vec3(0.8,0.82,1.0),mix(mix(/*夜*/vec3(0.7,0.72,0.8),/*昼*/vec3(1.57,1.56,1.5),daylight.y),/*日没*/vec3(1.7,1.35,0.9),dusk),weather),/*水*/vec3(1.0,1.0,0.9),wf),/*屋内*/vec3(1.2,1.1,1.0),indoor);
 if(bool(uw))ambient = FOG_COLOR.rgb+.7;
 diffuse.rgb = tonemap(diffuse.rgb,ambient);
-//diffuse.rgb = mix(diffuse.rgb,pow(daylight.xxx,ambient),smoothstep(.1,.9,length(wPos)/FAR_CHUNKS_DISTANCE)*.2);
 
 //ESBE_light
 #ifndef BLEND
