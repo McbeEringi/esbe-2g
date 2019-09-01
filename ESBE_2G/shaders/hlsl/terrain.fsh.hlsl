@@ -56,6 +56,7 @@ float flat_shading(float3 pos, float dusk){
 float4 water(float4 col,float3 p,float3 look,float weather,float sun){
 	sun = smoothstep(.5,.75,sun);
 	float cosT = 1.-dot(normalize(abs(look)).y,1.);
+	col.rgb = lerp(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*.7);
 
 	p.xz = p.xz*float2(1.0,0.4)//縦横比 aspect ratio
 		+smoothstep(0.,8.,abs(p.y-8.))*.5;
@@ -64,11 +65,11 @@ float4 water(float4 col,float3 p,float3 look,float weather,float sun){
 	//float2 skp = (look.xz+n*2.*look.xz/max(length(look.xz),.5))*cosT*.1;//反射ズレ計算
 	float2 skp = look.xz*cosT*.1;
 	float skn = snoise(float2(skp.x-TIME*.1,skp.y))/2.+.5;//[0.0~1.0]
-	float4 col2 = col*lerp(1.2,1.5,skn*sun);//almost C_REF in ESBE1G
+	float4 col2 = col*lerp(1.4,1.2,skn*sun);//almost C_REF in ESBE1G
 	float4 col3 = lerp(col*1.1,float4(1.,1.,1.,1.),smoothstep(3.+abs(look.y)*.3,0.,abs(look.z))*sun*weather*smoothstep(0.,.7,cosT)*.9);
 
 	float4 diffuse = lerp(col,lerp(col2,col3,smoothstep(.5,.9,n)),smoothstep(0.,.5,n));
-	return lerp(col,diffuse,max(.3,cosT));
+	return lerp(col,diffuse,max(.4,cosT));
 }
 
 ROOT_SIGNATURE
