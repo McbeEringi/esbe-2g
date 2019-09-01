@@ -140,10 +140,10 @@ PSInput.wf = 0.;
 		float3 wp = worldPos.xyz + VIEW_POS;
 		PSInput.position.y += sin(TIME*3.5+2.*wp.x+2.*wp.z+wp.y)*.05*frac(VSInput.position.y)*random(wp.x+wp.y+wp.z)*(1.-alphaFadeOut);
 	}
-if(bool(step(FOG_CONTROL.x,.0001))){
-	float3 uwp = worldPos.xyz + VIEW_POS;
-	PSInput.position.x += sin(TIME*3.5+2.*uwp.x+2.*uwp.z+uwp.y)*.02;
-}
+	if(bool(step(FOG_CONTROL.x,.0001))){
+		float3 uwp = worldPos.xyz + VIEW_POS;
+		PSInput.position.x += sin(TIME*3.5+2.*uwp.x+2.*uwp.z+uwp.y)*.02;
+	}
 #endif
 
 PSInput.cPos = VSInput.position;
