@@ -8,8 +8,8 @@ or
 [Official(ja)](https://sites.google.com/view/mcbeeringi/esbe-2g)  
 [MCPEDL](https://mcpedl.com/esbe-2g)  
 # LICENSE
-You are allowed to modify this shader in your personal use.
-You are prohibited to distribute this with or without any modification.
+You are allowed to modify this shader in your personal use.  
+You are prohibited to distribute this with or without any modification.  
 ©2019 @McbeEringi(twitter) All Rights Reserved
 # Photos
 v2.1
