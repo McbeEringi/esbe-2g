@@ -6,7 +6,7 @@
 		"orientation": "horizontal",
 		"controls": [
 			{"ico": {"type": "image","texture": "pack_icon","size": [ 20, 20 ]}},
-			{"ver": {"type": "label","text": "§b ESBE_2G\n§a v3.0"}}
+			{"ver": {"type": "label","text": "§b ESBE_2G\n§a v3.1"}}
 		]
 	},
 
