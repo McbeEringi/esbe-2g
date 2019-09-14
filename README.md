@@ -7,7 +7,7 @@ see [release](https://github.com/McbeEringi/esbe-2g/releases)
 or  
 [Official(ja)](https://sites.google.com/view/mcbeeringi/esbe-2g)  
 [MCPEDL](https://mcpedl.com/esbe-2g)  
-#LICENSE
+# LICENSE
 You are allowed to modify this shader in your personal use.
 You are prohibited to distribute this with or without any modification.
 ©2019 @McbeEringi(twitter) All Rights Reserved
