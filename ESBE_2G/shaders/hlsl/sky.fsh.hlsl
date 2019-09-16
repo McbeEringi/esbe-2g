@@ -36,8 +36,8 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 	float weather = smoothstep(0.8,1.0,FOG_CONTROL.y);
 	float ss = smoothstep(0.0,0.5,FOG_COLOR.r-FOG_COLOR.g)/2.;
 
-	float3 top_col = lerp(lerp(float3(0.0,0.0,0.1),float3(-0.1,0.0,0.1),day),float3(0.7,0.7,0.7),ss)*weather;
-	float3 hor_col = lerp(lerp(float3(0.0,0.1,0.2),float3(0.2,0.1,-0.05),day),float3(0.8,0.8,0.8),ss)*weather;
+	float3 top_col = lerp(lerp(float3(0.0,0.0,0.1),float3(-0.1,0.0,0.1),day),float3(0.5,0.5,0.5),ss)*weather;
+	float3 hor_col = lerp(lerp(float3(0.0,0.1,0.2),float3(0.2,0.1,-0.05),day),float3(0.7,0.7,0.7),ss)*weather;
 
 	float4 col = float4(lerp(CURRENT_COLOR.rgb+top_col,FOG_COLOR.rgb+hor_col,smoothstep(0.,.4,PSInput.fog)),1.);
 

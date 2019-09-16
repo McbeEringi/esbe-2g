@@ -41,8 +41,8 @@ void main()
 	float weather = smoothstep(0.8,1.0,FOG_CONTROL.y);
 	float ss = smoothstep(0.0,0.5,FOG_COLOR.r-FOG_COLOR.g)*.5;
 
-	vec3 top_col = mix(mix(vec3(0.0,0.0,0.1),vec3(-0.1,0.0,0.1),day),vec3(.7),ss)*weather;
-	vec3 hor_col = mix(mix(vec3(0.0,0.1,0.2),vec3(0.2,0.1,-0.05),day),vec3(.8),ss)*weather;
+	vec3 top_col = mix(mix(vec3(0.0,0.0,0.1),vec3(-0.1,0.0,0.1),day),vec3(.5),ss)*weather;
+	vec3 hor_col = mix(mix(vec3(0.0,0.1,0.2),vec3(0.2,0.1,-0.05),day),vec3(.7),ss)*weather;
 
 	vec4 col = vec4(mix(CURRENT_COLOR.rgb+top_col,FOG_COLOR.rgb+hor_col,smoothstep(0.,.4,fog)),1.);
 
