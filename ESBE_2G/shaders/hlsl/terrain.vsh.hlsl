@@ -134,7 +134,7 @@ PSInput.wf = 0.;
 		#endif //FANCY
 
 		float alphaFadeOut = clamp(cameraDist, 0.0, 1.0);
-		PSInput.color.a = lerp(VSInput.color.a*.7, 1.5, alphaFadeOut);
+		PSInput.color.a = lerp(VSInput.color.a*.6, 1.5, alphaFadeOut);
 
 		/////waves
 		float3 wp = worldPos.xyz + VIEW_POS;

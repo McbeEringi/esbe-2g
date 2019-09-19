@@ -127,7 +127,7 @@ highp float hTime = TIME;
 		#endif //FANCY
 
 		float alphaFadeOut = clamp(cameraDist, 0.0, 1.0);
-		color.a = mix(color.a*.7, 1.5, alphaFadeOut);
+		color.a = mix(color.a*.6, 1.5, alphaFadeOut);
 
 		/////waves
 		POS3 wp = worldPos.xyz + VIEW_POS;

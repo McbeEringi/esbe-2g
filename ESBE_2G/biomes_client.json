@@ -71,12 +71,12 @@
 			"water_fog_color": "#1156a7"
 		},
 		"mushroom_island": {
-			"water_surface_color": "#8a8997",
-			"water_fog_color": "#8a8997"
+			"water_surface_color": "#898a97",
+			"water_fog_color": "#898a97"
 		},
 		"mushroom_island_shore": {
-			"water_surface_color": "#818193",
-			"water_fog_color": "#818193"
+			"water_surface_color": "#818293",
+			"water_fog_color": "#818293"
 		},
 		"beach": {
 			"water_surface_color": "#157cab",
