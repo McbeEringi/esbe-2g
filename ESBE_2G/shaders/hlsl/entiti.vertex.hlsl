@@ -68,7 +68,7 @@ float4 TransformRGBA8_SNORM(const float4 RGBA8_SNORM) {
 }
 
 
-float lightIntensity(const float4x4 worldMat, const float4 position, const float3 normal) {
+float lightIntensity(const float4x4 worldMat, const float4 position, const float4 normal) {
 #ifdef FANCY
 	float3 N = normalize(mul(worldMat, normal)).xyz;
 
@@ -113,33 +113,36 @@ float2 calculateLayerUV(float2 origUV, float offset, float rotation) {
 #endif
 
 ROOT_SIGNATURE
-void main(in VS_Input VSInput, out PS_Input PSInput) {
-	float4 entitySpacePosition = float4(VSInput.position, 1);
-	float3 entitySpaceNormal = TransformRGBA8_SNORM(VSInput.normal);
-#ifdef USE_SKINNING
-	entitySpacePosition = mul(BONES[VSInput.boneId], entitySpacePosition);
-	entitySpaceNormal = mul(BONES[VSInput.boneId], entitySpaceNormal);
-#endif
-
+void main(in VS_Input VSInput, out PS_Input PSInput)
+{
 #ifdef INSTANCEDSTEREO
 	int i = VSInput.instanceID;
-	PSInput.position = mul(WORLDVIEWPROJ_STEREO[i], entitySpacePosition);
+	#ifdef USE_SKINNING
+		PSInput.position = mul(WORLDVIEWPROJ_STEREO[i], mul(BONES[VSInput.boneId], float4(VSInput.position, 1)));
+	#else
+		PSInput.position = mul(WORLDVIEWPROJ_STEREO[i], float4(VSInput.position, 1));
+	#endif
 #else
-	PSInput.position = mul(WORLDVIEWPROJ, entitySpacePosition);
+	#ifdef USE_SKINNING
+		PSInput.position = mul(WORLDVIEWPROJ, mul(BONES[VSInput.boneId], float4(VSInput.position, 1)));
+	#else
+		PSInput.position = mul(WORLDVIEWPROJ, float4(VSInput.position, 1));
+	#endif
 #endif
-
 #ifdef GEOMETRY_INSTANCEDSTEREO
 	PSInput.instanceID = VSInput.instanceID;
 #endif
-
 #ifdef VERTEXSHADER_INSTANCEDSTEREO
 	PSInput.renTarget_id = VSInput.instanceID;
 #endif
+	float4 normal = TransformRGBA8_SNORM(VSInput.normal);
 
-#ifdef INSTANCEDSTEREO
-	float L = lightIntensity(WORLD_STEREO, entitySpacePosition, entitySpaceNormal);
+#ifdef USE_SKINNING
+	float L = lightIntensity(BONES[VSInput.boneId], float4(VSInput.position, 1), normal);
+#elif !defined(INSTANCEDSTEREO)
+	float L = lightIntensity(WORLD, float4(VSInput.position, 1), normal);
 #else
-	float L = lightIntensity(WORLD, entitySpacePosition, entitySpaceNormal);
+	float L = lightIntensity(WORLD_STEREO, float4(VSInput.position, 1), normal);
 #endif
 
 #ifdef USE_OVERLAY

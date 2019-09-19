@@ -10,6 +10,8 @@
 #include "uniformAnimationConstants.h"
 #endif
 
+#line 13
+
 attribute mediump vec4 POSITION;
 attribute vec2 TEXCOORD_0;
 attribute vec4 NORMAL;
@@ -23,15 +25,15 @@ attribute float BONEID_0;
 
 #ifdef COLOR_BASED
 	attribute vec4 COLOR;
-		varying vec4 vertColor;
+	varying vec4 vertColor;
 #endif
 
 varying vec4 light;
 varying vec4 fogColor;
 
 #ifdef USE_OVERLAY
-		// When drawing horses on specific android devices, overlay color ends up being garbage data.
-		// Changing overlay color to high precision appears to fix the issue on devices tested
+	// When drawing horses on specific android devices, overlay color ends up being garbage data.
+	// Changing overlay color to high precision appears to fix the issue on devices tested
 	varying highp vec4 overlayColor;
 #endif
 
@@ -42,9 +44,11 @@ varying vec4 fogColor;
 #ifdef GLINT
 	varying vec2 layer1UV;
 	varying vec2 layer2UV;
-		varying vec4 tileLightColor;
+	varying vec4 tileLightColor;
 	varying vec4 glintColor;
 #endif
+	varying highp vec4 entitySpacePosition;
+	varying highp vec4 entitySpaceNormal;
 
 const float AMBIENT = 0.45;
 
@@ -53,46 +57,30 @@ const float ZFAC = 0.1;
 
 float lightIntensity() {
 #ifdef FANCY
-#ifdef USE_SKINNING
-#if defined(LARGE_VERTEX_SHADER_UNIFORMS)
-		vec3 N = normalize( BONES[int(BONEID_0)] * NORMAL ).xyz;
-#else
-		vec3 N = normalize( BONE * NORMAL ).xyz;
-#endif
-#else
-		vec3 N = normalize( WORLD * NORMAL ).xyz;
-#endif
+	vec3 N = normalize( WORLD * entitySpaceNormal ).xyz;
 
-		N.y *= TILE_LIGHT_COLOR.w; //TILE_LIGHT_COLOR.w contains the direction of the light
+	N.y *= TILE_LIGHT_COLOR.w; //TILE_LIGHT_COLOR.w contains the direction of the light
 
-		//take care of double sided polygons on materials without culling
-#ifdef FLIP_BACKFACES
-#ifdef USE_SKINNING
-#if defined(LARGE_VERTEX_SHADER_UNIFORMS)
-		vec3 viewDir = normalize((BONES[int(BONEID_0)] * POSITION).xyz);
-#else
-	vec3 viewDir = normalize((BONE * POSITION).xyz);
-#endif
-#else
-		vec3 viewDir = normalize((WORLD * POSITION).xyz);
-#endif
+	//take care of double sided polygons on materials without culling
+	#ifdef FLIP_BACKFACES
+		vec3 viewDir = normalize((WORLD * entitySpacePosition).xyz);
 		if( dot(N, viewDir) > 0.0 )
-				N *= -1.0;
-#endif
+			N *= -1.0;
+	#endif
 
-		float yLight = (1.0+N.y) * 0.5;
-		float def = yLight * (1.0-AMBIENT) + N.x*N.x * XFAC + N.z*N.z * ZFAC + AMBIENT;
+	float yLight = (1.0+N.y) * 0.5;
+	float def = yLight * (1.0-AMBIENT) + N.x*N.x * XFAC + N.z*N.z * ZFAC + AMBIENT;
 
-		//FLAT_SHADING
-		float dusk = smoothstep(.6,.8,TILE_LIGHT_COLOR.b);
-		N.x = abs(N.x*mix(1.5,.6,dusk));
-		N.yz = N.yz*.6+.3;
-		N.yz *= mix(vec2(.5,0.),vec2(1.),dusk);
-		float esbe = max(.2,max(N.x,max(N.y,N.z)));
+	//FLAT_SHADING
+	float dusk = smoothstep(.6,.8,TILE_LIGHT_COLOR.b);
+	N.x = abs(N.x*mix(1.5,.6,dusk));
+	N.yz = N.yz*.6+.3;
+	N.yz *= mix(vec2(.5,0.),vec2(1.),dusk);
+	float esbe = max(.2,max(N.x,max(N.y,N.z)));
 
-		return mix(def,esbe,smoothstep(.5,.75,TILE_LIGHT_COLOR.b));
+	return mix(def,esbe,smoothstep(.5,.75,TILE_LIGHT_COLOR.b));
 #else
-		return .9;
+	return .9;
 #endif
 }
 
@@ -113,27 +101,31 @@ vec2 calculateLayerUV(float offset, float rotation) {
 void main()
 {
 #ifdef USE_SKINNING
-#if defined(LARGE_VERTEX_SHADER_UNIFORMS)
-		POS4 pos = WORLDVIEWPROJ * BONES[int(BONEID_0)] * POSITION;
+	#if defined(LARGE_VERTEX_SHADER_UNIFORMS)
+		entitySpacePosition = BONES[int(BONEID_0)] * POSITION;
+		entitySpaceNormal = BONES[int(BONEID_0)] * NORMAL;
+	#else
+		entitySpacePosition = BONE * POSITION;
+		entitySpaceNormal = BONE * NORMAL;
+	#endif
 #else
-		POS4 pos = WORLDVIEWPROJ * BONE * POSITION;
+	entitySpacePosition = POSITION * vec4(1, 1, 1, 1);
+	entitySpaceNormal = NORMAL * vec4(1, 1, 1, 0);
 #endif
-#else
-		POS4 pos = WORLDVIEWPROJ * POSITION;
-#endif
-		gl_Position = pos;
+	vec4 pos = WORLDVIEWPROJ * entitySpacePosition;
+	gl_Position = pos;
 
-		float L = lightIntensity();
+	float L = lightIntensity();
 
 #ifdef USE_OVERLAY
 	L += OVERLAY_COLOR.a * 0.35;
 #endif
 
 #ifdef TINTED_ALPHA_TEST
-		alphaTestMultiplier = OVERLAY_COLOR.a;
+	alphaTestMultiplier = OVERLAY_COLOR.a;
 #endif
 
-		light = vec4(vec3(L) * TILE_LIGHT_COLOR.xyz, 1.0);
+	light = vec4(vec3(L) * TILE_LIGHT_COLOR.xyz, 1.0);
 
 #ifdef COLOR_BASED
 	vertColor = COLOR;
@@ -144,7 +136,7 @@ void main()
 #endif
 
 #ifndef NO_TEXTURE
-		uv = TEXCOORD_0;
+	uv = TEXCOORD_0;
 #endif
 
 #ifdef USE_UV_ANIM
@@ -155,10 +147,10 @@ void main()
 	glintColor = GLINT_COLOR;
 	layer1UV = calculateLayerUV(UV_OFFSET.x, UV_ROTATION.x);
 	layer2UV = calculateLayerUV(UV_OFFSET.y, UV_ROTATION.y);
-		tileLightColor = TILE_LIGHT_COLOR;
+	tileLightColor = TILE_LIGHT_COLOR;
 #endif
 
 	//fog
-		fogColor.rgb = FOG_COLOR.rgb;
+	fogColor.rgb = FOG_COLOR.rgb;
 	fogColor.a = clamp(((pos.z / RENDER_DISTANCE) - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
 }
