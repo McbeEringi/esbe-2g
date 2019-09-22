@@ -68,7 +68,7 @@ float4 water(float4 col,float3 p,float3 look,float weather,float sun){
 	float4 col2 = col*(lerp(1.5,1.3,skn*sun)-cosT*.2);//almost C_REF in ESBE1G
 	float4 col3 = lerp(col*1.1,float4(1.,1.,1.,1.),smoothstep(3.+abs(look.y)*.3,0.,abs(look.z))*sun*weather*smoothstep(0.,.7,cosT));
 
-	float4 diffuse = lerp(col,lerp(col2,col3,smoothstep(.5,1.,n)),smoothstep(0.,.5,n));
+	float4 diffuse = lerp(col,lerp(col2,col3,smoothstep(.5,.9,n)),smoothstep(0.,.5,n));
 	return lerp(col,diffuse,max(.4,cosT));
 }
 
