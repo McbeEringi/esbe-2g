@@ -89,7 +89,7 @@ vec4 water(vec4 col,float weather,highp float time){
 	vec4 col2 = col*(mix(1.5,1.3,skn*sun)-cosT*.2);//almost C_REF in ESBE1G
 	vec4 col3 = mix(col*1.1,vec4(1.),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*sun*weather*smoothstep(0.,.7,cosT));
 
-	vec4 diffuse = mix(col,mix(col2,col3,smoothstep(.5,.9,n)),smoothstep(0.,.5,n));
+	vec4 diffuse = mix(col,mix(col2,col3,smoothstep(.5,1.,n)),smoothstep(0.,.5,n));
 	return mix(col,diffuse,max(.4,cosT));
 }
 
