@@ -53,10 +53,10 @@ float flat_shading(float3 pos, float dusk){
 	return max(n.x,max(n.y,n.z));
 }
 
-float4 water(float4 col,float3 p,float3 look,float weather,float sun){
+float4 water(float4 col,float3 p,float3 look,float weather,float uw,float sun){
 	sun = smoothstep(.5,.75,sun);
 	float cosT = 1.-dot(normalize(abs(look)).y,1.);
-	col.rgb = lerp(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*.6);
+	col.rgb = lerp(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
 
 	p.xz = p.xz*float2(1.0,0.4)//縦横比 aspect ratio
 		+smoothstep(0.,8.,abs(p.y-8.))*.5;
@@ -149,7 +149,7 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 
 //ESBEwater
 #ifdef FANCY
-	if(PSInput.wf+uw > .5)diffuse = water(diffuse,PSInput.cPos,PSInput.wPos,weather,PSInput.uv1.y);
+	if(PSInput.wf+uw > .5)diffuse = water(diffuse,PSInput.cPos,PSInput.wPos,weather,1.-uw,PSInput.uv1.y);
 #endif
 
 //ESBE_shadow
