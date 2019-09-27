@@ -117,10 +117,6 @@ highp float hTime = TIME;
 			float cameraDist = pow(cameraDepth / FAR_CHUNKS_DISTANCE,2.);
 			wf = 1.;
 		#else
-			// Completely insane, but if I don't have these two lines in here, the water doesn't render on a Nexus 6
-			vec4 surfColor = vec4(color.rgb, 1.0);
-			color = surfColor;
-
 			vec3 relPos = -worldPos.xyz;
 			float camDist = length(relPos);
 			float cameraDist = camDist / FAR_CHUNKS_DISTANCE;
