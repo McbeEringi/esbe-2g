@@ -1,91 +1,78 @@
 {
- "namespace": "tabbed_upsell",
+	"namespace": "tabbed_upsell",
 
- "esbe_his": {
-  "type": "label",
-  "text":
-"©2019 §b@McbeEringi(twitter)§r All Rights Reserved.
-see LICENSE for more
-§aURL§r: mcbeeringi.github.io/esbe-2g
+	"esbe_panel": {
+		"type": "stack_panel",
+		"offset": [4,4],
+		"controls": [
+			{
+				"prof":{
+					"type": "stack_panel",
+					"orientation": "horizontal",
+					"size": ["100%",132],
+					"controls": [
+						{"img": {"type": "image","texture": "pack_icon","size": [ 128, 128 ]}},
+						{"sp": {"type":"panel","size":[4,4]}},
+						{
+							"p":{
+								"type": "stack_panel",
+								"controls":[
+									{"nam": {"type": "label","font_scale_factor": 1.5,"text": "§bEntropyShader\n§7for§bBedrockEdition\n2ndGeneration\n "}},
+									{"lic": {"type": "label","text": "©2019 §b@McbeEringi(twitter)\n§rAll Rights Reserved.\nsee LICENSE for more\n \n§6URL"}},
+									{"url": {"type": "label","font_scale_factor": 0.8,"text": "§bofficial(ja)§r: mcbeeringi.github.io/esbe-2g\n§aMCPEDL§r: mcpedl.com/esbe-2g"}}
+								]
+							}
+						}
+					]
+				}
+			},
+			{
+				"changes":{
+					"type": "stack_panel",
+					"orientation": "horizontal",
+					"size": ["100%",128],
+					"controls": [
+						{
+							"h":{
+								"type": "stack_panel",
+								"size": [132,"100%"],
+								"controls": [
+									{"nam": {"type": "label","font_scale_factor": 1.5,"text": "§bESBE_2G§a v3.1"}},
+									{"ch": {"type": "label","font_scale_factor": 1.2,"text": "upd.ch"}}
+								]
+							}
+						},
+						{
+							"p":{
+								"type": "stack_panel",
+								"controls": [
+									{"0": {"type": "label","font_type": "smooth","text": "change.0"}},
+									{"1": {"type": "label","font_type": "smooth","text": "change.1"}},
+									{"2": {"type": "label","font_type": "smooth","text": "change.2"}},
+									{"3": {"type": "label","font_type": "smooth","text": "change.3"}},
+									{"4": {"type": "label","font_type": "smooth","text": "change.4"}},
+									{"5": {"type": "label","font_type": "smooth","text": "change.5"}},
+									{"6": {"type": "label","font_type": "smooth","text": "change.6"}},
+									{"7": {"type": "label","font_type": "smooth","text": "change.7"}},
+									{"8": {"type": "label","font_type": "smooth","text": "change.8"}},
+									{"9": {"type": "label","font_type": "smooth","text": "change.9"}}
+								]
+							}
+						}
+					]
+				}
+			}
+		]
+	},
 
+	"scroll@common.scrolling_panel": {
+		"$show_background": false,
+		"$scrolling_content": "tabbed_upsell.esbe_panel"
+	},
 
-3.1
- 著作権の表記を追加
- 1.13に対応
- 夕焼けを若干暗く
- 水の透明度向上
- モバイル端末での低画質時の水の透明度の向上
- 足元の水の描写を若干強く
- キノコ島の水が検知されない問題を修正
- 水面近くの水中が明るすぎる問題を修正
- URLの更新
-3.0
- 昼間&夕焼けの色の調整
- 樹氷バイオームの葉が水として検知される問題を一部修正
- 水の描写を改良
- (空の色が反映されるように
- (水面に対する視線角で描写の強さが変わるように
- (太陽の反射を修正
- (遠くの水面が汚くなる問題を修正
- (地下で水に雲の反射が映る問題を修正
- (水の縦横比の変更 より細く
- 湿地の水が部分的に暗くなる問題を修正
-2.1
- AmbientOcclusionを追加
- 光源の演出を少し弱く
- 水の色を濃く
- 無駄なコードの削減
-2.0
- 空の色の大幅な改良
- 雲に影を追加
- 夜間の雲を少し明るく
- 日光下での松明の光をさらに弱く
- 光源がより輝いて見えるように
- タイトルUIの改良
- URLの更新
-1.2
- 水中に射し込む光の描写を追加
- アップデート内容がアプリ内で見れるように
- コードの整理
-1.1
- 水面の描写がより遠くまで見えるように
- 水の色の調整
- 水の色の天候による変化が控えめに
- 水面の太陽の反射を若干弱めに
- 夜の色味の調整
-1.0
- 水面反射の追加
- 水の色が強すぎる問題を修正
- 遠くの水に境目が見える問題を修正
- win10の夕焼け時の雲の色が強すぎる問題を修正
- ノイズ生成関数のhファイル化(容量削減)
- ノイズの値域の修正
-0.3
- フラットシェーディング追加(高画質時のみ)
- エンティティの描写の追加
- 強度の高いレッドストーンが揺れるバグを修正
- 水の検知コードの改良
- 水準備
- タイトル画面のクレジット部分のuiを変更
- 雲の量をほんの少し増加
- コードの削減
-0.2
- 雲やオーロラなど空全般の要素を追加
- 夜をより暗く
- 葉と水面の揺れに不規則性を追加(?)
- 一部端末で葉の揺れがカクつく問題を修正
-0.1
- 作った(松明,トーンマップ(夕焼け込み),影,水面&葉の揺れ,星,空準備)\n "
- },
-
- "scroll@common.scrolling_panel": {
-  "$show_background": false,
-  "$scrolling_content": "tabbed_upsell.esbe_his"
- },
-
- "tabbed_upseel_screen_panel@common_dialogs.main_panel_no_buttons": {
-  "size": ["80%" ,"80%" ],
-  "$text_name": "§bESBE_2G §aseries",
-  "$child_control": "tabbed_upsell.scroll"
- }
+	"tabbed_upseel_screen_panel@common_dialogs.main_panel_no_buttons": {
+		"size": ["80%" ,"80%" ],
+		"$text_name": "§bESBE_2G §ainfo",
+		"$child_control": "tabbed_upsell.scroll"
+	}
 }
