@@ -74,7 +74,7 @@ void main()
 		pos = PROJ * pos;
 #endif
 		gl_Position = pos;
-		cPos = POSITION.xyz;
+		cPos = POSITION.xyz;//+ceil(CHUNK_ORIGIN_AND_SCALE.xyz/16.)*16.;
 		wPos = worldPos.xyz;
 
 #ifndef BYPASS_PIXEL_SHADER
@@ -101,13 +101,16 @@ void main()
 #endif
 
 ///// waves
-highp float hTime = TIME;
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+	highp float hTime = TIME;
+	POS3 p = vec3(POSITION.x==16.?0.:POSITION.x,abs(POSITION.y-8.),POSITION.z==16.?0.:POSITION.z);
+#else
+	float hTime = TIME;
+	vec3 p = vec3(POSITION.x==16.?0.:POSITION.x,abs(POSITION.y-8.),POSITION.z==16.?0.:POSITION.z);
+#endif
+
 #ifdef ALPHA_TEST
-	if(color.g != color.b && color.r < color.g+color.b){
-		POS3 lp = POSITION.xyz;
-		lp.y = abs(lp.y-8.);
-		gl_Position.x += sin(hTime*3.5+2.*lp.x+2.*lp.z+lp.y)*.015*random(lp.x+lp.y+lp.z);
-	}
+	if(color.g != color.b && color.r < color.g+color.b)gl_Position.x += sin(hTime*3.5+2.*p.x+2.*p.z+p.y)*.015*random(p.x+p.y+p.z);
 #endif
 
 ///// blended layer (mostly water) magic
@@ -126,13 +129,10 @@ highp float hTime = TIME;
 		color.a = mix(color.a*.6, 1.5, alphaFadeOut);
 
 		/////waves
-		POS3 wp = worldPos.xyz + VIEW_POS;
-		gl_Position.y += sin(hTime*3.5+2.*wp.x+2.*wp.z+wp.y)*.05*fract(POSITION.y)*random(wp.x+wp.y+wp.z)*(1.-alphaFadeOut);
+		gl_Position.y += sin(hTime*3.5+2.*p.x+2.*p.z+p.y)*.05*fract(POSITION.y)*random(p.x+p.y+p.z)*(1.-alphaFadeOut);
 	}
-	if(bool(step(FOG_CONTROL.x,.0001))){
-		POS3 uwp = worldPos.xyz + VIEW_POS;
-		gl_Position.x += sin(hTime*3.5+2.*uwp.x+2.*uwp.z+uwp.y)*.02;
-	}
+	/////uw
+	if(bool(step(FOG_CONTROL.x,.0001)))gl_Position.x += sin(hTime*3.5+2.*p.x+2.*p.z+p.y)*.02;
 #endif
 
 #ifndef BYPASS_PIXEL_SHADER

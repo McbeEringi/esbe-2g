@@ -146,6 +146,6 @@ PSInput.wf = 0.;
 	}
 #endif
 
-PSInput.cPos = VSInput.position;
-PSInput.wPos = worldPos;
+PSInput.cPos = VSInput.position.xyz;
+PSInput.wPos = worldPos.xyz;
 }
