@@ -101,14 +101,8 @@ void main()
 #endif
 
 ///// waves
-#ifdef GL_FRAGMENT_PRECISION_HIGH
-	highp float hTime = TIME;
-	POS3 p = vec3(POSITION.x==16.?0.:POSITION.x,abs(POSITION.y-8.),POSITION.z==16.?0.:POSITION.z);
-#else
-	float hTime = TIME;
-	vec3 p = vec3(POSITION.x==16.?0.:POSITION.x,abs(POSITION.y-8.),POSITION.z==16.?0.:POSITION.z);
-#endif
-
+highp float hTime = TIME;
+POS3 p = vec3(POSITION.x==16.?0.:POSITION.x,abs(POSITION.y-8.),POSITION.z==16.?0.:POSITION.z);
 #ifdef ALPHA_TEST
 	if(color.g != color.b && color.r < color.g+color.b)gl_Position.x += sin(hTime*3.5+2.*p.x+2.*p.z+p.y)*.015*random(p.x+p.y+p.z);
 #endif
