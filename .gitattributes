@@ -1,2 +1,2 @@
-*.fragment linguist-language=glsl
-*.vertex linguist-language=glsl
+*.fragment linguist-language=GLSL
+*.vertex linguist-language=GLSL
