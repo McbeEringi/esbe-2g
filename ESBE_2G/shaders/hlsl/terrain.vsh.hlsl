@@ -113,12 +113,9 @@ PSInput.wf = 0.;
 #endif
 
 ///// waves
+float3 p = float3(VSInput.position.x==16.?0.:VSInput.position.x,abs(VSInput.position.y-8.),VSInput.position.z==16.?0.:VSInput.position.z);
 #ifdef ALPHA_TEST
-	if (PSInput.color.g != PSInput.color.b && PSInput.color.r < PSInput.color.g+PSInput.color.b){
-		float3 lp = VSInput.position.xyz;
-		lp.y = abs(lp.y-8.);
-		PSInput.position.x += sin(TIME*3.5+2.*lp.x+2.*lp.z+lp.y)*.015*random(lp.x+lp.y+lp.z);
-	}
+	if (PSInput.color.g != PSInput.color.b && PSInput.color.r < PSInput.color.g+PSInput.color.b)PSInput.position.x += sin(TIME*3.5+2.*p.x+2.*p.z+p.y)*.015*random(p.x+p.y+p.z);
 #endif
 
 ///// blended layer (mostly water) magic
@@ -137,13 +134,10 @@ PSInput.wf = 0.;
 		PSInput.color.a = lerp(VSInput.color.a*.6, 1.5, alphaFadeOut);
 
 		/////waves
-		float3 wp = worldPos.xyz + VIEW_POS;
-		PSInput.position.y += sin(TIME*3.5+2.*wp.x+2.*wp.z+wp.y)*.05*frac(VSInput.position.y)*random(wp.x+wp.y+wp.z)*(1.-alphaFadeOut);
+		PSInput.position.y += sin(TIME*3.5+2.*p.x+2.*p.z+p.y)*.05*frac(VSInput.position.y)*random(p.x+p.y+p.z)*(1.-alphaFadeOut);
 	}
-	if(bool(step(FOG_CONTROL.x,.0001))){
-		float3 uwp = worldPos.xyz + VIEW_POS;
-		PSInput.position.x += sin(TIME*3.5+2.*uwp.x+2.*uwp.z+uwp.y)*.02;
-	}
+	/////uw
+	if(bool(step(FOG_CONTROL.x,.0001)))PSInput.position.x += sin(TIME*3.5+2.*p.x+2.*p.z+p.y)*.02;
 #endif
 
 PSInput.cPos = VSInput.position.xyz;
