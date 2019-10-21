@@ -6,8 +6,10 @@ You are allowed to
 	take photo with this shader and share it
 	share download links below
 	modify this shader in your personal use
+	use this shader for education
 
 You are prohibited to
+	use any code as your code
 	distribute this shader with or without any modification
 	make other download links
 	earn money with this shader

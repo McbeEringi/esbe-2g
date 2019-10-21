@@ -9,6 +9,7 @@ You are allowed to
 	use this shader for education
 
 You are prohibited to
+	use any code as your code
 	distribute this shader with or without any modification
 	make other download links
 	earn money with this shader
