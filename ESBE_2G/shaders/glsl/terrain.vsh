@@ -59,38 +59,38 @@ highp float random(highp float p){
 
 void main()
 {
-		wf = 0.;
-		POS4 worldPos;
+wf = 0.;
+POS4 worldPos;
 #ifdef AS_ENTITY_RENDERER
-		POS4 pos = WORLDVIEWPROJ * POSITION;
-		worldPos = pos;
+	POS4 pos = WORLDVIEWPROJ * POSITION;
+	worldPos = pos;
 #else
-		worldPos.xyz = (POSITION.xyz * CHUNK_ORIGIN_AND_SCALE.w) + CHUNK_ORIGIN_AND_SCALE.xyz;
-		worldPos.w = 1.0;
+	worldPos.xyz = (POSITION.xyz * CHUNK_ORIGIN_AND_SCALE.w) + CHUNK_ORIGIN_AND_SCALE.xyz;
+	worldPos.w = 1.0;
 
-		// Transform to view space before projection instead of all at once to avoid floating point errors
-		// Not required for entities because they are already offset by camera translation before rendering
-		// World position here is calculated above and can get huge
-		POS4 pos = WORLDVIEW * worldPos;
-		pos = PROJ * pos;
+	// Transform to view space before projection instead of all at once to avoid floating point errors
+	// Not required for entities because they are already offset by camera translation before rendering
+	// World position here is calculated above and can get huge
+	POS4 pos = WORLDVIEW * worldPos;
+	pos = PROJ * pos;
 #endif
-		gl_Position = pos;
-		cPos = POSITION.xyz;//+ceil(CHUNK_ORIGIN_AND_SCALE.xyz/16.)*16.;
-		wPos = worldPos.xyz;
+gl_Position = pos;
+cPos = POSITION.xyz;//+ceil(CHUNK_ORIGIN_AND_SCALE.xyz/16.)*16.;
+wPos = worldPos.xyz;
 
 #ifndef BYPASS_PIXEL_SHADER
-		uv0 = TEXCOORD_0;
-		uv1 = TEXCOORD_1;
+	uv0 = TEXCOORD_0;
+	uv1 = TEXCOORD_1;
 	color = COLOR;
 #endif
 
 ///// find distance from the camera
-	#ifdef FANCY
-		vec3 relPos = -worldPos.xyz;
-		float cameraDepth = length(relPos);
-	#else
-		float cameraDepth = pos.z;
-	#endif
+#ifdef FANCY
+	vec3 relPos = -worldPos.xyz;
+	float cameraDepth = length(relPos);
+#else
+	float cameraDepth = pos.z;
+#endif
 
 ///// apply fog
 #ifdef FOG

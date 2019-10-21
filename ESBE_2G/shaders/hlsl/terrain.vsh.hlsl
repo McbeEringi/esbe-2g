@@ -96,12 +96,12 @@ PSInput.wf = 0.;
 #endif
 
 ///// find distance from the camera
-	#ifdef FANCY
-		float3 relPos = -worldPos;
-		float cameraDepth = length(relPos);
-	#else
-		float cameraDepth = PSInput.position.z;
-	#endif
+#ifdef FANCY
+	float3 relPos = -worldPos;
+	float cameraDepth = length(relPos);
+#else
+	float cameraDepth = PSInput.position.z;
+#endif
 
 ///// apply fog
 #ifdef FOG
