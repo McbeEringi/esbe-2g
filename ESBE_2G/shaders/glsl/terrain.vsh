@@ -23,11 +23,12 @@
 #endif
 
 #ifdef GL_FRAGMENT_PRECISION_HIGH
-	varying highp vec3 cPos;
+	#define HM highp
 #else
-	varying mediump vec3 cPos;
+	#define HM mediump
 #endif
-varying POS3 wPos;
+varying HM vec3 cPos;
+varying HM vec3 wPos;
 varying float wf;
 
 #include "uniformWorldConstants.h"

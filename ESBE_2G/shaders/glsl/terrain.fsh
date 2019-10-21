@@ -21,17 +21,17 @@
 #endif
 
 varying vec4 color;
-
 #ifdef FOG
 	varying float fog;
 #endif
 
 #ifdef GL_FRAGMENT_PRECISION_HIGH
-	varying highp vec3 cPos;
+	#define HM highp
 #else
-	varying mediump vec3 cPos;
+	#define HM mediump
 #endif
-varying POS3 wPos;
+varying HM vec3 cPos;
+varying HM vec3 wPos;
 varying float wf;
 
 #include "uniformShaderConstants.h"
@@ -102,9 +102,9 @@ void main()
 #else
 
 #if USE_TEXEL_AA
-	highp vec4 diffuse = texture2D_AA(TEXTURE_0, uv0);
+	HM vec4 diffuse = texture2D_AA(TEXTURE_0, uv0);
 #else
-	highp vec4 diffuse = texture2D(TEXTURE_0, uv0);
+	HM vec4 diffuse = texture2D(TEXTURE_0, uv0);
 #endif
 
 #ifdef SEASONS_FAR
@@ -117,8 +117,8 @@ void main()
 	#else
 	#define ALPHA_THRESHOLD 0.6
 	#endif
-	if(diffuse.a < ALPHA_THRESHOLD)
-		discard;
+	if(diffuse.a < ALPHA_THRESHOLD)discard;
+	//if(color.a==0. && !(gl_FrontFacing))discard;
 #endif
 
 vec4 inColor = color;
