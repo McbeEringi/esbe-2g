@@ -60,6 +60,12 @@ highp float random(highp float p){
 void main()
 {
 wf = 0.;
+#ifndef BYPASS_PIXEL_SHADER
+	uv0 = TEXCOORD_0;
+	uv1 = TEXCOORD_1;
+	color = COLOR;
+#endif
+
 POS4 worldPos;
 #ifdef AS_ENTITY_RENDERER
 	POS4 pos = WORLDVIEWPROJ * POSITION;
@@ -78,11 +84,6 @@ gl_Position = pos;
 cPos = POSITION.xyz;//+ceil(CHUNK_ORIGIN_AND_SCALE.xyz/16.)*16.;
 wPos = worldPos.xyz;
 
-#ifndef BYPASS_PIXEL_SHADER
-	uv0 = TEXCOORD_0;
-	uv1 = TEXCOORD_1;
-	color = COLOR;
-#endif
 
 ///// find distance from the camera
 #ifdef FANCY

@@ -94,6 +94,8 @@ PSInput.wf = 0.;
 #ifdef VERTEXSHADER_INSTANCEDSTEREO
 		PSInput.renTarget_id = VSInput.instanceID;
 #endif
+PSInput.cPos = VSInput.position.xyz;
+PSInput.wPos = worldPos.xyz;
 
 ///// find distance from the camera
 #ifdef FANCY
@@ -139,7 +141,4 @@ float3 p = float3(VSInput.position.x==16.?0.:VSInput.position.x,abs(VSInput.posi
 	/////uw
 	if(bool(step(FOG_CONTROL.x,.0001)))PSInput.position.x += sin(TIME*3.5+2.*p.x+2.*p.z+p.y)*.02;
 #endif
-
-PSInput.cPos = VSInput.position.xyz;
-PSInput.wPos = worldPos.xyz;
 }
