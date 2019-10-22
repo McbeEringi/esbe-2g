@@ -61,6 +61,10 @@ PSInput.wf = 0.;
 	PSInput.uv1 = VSInput.uv1;
 	PSInput.color = VSInput.color;
 #endif
+/////waves
+float3 p = float3(VSInput.position.x==16.?0.:VSInput.position.x,abs(VSInput.position.y-8.),VSInput.position.z==16.?0.:VSInput.position.z);
+float wav = sin(TIME*3.5+2.*p.x+2.*p.z+p.y);
+float rand = random(p.x+p.y+p.z);
 
 #ifdef AS_ENTITY_RENDERER
 	#ifdef INSTANCEDSTEREO
@@ -72,6 +76,9 @@ PSInput.wf = 0.;
 		float3 worldPos = PSInput.position;
 #else
 		float3 worldPos = (VSInput.position.xyz * CHUNK_ORIGIN_AND_SCALE.w) + CHUNK_ORIGIN_AND_SCALE.xyz;
+
+		/////waves
+		if(VSInput.color.a < 0.95 && VSInput.color.a >0.05 && VSInput.color.g > VSInput.color.r)worldPos.y += wav*.05*frac(VSInput.position.y)*rand*clamp(1.-length(worldPos.xyz)/FAR_CHUNKS_DISTANCE,0.,1.);
 
 		// Transform to view space before projection instead of all at once to avoid floating point errors
 		// Not required for entities because they are already offset by camera translation before rendering
@@ -114,10 +121,9 @@ PSInput.wPos = worldPos.xyz;
 	PSInput.fog = clamp((len - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
 #endif
 
-///// waves
-float3 p = float3(VSInput.position.x==16.?0.:VSInput.position.x,abs(VSInput.position.y-8.),VSInput.position.z==16.?0.:VSInput.position.z);
+///// leaves
 #ifdef ALPHA_TEST
-	if (PSInput.color.g != PSInput.color.b && PSInput.color.r < PSInput.color.g+PSInput.color.b)PSInput.position.x += sin(TIME*3.5+2.*p.x+2.*p.z+p.y)*.015*random(p.x+p.y+p.z);
+	if (PSInput.color.g != PSInput.color.b && PSInput.color.r < PSInput.color.g+PSInput.color.b)PSInput.position.x += wav*.015*rand;
 #endif
 
 ///// blended layer (mostly water) magic
@@ -134,11 +140,13 @@ float3 p = float3(VSInput.position.x==16.?0.:VSInput.position.x,abs(VSInput.posi
 
 		float alphaFadeOut = clamp(cameraDist, 0.0, 1.0);
 		PSInput.color.a = lerp(VSInput.color.a*.6, 1.5, alphaFadeOut);
-
-		/////waves
-		PSInput.position.y += sin(TIME*3.5+2.*p.x+2.*p.z+p.y)*.05*frac(VSInput.position.y)*random(p.x+p.y+p.z)*(1.-alphaFadeOut);
 	}
 	/////uw
-	if(bool(step(FOG_CONTROL.x,.0001)))PSInput.position.x += sin(TIME*3.5+2.*p.x+2.*p.z+p.y)*.02;
+	if(bool(step(FOG_CONTROL.x,.0001)))PSInput.position.x += wav*.02
+	#ifdef FANCY
+		*rand;
+	#else
+		;
+	#endif
 #endif
 }
