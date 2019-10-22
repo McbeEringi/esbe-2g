@@ -73,36 +73,34 @@ float rand = random(p.x+p.y+p.z);
 	#else
 		PSInput.position = mul(WORLDVIEWPROJ, float4(VSInput.position, 1));
 	#endif
-		float3 worldPos = PSInput.position;
+	float3 worldPos = PSInput.position;
 #else
-		float3 worldPos = (VSInput.position.xyz * CHUNK_ORIGIN_AND_SCALE.w) + CHUNK_ORIGIN_AND_SCALE.xyz;
+	float3 worldPos = (VSInput.position.xyz * CHUNK_ORIGIN_AND_SCALE.w) + CHUNK_ORIGIN_AND_SCALE.xyz;
 
-		/////waves
-		if(VSInput.color.a < 0.95 && VSInput.color.a >0.05 && VSInput.color.g > VSInput.color.r)worldPos.y += wav*.05*frac(VSInput.position.y)*rand*clamp(1.-length(worldPos.xyz)/FAR_CHUNKS_DISTANCE,0.,1.);
+	/////waves
+	if(VSInput.color.a < 0.95 && VSInput.color.a >0.05 && VSInput.color.g > VSInput.color.r)worldPos.y += wav*.05*frac(VSInput.position.y)*rand*clamp(1.-length(worldPos.xyz)/FAR_CHUNKS_DISTANCE,0.,1.);
 
-		// Transform to view space before projection instead of all at once to avoid floating point errors
-		// Not required for entities because they are already offset by camera translation before rendering
-		// World position here is calculated above and can get huge
+	// Transform to view space before projection instead of all at once to avoid floating point errors
+	// Not required for entities because they are already offset by camera translation before rendering
+	// World position here is calculated above and can get huge
 	#ifdef INSTANCEDSTEREO
 		int i = VSInput.instanceID;
-
 		PSInput.position = mul(WORLDVIEW_STEREO[i], float4(worldPos, 1 ));
 		PSInput.position = mul(PROJ_STEREO[i], PSInput.position);
-
 	#else
 		PSInput.position = mul(WORLDVIEW, float4( worldPos, 1 ));
 		PSInput.position = mul(PROJ, PSInput.position);
 	#endif
-
 #endif
+PSInput.cPos = VSInput.position.xyz;
+PSInput.wPos = worldPos.xyz;
+
 #ifdef GEOMETRY_INSTANCEDSTEREO
 		PSInput.instanceID = VSInput.instanceID;
 #endif
 #ifdef VERTEXSHADER_INSTANCEDSTEREO
 		PSInput.renTarget_id = VSInput.instanceID;
 #endif
-PSInput.cPos = VSInput.position.xyz;
-PSInput.wPos = worldPos.xyz;
 
 ///// find distance from the camera
 #ifdef FANCY

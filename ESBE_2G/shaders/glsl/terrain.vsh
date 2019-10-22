@@ -88,9 +88,9 @@ float rand = random(p.x+p.y+p.z);
 		POS4 pos = WORLDVIEW * worldPos;
 		pos = PROJ * pos;
 #endif
-		gl_Position = pos;
-		cPos = POSITION.xyz;//+ceil(CHUNK_ORIGIN_AND_SCALE.xyz/16.)*16.;
-		wPos = worldPos.xyz;
+gl_Position = pos;
+cPos = POSITION.xyz;//+ceil(CHUNK_ORIGIN_AND_SCALE.xyz/16.)*16.;
+wPos = worldPos.xyz;
 
 ///// find distance from the camera
 	#ifdef FANCY
