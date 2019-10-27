@@ -70,7 +70,7 @@ float flat_sh(float dusk){
 	return mix(s,max(dot(n,vec3(.9,.44,0.)),dot(n,vec3(-.9,.44,0.)))*1.3+.2,dusk);
 }
 
-vec4 water(vec4 col,float weather,float uw,highp float time){
+vec4 water(vec4 col,float weather,float uw,HM float time){
 	float sun = smoothstep(.5,.75,uv1.y);
 	float cosT = 1.-dot(normalize(abs(wPos)).y,1.);
 	col.rgb = mix(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
