@@ -64,13 +64,10 @@ vec3 tonemap(vec3 col, vec3 gamma){
 	return col/curve(vec3(1./exposure));
 }
 
-float flat_shading(float dusk){
-	dusk = dusk*.8;
+float flat_sh(float dusk){
 	vec3 n = normalize(cross(dFdx(cPos),dFdy(cPos)));
-	n.x = abs(n.x*mix(.75,1.5,dusk));
-	n.yz = n.yz*.6+.4;
-	n.yz *= mix(vec2(1.),vec2(.5,0.),dusk);
-	return max(n.x,max(n.y,n.z));
+	float s = min(1.,dot(n,vec3(0.,.8,.6))*.45+.64);
+	return mix(s,max(dot(n,vec3(.9,.44,0.)),dot(n,vec3(-.9,.44,0.)))*1.3+.2,dusk);
 }
 
 vec4 water(vec4 col,float weather,float uw,highp float time){
@@ -181,7 +178,7 @@ if(color.r==color.g && color.g==color.b)ao = smoothstep(.48*daylight.y,.52*dayli
 
 diffuse.rgb *= 1.-mix(/*影の濃さ*/0.5,0.0,min(sunlight,ao))*(1.-uv1.x)*daylight.x;
 #ifdef FANCY//FLAT_SHADING
-	diffuse.rgb *= mix(1.0,flat_shading(dusk),smoothstep(.7,.95,uv1.y)*min(1.25-uv1.x,1.)*daylight.x);
+	diffuse.rgb *= mix(1.0,flat_sh(dusk),smoothstep(.7,.95,uv1.y)*min(1.25-uv1.x,1.)*daylight.x);
 #endif
 
 #ifdef FOG

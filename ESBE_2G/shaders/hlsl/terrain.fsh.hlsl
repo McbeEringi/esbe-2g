@@ -44,13 +44,10 @@ float3 tonemap(float3 col, float3 gamma){
 	return col/curve(float3(1./exposure,0.,0.)).r;
 }
 
-float flat_shading(float3 pos, float dusk){
-	dusk *= .8;
+float flat_sh(float3 pos, float dusk){
 	float3 n = normalize(cross(ddx(-pos),ddy(pos)));
-	n.x = abs(n.x*lerp(.75,1.5,dusk));
-	n.yz = n.yz*.6+.4;
-	n.yz *= lerp(float2(1.,1.),float2(.5,0.),dusk);
-	return max(n.x,max(n.y,n.z));
+	float s = min(1.,dot(n,float3(0.,.8,.6))*.45+.64);
+	return lerp(s,max(dot(n,float3(.9,.44,0.)),dot(n,float3(-.9,.44,0.)))*1.3+.2,dusk);
 }
 
 float4 water(float4 col,float3 p,float3 look,float weather,float uw,float sun){
@@ -158,7 +155,7 @@ if(PSInput.color.r==PSInput.color.g && PSInput.color.g==PSInput.color.b)ao = smo
 
 diffuse.rgb *= 1.-lerp(/*影の濃さ*/0.5,0.0,min(sunlight,ao))*(1.-PSInput.uv1.x)*daylight.x;
 #ifdef FANCY//FLAT_SHADING
-	diffuse.rgb *= lerp(1.,flat_shading(PSInput.cPos,dusk),smoothstep(.7,.95,PSInput.uv1.y)*min(1.25-PSInput.uv1.x,1.)*daylight.x);
+	diffuse.rgb *= lerp(1.,flat_sh(PSInput.cPos,dusk),smoothstep(.7,.95,PSInput.uv1.y)*min(1.25-PSInput.uv1.x,1.)*daylight.x);
 #endif
 
 #ifdef FOG
