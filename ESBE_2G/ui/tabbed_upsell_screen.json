@@ -4,62 +4,40 @@
 	"p":{"type": "label","font_type": "smooth"},
 	"esbe_panel": {
 		"type": "stack_panel",
+		"orientation": "horizontal",
+		"size": ["100%",256],
 		"offset": [4,4],
 		"controls": [
 			{
-				"prof":{
+				"l":{
 					"type": "stack_panel",
-					"orientation": "horizontal",
-					"size": ["100%",132],
+					"size": [132,"100%"],
 					"controls": [
 						{"img": {"type": "image","texture": "pack_icon","size": [128,128]}},
-						{"sp": {"type":"panel","size":[4,4]}},
-						{
-							"p":{
-								"type": "stack_panel",
-								"controls":[
-									{"nam": {"type": "label","font_scale_factor": 1.5,"text": "§bEntropyShader\n§7for§bBedrockEdition\n2ndGeneration\n "}},
-									{"lic": {"type": "label","text": "©2019 §b@McbeEringi(twitter)\n§rAll Rights Reserved.\nsee LICENSE for more\n \n§6URL"}},
-									{"url": {"type": "label","font_scale_factor": 0.8,"text": "§bofficial(ja)§r: mcbeeringi.github.io/esbe-2g\n§aMCPEDL§r: mcpedl.com/esbe-2g"}}
-								]
-							}
-						}
+						{"nam": {"type": "label","font_scale_factor": 1.5,"text": "§bESBE_2G§a v4.0"}},
+						{"ch": {"type": "label","font_scale_factor": 1.2,"text": "upd.ch"}}
 					]
 				}
 			},
 			{
-				"changes":{
+				"r":{
 					"type": "stack_panel",
-					"orientation": "horizontal",
-					"size": ["100%",128],
+					"size": ["fill","100%"],
 					"controls": [
-						{
-							"h":{
-								"type": "stack_panel",
-								"size": [132,"100%"],
-								"controls": [
-									{"nam": {"type": "label","font_scale_factor": 1.5,"text": "§bESBE_2G§a v4.0"}},
-									{"ch": {"type": "label","font_scale_factor": 1.2,"text": "upd.ch"}}
-								]
-							}
-						},
-						{
-							"p":{
-								"type": "stack_panel",
-								"controls": [
-									{"0@tabbed_upsell.p": {"text": "change.0"}},
-									{"1@tabbed_upsell.p": {"text": "change.1"}},
-									{"2@tabbed_upsell.p": {"text": "change.2"}},
-									{"3@tabbed_upsell.p": {"text": "change.3"}},
-									{"4@tabbed_upsell.p": {"text": "change.4"}},
-									{"5@tabbed_upsell.p": {"text": "change.5"}},
-									{"6@tabbed_upsell.p": {"text": "change.6"}},
-									{"7@tabbed_upsell.p": {"text": "change.7"}},
-									{"8@tabbed_upsell.p": {"text": "change.8"}},
-									{"9@tabbed_upsell.p": {"text": "change.9"}}
-								]
-							}
-						}
+						{"nam": {"type": "label","font_scale_factor": 1.5,"text": "§bEntropyShader\n§7for§bBedrockEdition\n2ndGeneration\n "}},
+						{"lic": {"type": "label","text": "©2019 §b@McbeEringi(twitter)\n§rAll Rights Reserved.\nsee LICENSE for more\n \n§6URL"}},
+						{"url": {"type": "label","font_scale_factor": 0.8,"text": "§bofficial(ja)§r: mcbeeringi.github.io/esbe-2g\n§aMCPEDL§r: mcpedl.com/esbe-2g"}},
+						{"s": {"type": "panel","size": [4,4]}},
+						{"0@tabbed_upsell.p": {"text": "change.0"}},
+						{"1@tabbed_upsell.p": {"text": "change.1"}},
+						{"2@tabbed_upsell.p": {"text": "change.2"}},
+						{"3@tabbed_upsell.p": {"text": "change.3"}},
+						{"4@tabbed_upsell.p": {"text": "change.4"}},
+						{"5@tabbed_upsell.p": {"text": "change.5"}},
+						{"6@tabbed_upsell.p": {"text": "change.6"}},
+						{"7@tabbed_upsell.p": {"text": "change.7"}},
+						{"8@tabbed_upsell.p": {"text": "change.8"}},
+						{"9@tabbed_upsell.p": {"text": "change.9"}}
 					]
 				}
 			}
@@ -72,7 +50,7 @@
 	},
 
 	"tabbed_upseel_screen_panel@common_dialogs.main_panel_no_buttons": {
-		"size": ["80%" ,"80%" ],
+		"size": ["80%","80%"],
 		"$text_name": "§bESBE_2G §ainfo",
 		"$child_control": "tabbed_upsell.scroll"
 	}
