@@ -39,7 +39,7 @@
 								"type": "stack_panel",
 								"size": [132,"100%"],
 								"controls": [
-									{"nam": {"type": "label","font_scale_factor": 1.5,"text": "§bESBE_2G§a v3.2"}},
+									{"nam": {"type": "label","font_scale_factor": 1.5,"text": "§bESBE_2G§a v4.0"}},
 									{"ch": {"type": "label","font_scale_factor": 1.2,"text": "upd.ch"}}
 								]
 							}
