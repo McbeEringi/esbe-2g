@@ -142,9 +142,8 @@ PSInput.wPos = worldPos.xyz;
 	/////uw
 	if(bool(step(FOG_CONTROL.x,.0001)))PSInput.position.x += wav*.02
 	#ifdef FANCY
-		*rand;
-	#else
-		;
+		*rand
 	#endif
+	;
 #endif
 }

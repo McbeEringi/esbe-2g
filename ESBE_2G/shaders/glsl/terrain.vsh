@@ -132,10 +132,9 @@ wPos = worldPos.xyz;
 	/////uw
 	if(bool(step(FOG_CONTROL.x,.0001)))gl_Position.x += wav*.02
 	#ifdef FANCY
-		*rand;
-	#else
-		;
+		*rand
 	#endif
+	;
 #endif
 
 #ifndef BYPASS_PIXEL_SHADER
