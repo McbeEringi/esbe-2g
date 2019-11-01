@@ -4,7 +4,6 @@
 	"p":{"type": "label","font_type": "smooth"},
 	"esbe_panel": {
 		"type": "stack_panel",
-		"size": ["100%","100%"],
 		"offset": [4,4],
 		"controls": [
 			{
