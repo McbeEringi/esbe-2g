@@ -5,7 +5,6 @@
 
 uniform vec4 CURRENT_COLOR;
 uniform highp float TIME;
-
 varying vec4 color;
 
 void main()
