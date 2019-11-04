@@ -34,7 +34,6 @@ varying HM vec3 cPos;
 varying HM vec3 wPos;
 varying float wf;
 
-#include "uniformShaderConstants.h"
 #include "uniformPerFrameConstants.h"
 #include "util.h"
 #include "snoise.h"

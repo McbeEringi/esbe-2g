@@ -33,7 +33,6 @@ varying float wf;
 
 #include "uniformWorldConstants.h"
 #include "uniformPerFrameConstants.h"
-#include "uniformShaderConstants.h"
 #include "uniformRenderChunkConstants.h"
 
 attribute POS4 POSITION;
