@@ -180,6 +180,12 @@ diffuse.rgb *= 1.-mix(/*影の濃さ*/0.5,0.0,min(sunlight,ao))*(1.-uv1.x)*dayli
 	diffuse.rgb *= mix(1.0,flat_sh(dusk),smoothstep(.7,.95,uv1.y)*min(1.25-uv1.x,1.)*daylight.x);
 #endif
 
+//ESBE_sun_ref (unused)
+/*#ifdef BLEND
+vec3 N = normalize(cross(dFdx(cPos),dFdy(cPos)));
+diffuse = mix(diffuse,vec4(1),.8*smoothstep(.9,1.,dot(normalize(vec3(1)),reflect(normalize(wPos),N))));
+#endif*/
+
 #ifdef FOG
 	diffuse.rgb = mix( diffuse.rgb, FOG_COLOR.rgb, fog );
 #endif
