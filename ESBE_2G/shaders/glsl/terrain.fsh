@@ -177,9 +177,12 @@ diffuse.rgb *= 1.-mix(/*影の濃さ*/0.5,0.0,min(sunlight,ao))*(1.-uv1.x)*dayli
 #endif
 
 //ESBE_sun_ref (unused)
+//vec4(1)…色, vec3(1)…座標
 /*#ifdef BLEND
-vec3 N = normalize(cross(dFdx(cPos),dFdy(cPos)));
-diffuse = mix(diffuse,vec4(1),.8*smoothstep(.9,1.,dot(normalize(vec3(1)),reflect(normalize(wPos),N))));
+if(diffuse.a!=0.){
+	vec3 N = normalize(cross(dFdx(cPos),dFdy(cPos)));
+	diffuse = mix(diffuse,vec4(1),.8*smoothstep(.9,1.,dot(normalize(vec3(1)),reflect(normalize(wPos),N))));
+}
 #endif*/
 
 #ifdef FOG
