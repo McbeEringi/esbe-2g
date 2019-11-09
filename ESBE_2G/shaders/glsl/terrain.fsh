@@ -77,15 +77,11 @@ vec4 water(vec4 col,float weather,float uw,HM float time){
 	vec3 p = cPos;
 	p.xz = p.xz*vec2(1.0,0.4)//縦横比 aspect ratio
 		+smoothstep(0.,8.,abs(p.y-8.))*.5;
-	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))/4.+.5;//[0.0~1.0]
+	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))+2.;//[0.~4.]
 
-	//highp vec2 skp = (wPos.xz+n*2.*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
-	vec2 skp = wPos.xz*cosT*.1;
-	float skn = snoise(vec2(skp.x-time*.1,skp.y))/2.+.5;//[0.0~1.0]
-	vec4 col2 = col*(mix(1.5,1.3,skn*sun)-cosT*.2);//almost C_REF in ESBE1G
-	vec4 col3 = mix(col*1.1,vec4(1.),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*sun*weather*smoothstep(0.,.7,cosT));
-
-	vec4 diffuse = mix(col,mix(col2,col3,smoothstep(.5,.9,n)),smoothstep(0.,.5,n));
+	highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
+	skp.x -= time*.1;
+	vec4 diffuse = vec4(snoise(skp));
 	return mix(col,diffuse,max(.4,cosT));
 }
 
