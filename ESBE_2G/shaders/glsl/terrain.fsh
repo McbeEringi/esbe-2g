@@ -85,7 +85,6 @@ vec4 water(vec4 col,float weather,float uw,HM float time){
 	return mix(col,diffuse,max(.4,cosT));
 }
 
-
 void main()
 {
 #ifdef BYPASS_PIXEL_SHADER
