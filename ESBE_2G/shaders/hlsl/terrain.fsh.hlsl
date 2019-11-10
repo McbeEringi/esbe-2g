@@ -61,7 +61,7 @@ float4 water(float4 col,float3 p,float3 look,float weather,float uw,float sun){
 
 	float2 skp = (look.xz+n*4.*look.xz/max(length(look.xz),.5))*cosT*.1;//反射ズレ計算
 	skp.x -= TIME*.1;
-	float4 diffuse = float4(snoise(skp)*.5+.5);
+	float4 diffuse = snoise(skp)*.5+.5;
 	return lerp(col,diffuse,max(.4,cosT));
 }
 
