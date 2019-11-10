@@ -81,7 +81,7 @@ vec4 water(vec4 col,float weather,float uw,HM float time){
 
 	highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
 	skp.x -= time*.1;
-	vec4 diffuse = vec4(snoise(skp));
+	vec4 diffuse = vec4(snoise(skp)*.5+.5);
 	return mix(col,diffuse,max(.4,cosT));
 }
 

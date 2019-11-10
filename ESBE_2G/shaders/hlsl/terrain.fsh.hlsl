@@ -57,15 +57,11 @@ float4 water(float4 col,float3 p,float3 look,float weather,float uw,float sun){
 
 	p.xz = p.xz*float2(1.0,0.4)//縦横比 aspect ratio
 		+smoothstep(0.,8.,abs(p.y-8.))*.5;
-	float n = (snoise(p.xz-TIME*.5)+snoise(float2(p.x-TIME,(p.z+TIME)*.5)))/4.+.5;//[0.0~1.0]
+	float n = (snoise(p.xz-TIME*.5)+snoise(float2(p.x-TIME,(p.z+TIME)*.5)))+2.;//[0.~4.]
 
-	//float2 skp = (look.xz+n*2.*look.xz/max(length(look.xz),.5))*cosT*.1;//反射ズレ計算
-	float2 skp = look.xz*cosT*.1;
-	float skn = snoise(float2(skp.x-TIME*.1,skp.y))/2.+.5;//[0.0~1.0]
-	float4 col2 = col*(lerp(1.5,1.3,skn*sun)-cosT*.2);//almost C_REF in ESBE1G
-	float4 col3 = lerp(col*1.1,float4(1.,1.,1.,1.),smoothstep(3.+abs(look.y)*.3,0.,abs(look.z))*sun*weather*smoothstep(0.,.7,cosT));
-
-	float4 diffuse = lerp(col,lerp(col2,col3,smoothstep(.5,.9,n)),smoothstep(0.,.5,n));
+	float2 skp = (look.xz+n*4.*look.xz/max(length(look.xz),.5))*cosT*.1;//反射ズレ計算
+	skp.x -= TIME*.1;
+	float4 diffuse = float4(snoise(skp)*.5+.5);
 	return lerp(col,diffuse,max(.4,cosT));
 }
 
