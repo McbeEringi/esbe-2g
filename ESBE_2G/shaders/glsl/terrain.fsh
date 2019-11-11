@@ -71,20 +71,22 @@ float flat_sh(float dusk){
 
 vec4 water(vec4 col,float weather,float uw,HM float time){
 	float sun = smoothstep(.5,.75,uv1.y);
-	float cosT = 1.-dot(normalize(abs(wPos)).y,1.);
+	float cosT = 1.-normalize(abs(wPos)).y;
 	col.rgb = mix(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
 
 	vec3 p = cPos;
-	p.xz = p.xz*vec2(1.0,0.4)//縦横比 aspect ratio
+	p.xz = p.xz*vec2(1.0,0.4)//縦横比
 		+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))+2.;//[0.~4.]
-
 	highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
-	skp.x -= time*.1;
-	vec4 diffuse = vec4(snoise(skp)*.5+.5);
+	skp.x -= time*.05;
+
+	vec4 col2 = vec4(mix(texture2D(TEXTURE_1,uv1).rgb,FOG_COLOR.rgb,.5),cosT*.6+.3);
+	vec4 diffuse = mix(col,col2,max(0.,snoise(skp)*.7+.3)*(cosT*.5+.5)*.7);
+	float s_ref = sun*weather*smoothstep(0.,.7,cosT)*mix(.3,1.,smoothstep(1.5,4.,n));
+	diffuse = mix(diffuse,vec4(1.),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
 	return mix(col,diffuse,max(.4,cosT));
 }
-
 void main()
 {
 #ifdef BYPASS_PIXEL_SHADER
@@ -114,11 +116,11 @@ void main()
 
 vec4 inColor = color;
 
-#if defined(BLEND)
+#ifdef BLEND
 	diffuse.a *= inColor.a;
 #endif
 
-#if !defined(ALWAYS_LIT)
+#ifndef ALWAYS_LIT
 	diffuse *= texture2D( TEXTURE_1, uv1 );
 #endif
 
