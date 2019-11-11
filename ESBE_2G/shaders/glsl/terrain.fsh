@@ -87,6 +87,7 @@ vec4 water(vec4 col,float weather,float uw,HM float time){
 	diffuse = mix(diffuse,vec4(1.),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
 	return mix(col,diffuse,max(.4,cosT));
 }
+
 void main()
 {
 #ifdef BYPASS_PIXEL_SHADER
