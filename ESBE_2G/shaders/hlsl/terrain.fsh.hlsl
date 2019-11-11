@@ -96,7 +96,7 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 		discard;
 #endif
 
-#ifdef BLEN
+#ifdef BLEND
 	diffuse.a *= PSInput.color.a;
 #endif
 
