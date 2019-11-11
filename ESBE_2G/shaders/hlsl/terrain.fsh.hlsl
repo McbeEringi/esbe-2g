@@ -51,7 +51,7 @@ float flat_sh(float3 pos, float dusk){
 }
 
 float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float2 uv1){
-	sun = smoothstep(.5,.75,uv1.y);
+	float sun = smoothstep(.5,.75,uv1.y);
 	float cosT = 1.-normalize(abs(wPos)).y;
 	col.rgb = lerp(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
 
@@ -64,10 +64,7 @@ float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float2 uv1){
 	float4 col2 = float4(lerp(TEXTURE_1.Sample(TextureSampler1, uv1).rgb,FOG_COLOR.rgb,.5),cosT*.6+.3);
 	float4 diffuse = lerp(col,col2,max(0.,snoise(skp)*.7+.3)*(cosT*.5+.5)*.7);
 	float s_ref = sun*weather*smoothstep(0.,.7,cosT)*lerp(.3,1.,smoothstep(1.5,4.,n));
-	diffuse = lerp(diffuse,float4(1,1,1,1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
-	return lerp(col,diffuse,max(.4,cosT));
-
-	float4 diffuse = snoise(skp)*.5+.5;
+	diffuse = lerp(diffuse,1.,smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
 	return lerp(col,diffuse,max(.4,cosT));
 }
 
