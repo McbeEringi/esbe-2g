@@ -50,18 +50,18 @@ float flat_sh(float3 pos, float dusk){
 	return lerp(s,max(dot(n,float3(.9,.44,0.)),dot(n,float3(-.9,.44,0.)))*1.3+.2,dusk);
 }
 
-float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float2 uv1){
-	float sun = smoothstep(.5,.75,uv1.y);
+float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,float3 tex1){
+	sun = smoothstep(.5,.75,sun);
 	float cosT = 1.-normalize(abs(wPos)).y;
 	p.xz = p.xz*float2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-TIME*.5)+snoise(float2(p.x-TIME,(p.z+TIME)*.5)))+2.;//[0.~4.]
 
-	col.rgb = lerp(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
-	float4 diffuse = lerp(col,col*lerp(1.5,1.3,(1.-cosT)*uw),pow(1.-abs(n-2.)*.5,lerp(2.5,1.5,uw)));
+	col.rgb = lerp(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.7);
+	float4 diffuse = lerp(col,col*lerp(1.5,1.3,(1.-cosT)*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
 	if(bool(uw)){
 		float2 skp = (wPos.xz+n*4.*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
 		skp.x -= TIME*.1;
-		float4 c_col = float4(lerp(TEXTURE_1.Sample(TextureSampler1, uv1).rgb,FOG_COLOR.rgb,.5),cosT*.6+.3);
+		float4 c_col = float4((tex1+FOG_COLOR.rgb)*.5,cosT*.6+.3);
 		float4 c_ref = lerp(col,c_col,max(0.,snoise(skp)*.7+.3)*(cosT*.5+.5)*.7);
 		float s_ref = sun*weather*smoothstep(0.,.7,cosT)*lerp(.3,1.,smoothstep(1.5,4.,n));
 		c_ref = lerp(c_ref,1.,smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
@@ -102,8 +102,9 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 	diffuse.a *= PSInput.color.a;
 #endif
 
+float4 tex1 = TEXTURE_1.Sample(TextureSampler1, PSInput.uv1);
 #ifndef ALWAYS_LIT
-	diffuse *= TEXTURE_1.Sample(TextureSampler1, PSInput.uv1);
+	diffuse *= tex1;
 #endif
 
 #ifndef SEASONS
@@ -147,7 +148,7 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 
 //ESBEwater
 #ifdef FANCY
-	if(PSInput.wf+uw > .5)diffuse = water(diffuse,PSInput.cPos,PSInput.wPos,weather,1.-uw,PSInput.uv1);
+	if(PSInput.wf+uw > .5)diffuse = water(diffuse,PSInput.cPos,PSInput.wPos,weather,1.-uw,PSInput.uv1.y,tex1.rgb);
 #endif
 
 //ESBE_shadow

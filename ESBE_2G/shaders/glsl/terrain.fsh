@@ -69,19 +69,19 @@ float flat_sh(float dusk){
 	return mix(s,max(dot(n,vec3(.9,.44,0.)),dot(n,vec3(-.9,.44,0.)))*1.3+.2,dusk);
 }
 
-vec4 water(vec4 col,float weather,float uw,HM float time){
+vec4 water(vec4 col,float weather,float uw,vec3 tex1){
+	HM float time = TIME; vec3 p = cPos;
 	float sun = smoothstep(.5,.75,uv1.y);
 	float cosT = 1.-normalize(abs(wPos)).y;
-	vec3 p = cPos;
 	p.xz = p.xz*vec2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))+2.;//[0.~4.]
 
-	col.rgb = mix(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
-	vec4 diffuse = mix(col,col*mix(1.5,1.3,(1.-cosT)*uw),pow(1.-abs(n-2.)*.5,mix(2.5,1.5,uw)));
+	col.rgb = mix(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.7);
+	vec4 diffuse = mix(col,col*mix(1.5,1.3,(1.-cosT)*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
 	if(bool(uw)){
 		highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
 		skp.x -= time*.05;
-		vec4 c_col = vec4(mix(texture2D(TEXTURE_1,uv1).rgb,FOG_COLOR.rgb,.5),cosT*.6+.3);
+		vec4 c_col = vec4((tex1+FOG_COLOR.rgb)*.5,cosT*.6+.3);
 		vec4 c_ref = mix(col,c_col,max(0.,snoise(skp)*.7+.3)*(cosT*.5+.5)*.7);//new C_REF
 		float s_ref = sun*weather*smoothstep(0.,.7,cosT)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
 		c_ref = mix(c_ref,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
@@ -118,13 +118,13 @@ void main()
 #endif
 
 vec4 inColor = color;
-
 #ifdef BLEND
 	diffuse.a *= inColor.a;
 #endif
 
+vec4 tex1 = texture2D(TEXTURE_1,uv1);
 #ifndef ALWAYS_LIT
-	diffuse *= texture2D( TEXTURE_1, uv1 );
+	diffuse *= tex1;
 #endif
 
 #ifndef SEASONS
@@ -168,7 +168,7 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 
 //ESBEwater
 #ifdef FANCY
-	if(wf+uw>.5)diffuse = water(diffuse,weather,1.-uw,TIME);
+	if(wf+uw>.5)diffuse = water(diffuse,weather,1.-uw,tex1.rgb);
 #endif
 
 //ESBE_shadow
