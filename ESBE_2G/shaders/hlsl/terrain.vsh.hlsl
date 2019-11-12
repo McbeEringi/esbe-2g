@@ -127,15 +127,14 @@ PSInput.wPos = worldPos.xyz;
 ///// blended layer (mostly water) magic
 #ifndef ALPHA_TEST
 	if(VSInput.color.a < 0.95 && VSInput.color.a >0.05 && VSInput.color.g > VSInput.color.r) {
+		PSInput.wf = 1.;
 		#ifdef FANCY	/////enhance water
 			float cameraDist = pow(cameraDepth / FAR_CHUNKS_DISTANCE,2.);
-			PSInput.wf = 1.;
 		#else
 			float3 relPos = -worldPos.xyz;
 			float camDist = length(relPos);
 			float cameraDist = camDist / FAR_CHUNKS_DISTANCE;
 		#endif //FANCY
-
 		float alphaFadeOut = clamp(cameraDist, 0.0, 1.0);
 		PSInput.color.a = lerp(VSInput.color.a*.6, 1.5, alphaFadeOut);
 	}
