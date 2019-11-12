@@ -53,18 +53,20 @@ float flat_sh(float3 pos, float dusk){
 float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float2 uv1){
 	float sun = smoothstep(.5,.75,uv1.y);
 	float cosT = 1.-normalize(abs(wPos)).y;
-	col.rgb = lerp(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
-
-	p.xz = p.xz*float2(1.0,0.4)//縦横比 aspect ratio
-		+smoothstep(0.,8.,abs(p.y-8.))*.5;
+	p.xz = p.xz*float2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-TIME*.5)+snoise(float2(p.x-TIME,(p.z+TIME)*.5)))+2.;//[0.~4.]
-	float2 skp = (wPos.xz+n*4.*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
-	skp.x -= TIME*.1;
 
-	float4 col2 = float4(lerp(TEXTURE_1.Sample(TextureSampler1, uv1).rgb,FOG_COLOR.rgb,.5),cosT*.6+.3);
-	float4 diffuse = lerp(col,col2,max(0.,snoise(skp)*.7+.3)*(cosT*.5+.5)*.7);
-	float s_ref = sun*weather*smoothstep(0.,.7,cosT)*lerp(.3,1.,smoothstep(1.5,4.,n));
-	diffuse = lerp(diffuse,1.,smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
+	col.rgb = lerp(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
+	float4 diffuse = lerp(col,col*lerp(1.5,1.3,(1.-cosT)*uw),pow(1.-abs(n-2.)*.5,lerp(2.5,1.5,uw)));
+	if(bool(uw)){
+		float2 skp = (wPos.xz+n*4.*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
+		skp.x -= TIME*.1;
+		float4 c_col = float4(lerp(TEXTURE_1.Sample(TextureSampler1, uv1).rgb,FOG_COLOR.rgb,.5),cosT*.6+.3);
+		float4 c_ref = lerp(col,c_col,max(0.,snoise(skp)*.7+.3)*(cosT*.5+.5)*.7);
+		float s_ref = sun*weather*smoothstep(0.,.7,cosT)*lerp(.3,1.,smoothstep(1.5,4.,n));
+		c_ref = lerp(c_ref,1.,smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
+		diffuse = lerp(diffuse,c_ref,sun);
+	}
 	return lerp(col,diffuse,max(.4,cosT));
 }
 

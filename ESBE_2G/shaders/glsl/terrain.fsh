@@ -72,19 +72,21 @@ float flat_sh(float dusk){
 vec4 water(vec4 col,float weather,float uw,HM float time){
 	float sun = smoothstep(.5,.75,uv1.y);
 	float cosT = 1.-normalize(abs(wPos)).y;
-	col.rgb = mix(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
-
 	vec3 p = cPos;
-	p.xz = p.xz*vec2(1.0,0.4)//縦横比
-		+smoothstep(0.,8.,abs(p.y-8.))*.5;
+	p.xz = p.xz*vec2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))+2.;//[0.~4.]
-	highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
-	skp.x -= time*.05;
 
-	vec4 col2 = vec4(mix(texture2D(TEXTURE_1,uv1).rgb,FOG_COLOR.rgb,.5),cosT*.6+.3);
-	vec4 diffuse = mix(col,col2,max(0.,snoise(skp)*.7+.3)*(cosT*.5+.5)*.7);
-	float s_ref = sun*weather*smoothstep(0.,.7,cosT)*mix(.3,1.,smoothstep(1.5,4.,n));
-	diffuse = mix(diffuse,vec4(1.),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
+	col.rgb = mix(col.rgb,FOG_COLOR.rgb,cosT*cosT*sun*uw*.6);
+	vec4 diffuse = mix(col,col*mix(1.5,1.3,(1.-cosT)*uw),pow(1.-abs(n-2.)*.5,mix(2.5,1.5,uw)));
+	if(bool(uw)){
+		highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;//反射ズレ計算
+		skp.x -= time*.05;
+		vec4 c_col = vec4(mix(texture2D(TEXTURE_1,uv1).rgb,FOG_COLOR.rgb,.5),cosT*.6+.3);
+		vec4 c_ref = mix(col,c_col,max(0.,snoise(skp)*.7+.3)*(cosT*.5+.5)*.7);//new C_REF
+		float s_ref = sun*weather*smoothstep(0.,.7,cosT)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
+		c_ref = mix(c_ref,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
+		diffuse = mix(diffuse,c_ref,sun);
+	}
 	return mix(col,diffuse,max(.4,cosT));
 }
 
