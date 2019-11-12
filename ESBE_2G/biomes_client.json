@@ -6,8 +6,14 @@
 			"water_fog_color": "#44AFF5",
 			"water_fog_distance": 100
 		},
-		"plains": {},
-		"sunflower_plains": {},
+		"plains": {
+			"water_surface_color": "#44AFF5",
+			"water_fog_color": "#44AFF5"
+		},
+		"sunflower_plains": {
+			"water_surface_color": "#44AFF5",
+			"water_fog_color": "#44AFF5"
+		},
 		"desert": {
 			"water_surface_color": "#32A598",
 			"water_fog_color": "#32A598"
