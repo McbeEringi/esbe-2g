@@ -42,8 +42,6 @@ LAYOUT_BINDING(0) uniform sampler2D TEXTURE_0;
 LAYOUT_BINDING(1) uniform sampler2D TEXTURE_1;
 LAYOUT_BINDING(2) uniform sampler2D TEXTURE_2;
 
-//#define DEBUG//デバッグ画面
-
 vec3 curve(vec3 x){
 	float A = 0.50;
 	float B = 0.10;
@@ -193,15 +191,16 @@ if(diffuse.a!=0.){
 	diffuse.rgb = mix( diffuse.rgb, FOG_COLOR.rgb, fog );
 #endif
 
+//#define DEBUG//デバッグ画面
 #ifdef DEBUG
-	vec2 subdisp = gl_FragCoord.xy/1000.;
+	HM vec2 subdisp = gl_FragCoord.xy/1000.;
 	if(subdisp.x<1. && subdisp.y<1.){
 		vec3 subback = vec3(1);
 		if(subdisp.x>0. && subdisp.x<=.2 && subdisp.y<=daylight.y)subback.rgb=vec3(1,.7,0);
-		if(subdisp.x>.2 && subdisp.x<=.4 && subdisp.y<=weather)subback.rgb=vec3(0,.5,1);
-		if(subdisp.x>.4 && subdisp.x<=.6 && subdisp.y<=dusk)subback.rgb=vec3(1,0,0);
-		if(subdisp.x>.6 && subdisp.x<=.8 && subdisp.y<=FOG_COLOR.g)subback.rgb=vec3(.5,1.,.5);
-		if(subdisp.x>.8 && subdisp.x<=1. && subdisp.y<=FOG_CONTROL.x)subback.rgb=vec3(.5,.5,.5);
+		if(subdisp.x>.2 && subdisp.x<=.4 && subdisp.y<=weather)subback.rgb=vec3(.5,.5,1);
+		if(subdisp.x>.4 && subdisp.x<=.6 && subdisp.y<=dusk)subback.rgb=vec3(1,.5,.5);
+		if(subdisp.x>.6 && subdisp.x<=.8 && subdisp.y<=FOG_COLOR.g)subback.rgb=vec3(.5,1,.5);
+		if(subdisp.x>.8 && subdisp.x<=1. && subdisp.y<=FOG_CONTROL.x)subback.rgb=vec3(.5);
 		diffuse = mix(diffuse,vec4(subback,1),.5);
 		vec3 tone = tonemap(subdisp.xxx,ambient);
 		if(subdisp.y<=tone.r+.005 && subdisp.y>=tone.r-.005)diffuse.rgb=vec3(1,0,0);
