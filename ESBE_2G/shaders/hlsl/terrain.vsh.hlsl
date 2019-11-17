@@ -125,7 +125,7 @@ PSInput.wPos = worldPos.xyz;
 #endif
 
 ///// blended layer (mostly water) magic
-#if !defined(ALPHA_TEST) && !defined(SEASONS)
+#ifndef SEASONS
 	if(VSInput.color.a < 0.95 && VSInput.color.a >0.05 && VSInput.color.g > VSInput.color.r) {
 		PSInput.wf = 1.;
 		#ifdef FANCY	/////enhance water

@@ -114,7 +114,7 @@ wPos = worldPos.xyz;
 #endif
 
 ///// blended layer (mostly water) magic
-#if !defined(ALPHA_TEST) && !defined(SEASONS)
+#ifndef SEASONS
 	if(color.a < 0.95 && color.a > 0.05 && color.g > color.r) {
 		wf = 1.;
 		#ifdef FANCY	/////enhance water
