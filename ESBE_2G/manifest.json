@@ -13,5 +13,17 @@
 			"uuid": "D8BB9270-B73D-478E-A500-8A4E504A297A",
 			"version": [0, 4, 1]
 		}
+	],
+	"subpacks": [
+		{
+			"folder_name": "tex",
+			"name": "sun&moon: texture",
+			"memory_tier": 1
+		},
+		{
+			"folder_name": "code",
+			"name": "sun&moon: code",
+			"memory_tier": 2
+		}
 	]
 }
