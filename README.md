@@ -8,7 +8,7 @@ or
 [Official(ja)](https://sites.google.com/view/mcbeeringi/esbe-2g)  
 [MCPEDL](https://mcpedl.com/esbe-2g)  
 # LICENSE
-see LICENSE  
+see ESBE_2G/LICENSE.txt  
 # Photos
-v3.0  
+v4.0  
 ![img](docs/1.jpg)![img](docs/2.jpg)![img](docs/3.jpg)
