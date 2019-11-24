@@ -1,6 +1,7 @@
 # ESBE_2G
 ##### A shader for Minecraft Bedrock  
-![img](docs/esbe2g.png)
+![img](docs/esbe2g.png)  
+[twitter](https://twitter.com/mcbeeringi)  
 # Download
 see [release](https://github.com/McbeEringi/esbe-2g/releases)  
 

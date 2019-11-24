@@ -121,7 +121,7 @@ PSInput.wPos = worldPos.xyz;
 
 ///// leaves
 #ifdef ALPHA_TEST
-	if (PSInput.color.g != PSInput.color.b && PSInput.color.r < PSInput.color.g+PSInput.color.b)PSInput.position.x += wav*.015*rand;
+	if(PSInput.color.g != PSInput.color.b && PSInput.color.r < PSInput.color.g+PSInput.color.b)PSInput.position.x += wav*.015*rand*PROJ[0].x;
 #endif
 
 ///// blended layer (mostly water) magic
@@ -139,7 +139,7 @@ PSInput.wPos = worldPos.xyz;
 		PSInput.color.a = lerp(VSInput.color.a*.6, 1.5, alphaFadeOut);
 	}
 	/////uw
-	if(bool(step(FOG_CONTROL.x,.0001)))PSInput.position.x += wav*.02
+	if(bool(step(FOG_CONTROL.x,.0001)))PSInput.position.x += wav*.02*PROJ[0].x
 	#ifdef FANCY
 		*rand
 	#endif

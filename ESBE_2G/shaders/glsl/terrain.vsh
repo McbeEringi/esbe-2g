@@ -110,7 +110,7 @@ wPos = worldPos.xyz;
 
 ///// leaves
 #ifdef ALPHA_TEST
-	if(color.g != color.b && color.r < color.g+color.b)gl_Position.x += wav*.015*rand;
+	if(color.g != color.b && color.r < color.g+color.b)gl_Position.x += wav*.015*rand*PROJ[0].x;
 #endif
 
 ///// blended layer (mostly water) magic
@@ -128,7 +128,7 @@ wPos = worldPos.xyz;
 		color.a = mix(color.a*.6, 1.5, alphaFadeOut);
 	}
 	/////uw
-	if(bool(step(FOG_CONTROL.x,.0001)))gl_Position.x += wav*.02
+	if(bool(step(FOG_CONTROL.x,.0001)))gl_Position.x += wav*.02*PROJ[0].x
 	#ifdef FANCY
 		*rand
 	#endif
