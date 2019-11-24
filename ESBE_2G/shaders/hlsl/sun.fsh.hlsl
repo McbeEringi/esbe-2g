@@ -15,7 +15,7 @@ struct PS_Output
 ROOT_SIGNATURE
 void main(in PS_Input PSInput, out PS_Output PSOutput)
 {
-	float2 p = mul(position.xz,float2x2(.8,.6,-.6,.8));
+	float2 p = mul(PSInput.position.xz,float2x2(.8,.6,-.6,.8));
 	float l = length(p);
 	float sun = max(cos(min(l*10.,1.58)),.5-l);
 	float mp = ((step(.25,PSInput.uv.x)+step(.5,PSInput.uv.x)+step(.75,PSInput.uv.x))*.25+step(.5,PSInput.uv.y))*3.1415;//[0~2pi]
