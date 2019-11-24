@@ -11,7 +11,7 @@ varying vec2 p;
 void main()
 {
 	gl_Position = WORLDVIEWPROJ * POSITION;
-	p = POSITION.xz;
+	p = POSITION.xz*mat2(.8,.6,-.6,.8);
 
 	uv = TEXCOORD_0;
 }
