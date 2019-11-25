@@ -19,7 +19,7 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 	float2 p = PSInput.fsh.xy;
 	float l = length(p);
 	float sun = max(cos(min(l*10.,1.58)),.5-l);
-	float mp = (floor(PSInput.fsh.z*4.)*.25+step(.5,PSInput.fsh.w))*3.1415;//[0~2pi]
+	float mp = (floor(PSInput.fsh.z*4.)*.25+step(PSInput.fsh.w,.5))*3.1415;//[0~2pi]
 	float r =.15;//月半径 ~0.5
 	float3 n = normalize(float3(p,sqrt(r*r-l*l)));
 	float moon = dot(-float3(sin(mp),0.,cos(mp)),n);

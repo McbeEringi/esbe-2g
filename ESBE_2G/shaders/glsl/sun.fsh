@@ -17,7 +17,7 @@ void main()
 {
 	float l = length(p);
 	float sun = max(cos(min(l*10.,1.58)),.5-l);
-	float mp = (floor(uv.x*4.)*.25+step(.5,uv.y))*3.1415;//[0~2pi]
+	float mp = (floor(uv.x*4.)*.25+step(uv.y,.5))*3.1415;//[0~2pi]
 	float r =.15;//月半径 ~0.5
 	vec3 n = normalize(vec3(p,sqrt(r*r-l*l)));
 	float moon = dot(-vec3(sin(mp),0.,cos(mp)),n);
