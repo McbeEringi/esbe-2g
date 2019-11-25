@@ -16,7 +16,7 @@ varying vec2 p;
 void main()
 {
 	float l = length(p);
-	float sun = max(cos(min(l*10.,1.58)),.5-l);
+	float sun = max(cos(min(l*12.,1.58)),.5-l*.7);
 	float mp = (floor(uv.x*4.)*.25+step(uv.y,.5))*3.1415;//[0~2pi]
 	float r =.13;//月半径 ~0.5
 	vec3 n = normalize(vec3(p,sqrt(r*r-l*l)));
