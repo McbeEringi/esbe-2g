@@ -17,9 +17,9 @@ void main()
 {
 	float l = length(p);
 	float sun = max(cos(min(l*10.,1.58)),.5-l);
-	float mp = ((step(.25,uv.x)+step(.5,uv.x)+step(.75,uv.x))*.25+step(.5,uv.y))*3.1415;//[0~2pi]
+	float mp = (floor(uv.x*4.)*.25+step(.5,uv.y))*3.1415;//[0~2pi]
 	float r =.15;//月半径 ~0.5
-	vec3 n = normalize(vec3(p,sqrt(r*r-p.x*p.x-p.y*p.y)));
+	vec3 n = normalize(vec3(p,sqrt(r*r-l*l)));
 	float moon = dot(-vec3(sin(mp),0.,cos(mp)),n);
 	moon = smoothstep(-r,0.,moon)*(moon*.2+.8)*smoothstep(r,r-r*.1,l);
 	moon *= 1.-smoothstep(1.5,0.,snoise(p+n.xy+5.)*.5+snoise((p+n.xy)*3.)*.25+.75)*.15;

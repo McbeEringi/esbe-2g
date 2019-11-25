@@ -5,7 +5,7 @@ struct PS_Input
 {
 	float4 position : SV_Position;
 	float2 uv : TEXCOORD_0_FB_MSAA;
-	float2 pos : pos;
+	float4 fsh : fsh;
 };
 
 struct PS_Output
@@ -16,12 +16,12 @@ struct PS_Output
 ROOT_SIGNATURE
 void main(in PS_Input PSInput, out PS_Output PSOutput)
 {
-	float2 p = PSInput.pos;
+	float2 p = PSInput.fsh.xy;
 	float l = length(p);
 	float sun = max(cos(min(l*10.,1.58)),.5-l);
-	float mp = (sin(TIME)+1.)*3.1415;//((step(.25,PSInput.uv.x)+step(.5,PSInput.uv.x)+step(.75,PSInput.uv.x))*.25+step(.5,PSInput.uv.y))*3.1415;//[0~2pi]
+	float mp = (floor(PSInput.fsh.z*4.)*.25+step(.5,PSInput.fsh.w))*3.1415;//[0~2pi]
 	float r =.15;//月半径 ~0.5
-	float3 n = normalize(float3(p,sqrt(r*r-p.x*p.x-p.y*p.y)));
+	float3 n = normalize(float3(p,sqrt(r*r-l*l)));
 	float moon = dot(-float3(sin(mp),0.,cos(mp)),n);
 	moon = smoothstep(-r,0.,moon)*(moon*.2+.8)*smoothstep(r,r-r*.1,l);
 	moon *= 1.-smoothstep(1.5,0.,snoise(p+n.xy+5.)*.5+snoise((p+n.xy)*3.)*.25+.75)*.15;
