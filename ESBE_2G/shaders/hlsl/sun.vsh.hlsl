@@ -14,6 +14,7 @@ struct PS_Input
 {
 	float4 position : SV_Position;
 	float2 uv : TEXCOORD_0;
+	float2 pos : pos;
 #ifdef GEOMETRY_INSTANCEDSTEREO
 	uint instanceID : SV_InstanceID;
 #endif
@@ -38,4 +39,5 @@ void main(in VS_Input VSInput, out PS_Input PSInput)
 #ifdef VERTEXSHADER_INSTANCEDSTEREO
 	PSInput.renTarget_id = VSInput.instanceID;
 #endif
+PSInput.pos = mul(VSInput.position.xz,float2x2(.8,.6,-.6,.8));
 }

@@ -121,7 +121,7 @@ PSInput.wPos = worldPos.xyz;
 
 ///// leaves
 #ifdef ALPHA_TEST
-	if(PSInput.color.g != PSInput.color.b && PSInput.color.r < PSInput.color.g+PSInput.color.b)PSInput.position.x += wav*.015*rand*PROJ[0].x;
+	if(PSInput.color.g != PSInput.color.b && PSInput.color.r < PSInput.color.g+PSInput.color.b)PSInput.position.x += wav*.016*rand*PROJ[0].x;
 #endif
 
 ///// blended layer (mostly water) magic
