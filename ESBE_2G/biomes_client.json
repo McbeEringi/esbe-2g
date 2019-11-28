@@ -2,7 +2,7 @@
 	"biomes": {
 		"default": {
 			"water_surface_color": "#44AFF5",
-			"water_surface_transparency": 0.6,
+			"water_surface_transparency": 0.65,
 			"water_fog_color": "#44AFF5",
 			"water_fog_distance": 100
 		},
@@ -53,12 +53,15 @@
 			"water_fog_color": "#1919ff"
 		},
 		"hell": {
-			"water_surface_color": "#905957",
-			"water_fog_color": "#905957"
+			"water_surface_color": "#752100",
+			"water_fog_color": "#905957",
+			"water_surface_transparency": 0.8,
+			"water_fog_distance": 50
 		},
 		"the_end": {
-			"water_surface_color": "#62529e",
-			"water_fog_color": "#62529e"
+			"water_surface_color": "#65318e",
+			"water_fog_color": "#65318e",
+			"water_surface_transparency": 0.8
 		},
 		"frozen river": {
 			"water_surface_color": "#185390",
