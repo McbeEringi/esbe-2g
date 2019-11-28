@@ -126,7 +126,7 @@ PSInput.wPos = worldPos.xyz;
 
 ///// blended layer (mostly water) magic
 #ifndef SEASONS
-	if(VSInput.color.a < 0.95 && VSInput.color.a >0.05 && VSInput.color.g > VSInput.color.r) {
+	if(VSInput.color.a < 0.95 && VSInput.color.a > 0.05) {
 		PSInput.wf = 1.;
 		#ifdef FANCY	/////enhance water
 			float cameraDist = pow(cameraDepth / FAR_CHUNKS_DISTANCE,2.);
