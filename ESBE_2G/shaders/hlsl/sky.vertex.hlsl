@@ -2,8 +2,8 @@
 
 struct VS_Input
 {
-		float3 position : POSITION;
-		float4 color : COLOR;
+	float3 position : POSITION;
+	float4 color : COLOR;
 #ifdef INSTANCEDSTEREO
 	uint instanceID : SV_InstanceID;
 #endif
@@ -12,9 +12,9 @@ struct VS_Input
 
 struct PS_Input
 {
-		float4 position : SV_Position;
-		float4 fog : FOG;
-		float2 pos : POS;
+	float4 position : SV_Position;
+	float4 fog : FOG;
+	float2 pos : POS;
 #ifdef GEOMETRY_INSTANCEDSTEREO
 	uint instanceID : SV_InstanceID;
 #endif
@@ -40,6 +40,6 @@ void main(in VS_Input VSInput, out PS_Input PSInput)
 #ifdef VERTEXSHADER_INSTANCEDSTEREO
 	PSInput.renTarget_id = VSInput.instanceID;
 #endif
-		PSInput.pos = VSInput.position.xz;
-		PSInput.fog = VSInput.color.r;
+	PSInput.pos = VSInput.position.xz;
+	PSInput.fog = VSInput.color.r;
 }

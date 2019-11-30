@@ -17,9 +17,9 @@ varying highp vec2 pos;
 
 void main()
 {
-		vec4 dome = POSITION;
-		dome.y -= length(dome.xz)*.2;
-		gl_Position = WORLDVIEWPROJ * dome;
-		pos = POSITION.xz;
-		fog = COLOR.r;
+	vec4 dome = POSITION;
+	dome.y -= length(dome.xz)*.2;
+	gl_Position = WORLDVIEWPROJ * dome;
+	pos = POSITION.xz;
+	fog = COLOR.r;
 }
