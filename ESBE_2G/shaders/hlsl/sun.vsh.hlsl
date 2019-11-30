@@ -27,11 +27,12 @@ ROOT_SIGNATURE
 void main(in VS_Input VSInput, out PS_Input PSInput)
 {
 	PSInput.uv = VSInput.uv;
+	float4 pos = float4(VSInput.position*float3(10.,1.,10.),1);
 #ifdef INSTANCEDSTEREO
 	int i = VSInput.instanceID;
-	PSInput.position = mul( WORLDVIEWPROJ_STEREO[i], float4( VSInput.position*float3(10.,1.,10.), 1 ) );
+	PSInput.position = mul( WORLDVIEWPROJ_STEREO[i], pos);
 #else
-	PSInput.position = mul(WORLDVIEWPROJ, float4(VSInput.position*float3(10.,1.,10.), 1));
+	PSInput.position = mul(WORLDVIEWPROJ, pos);
 #endif
 #ifdef GEOMETRY_INSTANCEDSTEREO
 	PSInput.instanceID = VSInput.instanceID;
@@ -39,5 +40,5 @@ void main(in VS_Input VSInput, out PS_Input PSInput)
 #ifdef VERTEXSHADER_INSTANCEDSTEREO
 	PSInput.renTarget_id = VSInput.instanceID;
 #endif
-PSInput.fsh = float4(mul(VSInput.position.xz*10.,float2x2(.8,.6,-.6,.8)),VSInput.uv);
+PSInput.fsh = float4(mul(pos.xz,float2x2(.8,.6,-.6,.8)),VSInput.uv);
 }

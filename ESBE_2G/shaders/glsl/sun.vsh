@@ -21,8 +21,8 @@ varying vec2 p;
 
 void main()
 {
-	gl_Position = WORLDVIEWPROJ * (POSITION*vec2(10.,1.).xyxy);
-	p = (POSITION.xz*10.)*mat2(.8,.6,-.6,.8);
-
+	POS4 pos = POSITION*vec2(10.,1.).xyxy;
+	gl_Position = WORLDVIEWPROJ * pos;
+	p = pos.xz
 	uv = TEXCOORD_0;
 }
