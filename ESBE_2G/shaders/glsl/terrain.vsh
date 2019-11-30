@@ -92,12 +92,8 @@ cPos = POSITION.xyz;//+ceil(CHUNK_ORIGIN_AND_SCALE.xyz/16.)*16.;
 wPos = worldPos.xyz;
 
 ///// find distance from the camera
-	#ifdef FANCY
-		vec3 relPos = -worldPos.xyz;
-		float cameraDepth = length(relPos);
-	#else
-		float cameraDepth = pos.z;
-	#endif
+vec3 relPos = -worldPos.xyz;
+float cameraDepth = length(relPos);
 
 ///// apply fog
 #ifdef FOG
@@ -113,21 +109,18 @@ wPos = worldPos.xyz;
 	if(color.g != color.b && color.r < color.g+color.b)gl_Position.x += wav*.015*rand*PROJ[0].x;
 #endif
 
-///// blended layer (mostly water) magic
+///// esbe water detection
 #ifndef SEASONS
 	if(color.a < 0.95 && color.a > 0.05) {
 		wf = 1.;
-		#ifdef FANCY	/////enhance water
-			float cameraDist = pow(cameraDepth / FAR_CHUNKS_DISTANCE,2.);
-		#else
-			vec3 relPos = -worldPos.xyz;
-			float camDist = length(relPos);
-			float cameraDist = camDist / FAR_CHUNKS_DISTANCE;
-		#endif //FANCY
+		float cameraDist = cameraDepth / FAR_CHUNKS_DISTANCE;
+		#ifdef FANCY
+			cameraDist *= cameraDist;
+		#endif
 		float alphaFadeOut = clamp(cameraDist, 0.0, 1.0);
 		color.a = mix(color.a*.6, 1.5, alphaFadeOut);
 	}
-	/////uw
+	///// under water
 	if(bool(step(FOG_CONTROL.x,.0001)))gl_Position.x += wav*.02*PROJ[0].x
 	#ifdef FANCY
 		*rand
