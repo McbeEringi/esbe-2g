@@ -1,7 +1,13 @@
 // __multiversion__
 // This signals the loading code to prepend either #version 100 or #version 300 es as apropriate.
 
-#include "fragmentVersionSimple.h"
+#if __VERSION__ >= 300
+	#define varying in
+	#define texture2D texture
+	out vec4 FragColor;
+	#define gl_FragColor FragColor
+#else
+#endif
 
 uniform vec4 CURRENT_COLOR;
 uniform highp float TIME;
