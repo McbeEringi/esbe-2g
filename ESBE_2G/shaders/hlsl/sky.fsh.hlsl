@@ -3,14 +3,14 @@
 
 struct PS_Input
 {
-		float4 position : SV_Position;
-		float4 fog : FOG;
-		float2 pos : POS;
+	float4 position : SV_Position;
+	float4 fog : FOG;
+	float2 pos : POS;
 };
 
 struct PS_Output
 {
-		float4 color : SV_Target;
+	float4 color : SV_Target;
 };
 
 float fBM(int octaves, float lowerBound, float upperBound, float2 st) {
