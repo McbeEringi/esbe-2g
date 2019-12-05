@@ -39,13 +39,15 @@
 			"water_fog_color": "#1E6B82"
 		},
 		"swampland": {
-			"water_surface_color": "#607960",
-			"water_fog_color": "#E7ECA2",
+			"water_surface_color": "#607960",//"#4c6559"
+			"water_surface_transparency": 0.65,
+			"water_fog_color": "#E7ECA2",//"#4c6559"
 			"water_fog_distance": 50
 		},
 		"swampland_mutated": {
-			"water_surface_color": "#607960",
-			"water_fog_color": "#E7ECA2",
+			"water_surface_color": "#607960",//"#4c6156"
+			"water_surface_transparency": 0.65,
+			"water_fog_color": "#E7ECA2",//"#4c6156"
 			"water_fog_distance": 50
 		},
 		"river": {
@@ -229,6 +231,7 @@
 		},
 		"warm_ocean": {
 			"water_surface_color": "#02B0E5",
+			"water_surface_transparency": 0.55,
 			"water_fog_color": "#166dfc"
 		},
 		"deep_warm_ocean": {
