@@ -139,10 +139,11 @@ vec4 tex1 = texture2D(TEXTURE_1,uv1);
 #endif
 
 //DATABASE
+float weather =
 #ifdef FOG
-	float weather = smoothstep(0.8,1.0,FOG_CONTROL.y);
+	smoothstep(.7,1.,FOG_CONTROL.y);
 #else
-	float weather = 1.0;
+	1.;
 #endif
 vec2 daylight = texture2D(TEXTURE_1,vec2(0.,1.)).rr;
 daylight.x *= weather;

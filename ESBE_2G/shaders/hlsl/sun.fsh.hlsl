@@ -27,5 +27,5 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 	moon *= 1.-smoothstep(1.5,0.,snoise(p+n.xy+5.)*.5+snoise((p+n.xy)*3.)*.25+.75)*.15;
 	moon = max(moon,cos(min(l*2.,1.58))*sin(mp*.5)*.6);//拡散光
 
-	PSOutput.color = float4(1.,.95,.81,1.)*lerp(moon,sun,step(.5,TEXTURE_0.Sample(TextureSampler0,float2(.5,.5)).r));
+	PSOutput.color = float4(1.,.95,.81,smoothstep(.7,1.,FOG_CONTROL.y))*lerp(moon,sun,step(.5,TEXTURE_0.Sample(TextureSampler0,float2(.5,.5)).r));
 }

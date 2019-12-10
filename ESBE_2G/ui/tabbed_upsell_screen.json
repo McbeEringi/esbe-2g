@@ -14,7 +14,7 @@
 					"controls": [
 						{"i": {"type": "image","texture": "ESBE_2G","size": [128,128]}},
 						{"s": {"type": "panel","size": [4,4]}},
-						{"n": {"type": "label","font_scale_factor": 1.5,"text": "§bESBE_2G§a v4.1"}},
+						{"n": {"type": "label","font_scale_factor": 1.5,"text": "§bESBE_2G§a v4.2"}},
 						{"c": {"type": "label","font_scale_factor": 1.2,"text": "upd.ch"}}
 					]
 				}

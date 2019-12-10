@@ -11,6 +11,7 @@
 #endif
 
 LAYOUT_BINDING(0) uniform sampler2D TEXTURE_0;
+uniform vec2 FOG_CONTROL;
 varying vec2 p;
 
 void main()
@@ -25,5 +26,5 @@ void main()
 	moon *= 1.-smoothstep(1.5,0.,snoise(p+n.xy+5.)*.5+snoise((p+n.xy)*3.)*.25+.75)*.15;
 	moon = max(moon,cos(min(l*2.,1.58))*sin(mp*.5)*.6);//拡散光
 
-	gl_FragColor = vec4(1.,.95,.81,1.)*mix(moon,sun,step(.5,texture2D(TEXTURE_0,vec2(.5)).r));
+	gl_FragColor = vec4(1.,.95,.81,smoothstep(.7,1.,FOG_CONTROL.y))*mix(moon,sun,step(.5,texture2D(TEXTURE_0,vec2(.5)).r));
 }
