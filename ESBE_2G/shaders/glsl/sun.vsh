@@ -23,6 +23,6 @@ void main()
 {
 	POS4 pos = POSITION*vec2(10.,1.).xyxy;
 	gl_Position = WORLDVIEWPROJ * pos;
-	p = pos.xz;
+	p = mat2(.8,.6,-.6,.8)*pos.xz;
 	uv = TEXCOORD_0;
 }
