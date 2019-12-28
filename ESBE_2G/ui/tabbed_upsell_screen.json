@@ -25,8 +25,8 @@
 					"size": ["fill","100%"],
 					"controls": [
 						{"n": {"type": "label","font_scale_factor": 1.5,"text": "§bEntropyShader\n§7for§bBedrockEdition\n2ndGeneration\n "}},
-						{"l": {"type": "label","text": "©2019~ §b@McbeEringi(twitter)\n§rAll Rights Reserved.\nsee LICENSE for more\n \n§6URL"}},
-						{"u": {"type": "label","font_scale_factor": 0.8,"text": "§bofficial(ja)§r: mcbeeringi.github.io/esbe-2g\n§aMCPEDL§r: mcpedl.com/esbe-2g\n "}},
+						{"l": {"type": "label","text": "©2019~ §b@McbeEringi(twitter)\n§rAll Rights Reserved. See 'LICENSE.txt'.\n \n§6URL"}},
+						{"u": {"type": "label","font_scale_factor": 0.8,"text": "§bOfficial(ja)§r: mcbeeringi.github.io/esbe-2g\n§aMCPEDL§r: mcpedl.com/esbe-2g\n "}},
 						{"0": {"type": "label","text": "change.0"}},
 						{"1": {"type": "label","text": "change.1"}},
 						{"2": {"type": "label","text": "change.2"}},
