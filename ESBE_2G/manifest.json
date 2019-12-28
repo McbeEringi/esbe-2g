@@ -17,12 +17,12 @@
 	"subpacks": [
 		{
 			"folder_name": "tex",
-			"name": "sun&moon: texture",
+			"name": "Sun / Moon: Texture",
 			"memory_tier": 1
 		},
 		{
 			"folder_name": "code",
-			"name": "sun&moon: code",
+			"name": "Sun / Moon: Code generated",
 			"memory_tier": 2
 		}
 	]
