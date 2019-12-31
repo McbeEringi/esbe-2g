@@ -1,7 +1,7 @@
 ver書き換え
 manifest.json
 ui>start_screen.json
-ui>tabbed_upsell_screen.json l42
+ui>tabbed_upsell_screen.json l17
 
 snow … texture2D( TEXTURE_2, vec2(.7,.05))
 
