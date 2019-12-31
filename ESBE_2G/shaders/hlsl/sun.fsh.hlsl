@@ -26,8 +26,8 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 		float mp = (floor(PSInput.uv_.x*4.)*.25+step(PSInput.uv_.y,.5))*3.1415;//[0~2pi]
 		float r =.13;//月半径
 		float3 n = normalize(float3(p[0],sqrt(r*r-l*l)));
-		s = dot(-float3(sin(mp),0.,cos(mp)),n);
-		s = smoothstep(-r,0.,s)*(s*.2+.8)*smoothstep(r,r-r*.15,l);
+		s = smoothstep(-.3,.5,dot(-float3(sin(mp),0.,cos(mp)),n));
+		s *= smoothstep(r,r-r*.05,l);
 		s *= 1.-smoothstep(1.5,0.,snoise(p[0]+n.xy+5.)*.5+snoise((p[0]+n.xy)*3.)*.25+.75)*.15;
 		s = max(s,cos(min(l*2.,1.58))*sin(mp*.5)*.6);//拡散光
 	}
