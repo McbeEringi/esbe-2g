@@ -15,7 +15,7 @@ struct PS_Input
 	float4 position : SV_Position;
 	float2 uv : TEXCOORD_0;
 	float2 uv_ : uv_;
-	float4 fsh : fsh;
+	float4 pos : pos;
 #ifdef GEOMETRY_INSTANCEDSTEREO
 	uint instanceID : SV_InstanceID;
 #endif
@@ -42,5 +42,5 @@ void main(in VS_Input VSInput, out PS_Input PSInput)
 	PSInput.renTarget_id = VSInput.instanceID;
 #endif
 PSInput.uv_ = VSInput.uv;
-PSInput.fsh = float4(mul(float2x2(.8,-.6,.6,.8),pos.xz),mul(WORLDVIEW,pos).xy*.01);
+PSInput.pos = float4(mul(float2x2(.8,-.6,.6,.8),pos.xz),mul(WORLDVIEW,pos).xy*.009);
 }

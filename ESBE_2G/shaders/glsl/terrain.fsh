@@ -150,7 +150,7 @@ daylight.x *= weather;
 float sunlight = smoothstep(0.865,0.875,uv1.y);
 float indoor = smoothstep(1.0,0.5,uv1.y);
 float dusk = min(smoothstep(0.4,0.55,daylight.y),smoothstep(0.8,0.65,daylight.y));
-float uw = step(FOG_CONTROL.x,.0001);
+float uw = step(FOG_CONTROL.x,0.);
 
 //ESBE_tonemap	see http://filmicworlds.com/blog/filmic-tonemapping-operators/
 //1が標準,小…暗,大…明

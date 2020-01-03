@@ -6,7 +6,7 @@ struct PS_Input
 	float4 position : SV_Position;
 	float2 uv : TEXCOORD_0_FB_MSAA;
 	float2 uv_ : uv_;
-	float4 fsh : fsh;
+	float4 pos : pos;
 };
 
 struct PS_Output
@@ -17,7 +17,7 @@ struct PS_Output
 ROOT_SIGNATURE
 void main(in PS_Input PSInput, out PS_Output PSOutput)
 {
-	float2x2 p = PSInput.fsh;
+	float2x2 p = PSInput.pos;
 	float l = length(p[0]);
 	float s;
 	if(TEXTURE_0.Sample(TextureSampler0,float2(.5,.5)).r>.5)
