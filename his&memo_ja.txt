@@ -2,7 +2,8 @@ ver書き換え
 manifest.json
 ui>start_screen.json l17,53
 
-snow … texture2D( TEXTURE_2, vec2(.7,.05))
+snow… texture2D( TEXTURE_2, vec2(.7,.05))
+nether… step(TILE_LIGHT_COLOR.w,0.)
 
 
 4.1
