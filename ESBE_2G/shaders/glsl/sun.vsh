@@ -17,14 +17,13 @@
 attribute POS4 POSITION;
 attribute vec2 TEXCOORD_0;
 uniform MAT4 WORLDVIEWPROJ;
-uniform MAT4 WORLDVIEW;
-varying mat2 p;
+varying vec4 pos;
 
 void main()
 {
-	POS4 pos = POSITION*vec2(10.,1.).xyxy;
-	gl_Position = WORLDVIEWPROJ * pos;
-	p[0] = mat2(.8,.6,-.6,.8)*pos.xz;
-	p[1] = (WORLDVIEW*pos).xy*.009;
+	POS4 p = POSITION*vec2(10.,1.).xyxy;
+	POS4 glp = WORLDVIEWPROJ * p;
+	gl_Position = glp;
+	pos = vec4(mat2(.8,.6,-.6,.8)*p.xz,glp.xy);
 	uv = TEXCOORD_0;
 }

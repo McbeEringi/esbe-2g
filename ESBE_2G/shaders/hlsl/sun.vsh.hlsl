@@ -42,5 +42,5 @@ void main(in VS_Input VSInput, out PS_Input PSInput)
 	PSInput.renTarget_id = VSInput.instanceID;
 #endif
 PSInput.uv_ = VSInput.uv;
-PSInput.pos = float4(mul(float2x2(.8,-.6,.6,.8),pos.xz),mul(WORLDVIEW,pos).xy*.009);
+PSInput.pos = float4(mul(float2x2(.8,-.6,.6,.8),pos.xz),mul(WORLDVIEWPROJ, pos).xy);
 }
