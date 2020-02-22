@@ -26,18 +26,18 @@ struct PS_Output
 };
 
 float3 curve(float3 x){
-	float A = 0.50;
-	float B = 0.10;
-	float C = 0.40;
-	float D = 0.65;
-	float E = 0.05;
-	float F = 0.20;
+	static const float A = 0.50;
+	static const float B = 0.10;
+	static const float C = 0.40;
+	static const float D = 0.65;
+	static const float E = 0.05;
+	static const float F = 0.20;
 	return ((x*(A*x+C*B)+D*E)/(x*(A*x+B)+D*F))-E/F;
 }
 
 float3 tonemap(float3 col, float3 gamma){
-	float saturation = 1.2;
-	float exposure = 1.0;
+	static const float saturation = 1.2;
+	static const float exposure = 1.0;
 	col = pow(col,1./gamma);
 	float luma = dot(col, float3(0.298912, 0.586611, 0.114478));
 	col = curve((col-luma)*saturation+luma);

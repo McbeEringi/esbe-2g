@@ -43,18 +43,18 @@ LAYOUT_BINDING(1) uniform sampler2D TEXTURE_1;
 LAYOUT_BINDING(2) uniform sampler2D TEXTURE_2;
 
 vec3 curve(vec3 x){
-	float A = 0.50;
-	float B = 0.10;
-	float C = 0.40;
-	float D = 0.65;
-	float E = 0.05;
-	float F = 0.20;
+	const float A = 0.50;
+	const float B = 0.10;
+	const float C = 0.40;
+	const float D = 0.65;
+	const float E = 0.05;
+	const float F = 0.20;
 	return ((x*(A*x+C*B)+D*E)/(x*(A*x+B)+D*F))-E/F;
 }
 
 vec3 tonemap(vec3 col, vec3 gamma){
-	float saturation = 1.2;
-	float exposure = 1.0;
+	const float saturation = 1.2;
+	const float exposure = 1.0;
 	col = pow(col,1./gamma);
 	float luma = dot(col, vec3(0.298912, 0.586611, 0.114478));
 	col = curve((col-luma)*saturation+luma);
