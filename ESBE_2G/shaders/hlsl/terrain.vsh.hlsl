@@ -41,9 +41,9 @@ static const float3 UNIT_Y = float3(0, 1, 0);
 static const float DIST_DESATURATION = 56.0 / 255.0; //WARNING this value is also hardcoded in the water color, don'tchange
 
 float hash11(float p){
-	float3 p3  = frac(p * 0.1031);
-	p3 += dot(p3, p3.yzx + 19.19);
-	return frac((p3.x + p3.y) * p3.z);
+	p = frac(p * .1031);
+	p *= p + 33.33;
+	return frac((p + p) * p);
 }
 
 float random(float p){

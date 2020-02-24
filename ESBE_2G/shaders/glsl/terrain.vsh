@@ -46,9 +46,9 @@ const vec3 UNIT_Y = vec3(0,1,0);
 const float DIST_DESATURATION = 56.0 / 255.0; //WARNING this value is also hardcoded in the water color, don'tchange
 
 highp float hash11(highp float p){
-	highp vec3 p3  = vec3(fract(p * 0.1031));
-	p3 += dot(p3, p3.yzx + 19.19);
-	return fract((p3.x + p3.y) * p3.z);
+	p = fract(p * .1031);
+	p *= p + 33.33;
+	return fract((p + p) * p);
 }
 
 highp float random(highp float p){
