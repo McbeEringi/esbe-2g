@@ -194,7 +194,7 @@ if(diffuse.a!=0.){
 
 //#define DEBUG//デバッグ画面
 #ifdef DEBUG
-	HM vec2 subdisp = gl_FragCoord.xy/1000.;
+	HM vec2 subdisp = gl_FragCoord.xy/1024.;
 	if(subdisp.x<1. && subdisp.y<1.){
 		vec3 subback = vec3(1);
 		if(subdisp.x>0. && subdisp.x<=.2 && subdisp.y<=daylight.y)subback.rgb=vec3(1,.7,0);

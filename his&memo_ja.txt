@@ -6,6 +6,8 @@ snow… texture2D( TEXTURE_2, vec2(.7,.05))
 nether… step(TILE_LIGHT_COLOR.w,0.)
 
 
+4.3
+ 作物系のブロックが揺れるように
 4.2
  雨天時にも太陽が表示される問題を修正
  月の改良
