@@ -74,7 +74,6 @@ vec4 water(vec4 col,float weather,float uw,vec3 tex1){
 	p.xz = p.xz*vec2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))+2.;//[0.~4.]
 
-	col.rgb = mix(col.rgb,FOG_COLOR.rgb,oms*oms*sun*uw*.7);
 	vec4 diffuse = mix(col,col*mix(1.5,1.3,(1.-oms)*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
 	if(bool(uw)){//new C_REF
 		highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*length(T.xz)*.1;
@@ -83,6 +82,7 @@ vec4 water(vec4 col,float weather,float uw,vec3 tex1){
 		vec4 c_ref = mix(col,c_col,max(0.,snoise(skp)*.7+.3)*(oms*.5+.5)*.7);
 		float s_ref = sun*weather*smoothstep(0.,.7,oms)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
 		c_ref = mix(c_ref,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
+		c_ref.rgb = mix(c_ref.rgb,FOG_COLOR.rgb,oms*sun*.8);
 		diffuse = mix(diffuse,c_ref,sun);
 	}
 	return mix(col,diffuse,max(.4,oms));

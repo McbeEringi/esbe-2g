@@ -56,7 +56,6 @@ float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,fl
 	p.xz = p.xz*float2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-TIME*.5)+snoise(float2(p.x-TIME,(p.z+TIME)*.5)))+2.;//[0.~4.]
 
-	col.rgb = lerp(col.rgb,FOG_COLOR.rgb,oms*oms*sun*uw*.7);
 	float4 diffuse = lerp(col,col*lerp(1.5,1.3,(1.-oms)*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
 	if(bool(uw)){//new C_REF
 		float2 skp = (wPos.xz+n*4.*wPos.xz/max(length(wPos.xz),.5))*length(T.xz)*.1;
@@ -65,6 +64,7 @@ float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,fl
 		float4 c_ref = lerp(col,c_col,max(0.,snoise(skp)*.7+.3)*(oms*.5+.5)*.7);
 		float s_ref = sun*weather*smoothstep(0.,.7,oms)*lerp(.3,1.,smoothstep(1.5,4.,n));
 		c_ref = lerp(c_ref,1.,smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
+		c_ref.rgb = lerp(c_ref.rgb,FOG_COLOR.rgb,oms*sun*.8);
 		diffuse = lerp(diffuse,c_ref,sun);
 	}
 	return lerp(col,diffuse,max(.4,oms));
