@@ -20,7 +20,7 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 {
 	float l = length(PSInput.pos);
 	float s;
-	if(TEXTURE_0.Sample(TextureSampler0,float2(.5,.5)).r>.5)
+	if(TEXTURE_0.Sample(TextureSampler0,float2(.5,.5)).r>.1)
 		s = max(cos(min(l*12.,1.58)),.5-l*.7);
 	else{
 		float mp = (floor(PSInput.uv_.x*4.)*.25+step(PSInput.uv_.y,.5))*3.1415;//[0~2pi]

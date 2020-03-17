@@ -19,7 +19,7 @@ void main()
 {
 	float l = length(pos);
 	float s;
-	if(texture2D(TEXTURE_0,vec2(.5)).r>.5)
+	if(texture2D(TEXTURE_0,vec2(.5)).r>.1)
 		s = max(cos(min(l*12.,1.58)),(.5-l*.7)/*(snoise(vec2(atan(pos.x,pos.y)*2.,TIME*.5))*.1+.9)*/);
 	else{
 		float mp = (floor(uv.x*4.)*.25+step(uv.y,.5))*3.1415;//[0~2pi]

@@ -129,7 +129,7 @@ float cameraDepth = length(relPos);
 			cameraDist *= cameraDist;
 		#endif
 		float alphaFadeOut = clamp(cameraDist, 0.0, 1.0);
-		PSInput.color.a = lerp(VSInput.color.a*.65, 1.5, alphaFadeOut);
+		PSInput.color.a = lerp(VSInput.color.a*.6, 1.5, alphaFadeOut);
 	}
 	///// under water
 	if(bool(step(FOG_CONTROL.x,.0001)))PSInput.position.x += wav*.02*PROJ[0].x
