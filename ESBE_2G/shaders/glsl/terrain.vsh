@@ -106,7 +106,8 @@ float cameraDepth = length(relPos);
 
 ///// leaves
 #ifdef ALPHA_TEST
-	if((color.g != color.b && color.r < color.g+color.b)||fract(POSITION.y)==.9375)gl_Position.x += wav*.015*rand*PROJ[0].x;
+	vec3 frp = fract(POSITION.xyz);
+	if((color.g != color.b && color.r < color.g+color.b)||(frp.y==.9375&&(frp.x==0.||frp.z==0.)))gl_Position.x += wav*.016*rand*PROJ[0].x;
 #endif
 
 ///// esbe water detection
