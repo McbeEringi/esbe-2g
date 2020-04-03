@@ -3,17 +3,14 @@
 
 #if __VERSION__ >= 300
 	#define varying in
-	#define texture2D texture
 	out vec4 FragColor;
 	#define gl_FragColor FragColor
-#else
 #endif
 
 uniform vec4 CURRENT_COLOR;
 uniform highp float TIME;
 varying vec4 color;
 
-void main()
-{
-	gl_FragColor = vec4(color.rgb * CURRENT_COLOR.rgb * (sin(TIME*color.a)*.3+.7), color.a);
+void main(){
+	gl_FragColor = vec4(CURRENT_COLOR.rgb*abs(sin(TIME*color.a)),color.a);
 }

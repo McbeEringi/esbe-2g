@@ -12,8 +12,7 @@ struct PS_Output
 };
 
 ROOT_SIGNATURE
-void main(in PS_Input PSInput, out PS_Output PSOutput)
-{
+void main(in PS_Input PSInput, out PS_Output PSOutput){
 	PSOutput.color = PSInput.color;
-	PSOutput.color.rgb *= CURRENT_COLOR.rgb * (sin(TIME*PSInput.color.a)*.3+.7);
+	PSOutput.color.rgb = CURRENT_COLOR.rgb*abs(sin(TIME*PSInput.color.a));
 }
