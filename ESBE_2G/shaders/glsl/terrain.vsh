@@ -122,7 +122,7 @@ float cameraDepth = length(relPos);
 		color.a = mix(color.a*.6, 1.5, alphaFadeOut);
 	}
 	///// under water
-	if(bool(step(FOG_CONTROL.x,.0001)))gl_Position.x += wav*.02*PROJ[0].x
+	if(FOG_CONTROL.x==0.)gl_Position.x += wav*.02*PROJ[0].x
 	#ifdef FANCY
 		*rand
 	#endif

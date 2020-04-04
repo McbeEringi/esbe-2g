@@ -27,7 +27,7 @@ highp float fBM(const int octaves, const float lowerBound, const float upperBoun
 		if (value >= upperBound) break;
 		else if (value + amplitude <= lowerBound) break;
 		st        *= 2.0;
-		st.x      -=TIME/256.*float(i+1);
+		st.x      -=TIME*.002*float(i+1);
 		amplitude *= 0.5;
 	}
 	return smoothstep(lowerBound, upperBound, value);
@@ -40,6 +40,7 @@ void main()
 	float day = smoothstep(0.15,0.25,FOG_COLOR.g);
 	float weather = smoothstep(0.8,1.0,FOG_CONTROL.y);
 	float ss = smoothstep(0.0,0.5,FOG_COLOR.r-FOG_COLOR.g)*.5;
+	bool uw = FOG_CONTROL.x==0.;
 
 	vec3 top_col = mix(mix(vec3(0.0,0.0,0.1),vec3(-0.1,0.0,0.1),day),vec3(.5),ss)*weather;
 	vec3 hor_col = mix(mix(vec3(0.0,0.1,0.2),vec3(0.2,0.1,-0.05),day),vec3(.7),ss)*weather;
@@ -49,7 +50,7 @@ void main()
 		//AURORA
 		float aflag = (1.-day)*weather;
 		if(aflag > 0.){
-			vec2 apos = vec2(pos.x-TIME/256.,pos.y*10.);
+			vec2 apos = vec2(pos.x-TIME*.004,pos.y*10.);
 			apos.y += sin(pos.x*20.+TIME*.1)*.15;
 			vec3 ac = mix(/*オーロラ色1*/vec3(0.,.8,.4),/*オーロラ色2*/vec3(.4,.2,.8),sin(apos.x+apos.y+TIME*.01)*.5+.5);
 			float am = fBM(4,.5,1.,apos);
@@ -59,11 +60,10 @@ void main()
 		//CLOUDS
 		vec3 cc = mix(.25,1.,day)*vec3(.95+ss,1.,1.-ss);
 		float lb = mix(.1,.5,weather);
-		float cm = fBM(6,lb,.9,pos*3.-TIME*.001);
+		float cm = fBM(uw?4:6,lb,.8,pos*3.-TIME*.002);
 		if(cm>0.){
-			float br = max(cm-fBM(4,lb,1.,pos*2.7-TIME*.001),0.);
-			br = sin(br*1.570796);
-			cc *= mix(.8,1.03,br);
+			float br = fBM(uw?2:4,lb,.9,pos*2.7-TIME*.002);
+			cc *= mix(1.03,.8,br);
 		}
 		col.rgb = mix(col.rgb,cc,cm);
 

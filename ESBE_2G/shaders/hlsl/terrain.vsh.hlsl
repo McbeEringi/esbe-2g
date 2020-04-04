@@ -133,7 +133,7 @@ float cameraDepth = length(relPos);
 		PSInput.color.a = lerp(VSInput.color.a*.6, 1.5, alphaFadeOut);
 	}
 	///// under water
-	if(bool(step(FOG_CONTROL.x,.0001)))PSInput.position.x += wav*.02*PROJ[0].x
+	if(FOG_CONTROL.x==0.)PSInput.position.x += wav*.02*PROJ[0].x
 	#ifdef FANCY
 		*rand
 	#endif
