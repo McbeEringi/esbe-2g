@@ -62,7 +62,7 @@ void main()
 		float lb = mix(.1,.5,weather);
 		float cm = fBM(uw?4:6,lb,.8,pos*3.-TIME*.002);
 		if(cm>0.){
-			float br = fBM(uw?2:4,lb,.9,pos*2.7-TIME*.002);
+			float br = fBM(uw?2:4,lb,.9,pos*2.6-TIME*.002);
 			cc *= mix(1.03,.8,br);
 		}
 		col.rgb = mix(col.rgb,cc,cm);

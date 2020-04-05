@@ -57,7 +57,7 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 		float lb = lerp(.1,.5,weather);
 		float cm = fBM(uw?4:6,lb,.8,PSInput.pos*3.-TIME*.002);
 		if(cm>0.){
-			float br = fBM(uw?2:4,lb,.9,PSInput.pos*2.7-TIME*.002);
+			float br = fBM(uw?2:4,lb,.9,PSInput.pos*2.6-TIME*.002);
 			cc *= lerp(1.03,.8,br);
 		}
 		col.rgb = lerp(col.rgb,cc,cm);
