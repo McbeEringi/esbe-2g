@@ -34,11 +34,11 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 	//DATABASE
 	float day = smoothstep(0.15,0.25,FOG_COLOR.g);
 	float weather = smoothstep(0.8,1.0,FOG_CONTROL.y);
-	float ss = smoothstep(0.0,0.5,FOG_COLOR.r-FOG_COLOR.g)*.5;
+	float ss = clamp(FOG_COLOR.r-FOG_COLOR.g,0.,.5)*2.;
 	bool uw = FOG_CONTROL.x==0.;
 
-	float3 top_col = lerp(lerp(float3(0.0,0.0,0.1),float3(-0.1,0.0,0.1),day),float3(0.5,0.5,0.5),ss)*weather;
-	float3 hor_col = lerp(lerp(float3(0.0,0.1,0.2),float3(0.2,0.1,-0.05),day),float3(0.7,0.7,0.7),ss)*weather;
+	float3 top_col = lerp(lerp(float3(0.0,0.0,0.1),float3(-0.1,0.0,0.1),day),float3(0.5,0.5,0.5),ss*.5)*weather;
+	float3 hor_col = lerp(lerp(float3(0.0,0.1,0.2),float3(0.2,0.1,-0.05),day),float3(0.7,0.7,0.7),ss*.5)*weather;
 
 	float4 col = float4(lerp(CURRENT_COLOR.rgb+top_col,FOG_COLOR.rgb+hor_col,smoothstep(0.,.4,PSInput.fog)),1.);
 
@@ -53,12 +53,12 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 		}
 
 		//CLOUDS
-		float3 cc = lerp(.25,1.,day)*float3(.95+ss,1.,1.-ss);
+		float3 cc = lerp(/*雨*/(mix(.2,.9,day)),lerp(lerp(/*夜*/float3(.1,.18,.38),/*昼*/float3(.97,.96,.90),day),/*日没*/float3(.97,.72,.38),ss),weather);
 		float lb = lerp(.1,.5,weather);
 		float cm = fBM(uw?4:6,lb,.8,PSInput.pos*3.-TIME*.002);
 		if(cm>0.){
 			float br = fBM(uw?2:4,lb,.9,PSInput.pos*2.6-TIME*.002);
-			cc *= lerp(1.03,.8,br);
+			cc *= lerp(1.03,.8,br*(1.-ss*.7));
 		}
 		col.rgb = lerp(col.rgb,cc,cm);
 

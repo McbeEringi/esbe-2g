@@ -39,11 +39,11 @@ void main()
 	//DATABASE
 	float day = smoothstep(0.15,0.25,FOG_COLOR.g);
 	float weather = smoothstep(0.8,1.0,FOG_CONTROL.y);
-	float ss = smoothstep(0.0,0.5,FOG_COLOR.r-FOG_COLOR.g)*.5;
+	float ss = clamp(FOG_COLOR.r-FOG_COLOR.g,0.,.5)*2.;
 	bool uw = FOG_CONTROL.x==0.;
 
-	vec3 top_col = mix(mix(vec3(0.0,0.0,0.1),vec3(-0.1,0.0,0.1),day),vec3(.5),ss)*weather;
-	vec3 hor_col = mix(mix(vec3(0.0,0.1,0.2),vec3(0.2,0.1,-0.05),day),vec3(.7),ss)*weather;
+	vec3 top_col = mix(mix(vec3(0.0,0.0,0.1),vec3(-0.1,0.0,0.1),day),vec3(.5),ss*.5)*weather;
+	vec3 hor_col = mix(mix(vec3(0.0,0.1,0.2),vec3(0.2,0.1,-0.05),day),vec3(.7),ss*.5)*weather;
 
 	vec4 col = vec4(mix(CURRENT_COLOR.rgb+top_col,FOG_COLOR.rgb+hor_col,smoothstep(0.,.4,fog)),1.);
 
@@ -58,12 +58,12 @@ void main()
 		}
 
 		//CLOUDS
-		vec3 cc = mix(.25,1.,day)*vec3(.95+ss,1.,1.-ss);
+		vec3 cc = mix(/*雨*/vec3(mix(.2,.9,day)),mix(mix(/*夜*/vec3(.1,.18,.38),/*昼*/vec3(.97,.96,.90),day),/*日没*/vec3(.97,.72,.38),ss),weather);
 		float lb = mix(.1,.5,weather);
 		float cm = fBM(uw?4:6,lb,.8,pos*3.-TIME*.002);
 		if(cm>0.){
 			float br = fBM(uw?2:4,lb,.9,pos*2.6-TIME*.002);
-			cc *= mix(1.03,.8,br);
+			cc *= mix(1.03,.8,br*(1.-ss*.7));
 		}
 		col.rgb = mix(col.rgb,cc,cm);
 
