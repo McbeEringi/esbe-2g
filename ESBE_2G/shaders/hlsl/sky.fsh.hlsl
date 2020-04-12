@@ -53,7 +53,7 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 		}
 
 		//CLOUDS
-		float3 cc = lerp(/*雨*/(mix(.2,.9,day)),lerp(lerp(/*夜*/float3(.1,.18,.38),/*昼*/float3(.97,.96,.90),day),/*日没*/float3(.97,.72,.38),ss),weather);
+		float3 cc = lerp(/*雨*/lerp(.2,.9,day),lerp(lerp(/*夜*/float3(.1,.18,.38),/*昼*/float3(.97,.96,.90),day),/*日没*/float3(.97,.72,.38),ss),weather);
 		float lb = lerp(.1,.5,weather);
 		float cm = fBM(uw?4:6,lb,.8,PSInput.pos*3.-TIME*.002);
 		if(cm>0.){
