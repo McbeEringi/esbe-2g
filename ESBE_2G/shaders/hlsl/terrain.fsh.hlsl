@@ -44,13 +44,7 @@ float3 tonemap(float3 col, float3 gamma){
 	return col/curve(float3(1./exposure,0.,0.)).r;
 }
 
-float flat_sh(float3 pos, float dusk){
-	float3 n = normalize(cross(ddx(-pos),ddy(pos)));
-	float s = min(1.,dot(n,float3(0.,.8,.6))*.45+.64);
-	return lerp(s,max(dot(n,float3(.9,.44,0.)),dot(n,float3(-.9,.44,0.)))*1.3+.2,dusk);
-}
-
-float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,float3 tex1){
+float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,float3 tex1,float w_r){
 	sun = smoothstep(.5,.75,sun);
 	float3 T = normalize(abs(wPos)); float oms = 1.-T.y;
 	p.xz = p.xz*float2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
@@ -64,7 +58,7 @@ float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,fl
 		float4 c_ref = lerp(col,c_col,max(0.,snoise(skp)*.7+.3)*(oms*.5+.5)*.7);
 		float s_ref = sun*weather*smoothstep(0.,.7,oms)*lerp(.3,1.,smoothstep(1.5,4.,n));
 		c_ref = lerp(c_ref,1.,smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
-		c_ref.rgb = lerp(c_ref.rgb,FOG_COLOR.rgb,oms*sun*.8);
+		c_ref = lerp(c_ref,FOG_COLOR,w_r*sun*.8);
 		diffuse = lerp(diffuse,c_ref,sun);
 	}
 	return lerp(col,diffuse,max(.4,oms));
@@ -149,7 +143,9 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 
 //ESBEwater
 #ifdef FANCY
-	if(PSInput.wf+uw > .5)diffuse = water(diffuse,PSInput.cPos,PSInput.wPos,weather,1.-uw,PSInput.uv1.y,tex1.rgb);
+	float3 n = normalize(cross(ddx(-PSInput.cPos),ddy(PSInput.cPos)));
+	float w_r = 1.-dot(normalize(-PSInput.wPos),n);w_r=.02+.98*w_r*w_r*w_r*w_r*w_r;
+	if(PSInput.wf+uw > .5)diffuse = water(diffuse,PSInput.cPos,PSInput.wPos,weather,1.-uw,PSInput.uv1.y,tex1.rgb,w_r);
 #endif
 
 //ESBE_shadow
@@ -158,7 +154,9 @@ if(PSInput.color.r==PSInput.color.g && PSInput.color.g==PSInput.color.b)ao = smo
 
 diffuse.rgb *= 1.-lerp(/*影の濃さ*/0.5,0.0,min(sunlight,ao))*(1.-PSInput.uv1.x)*daylight.x;
 #ifdef FANCY//FLAT_SHADING
-	diffuse.rgb *= lerp(1.,flat_sh(PSInput.cPos,dusk),smoothstep(.7,.95,PSInput.uv1.y)*min(1.25-PSInput.uv1.x,1.)*daylight.x);
+	float fl_s = min(1.,dot(n,float3(0.,.8,.6))*.45+.64);
+	fl_s = lerp(fl_s,max(dot(n,float3(.9,.44,0.)),dot(n,float3(-.9,.44,0.)))*1.3+.2,dusk);
+	diffuse.rgb *= lerp(1.,fl_s,smoothstep(.7,.95,PSInput.uv1.y)*min(1.25-PSInput.uv1.x,1.)*daylight.x);
 #endif
 
 #ifdef FOG

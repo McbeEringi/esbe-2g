@@ -61,13 +61,7 @@ vec3 tonemap(vec3 col, vec3 gamma){
 	return col/curve(vec3(1./exposure));
 }
 
-float flat_sh(float dusk){
-	vec3 n = normalize(cross(dFdx(cPos),dFdy(cPos)));
-	float s = min(1.,dot(n,vec3(0.,.8,.6))*.45+.64);
-	return mix(s,max(dot(n,vec3(.9,.44,0.)),dot(n,vec3(-.9,.44,0.)))*1.3+.2,dusk);
-}
-
-vec4 water(vec4 col,float weather,float uw,vec3 tex1){
+vec4 water(vec4 col,float weather,float uw,vec3 tex1,float r){
 	HM float time = TIME; vec3 p = cPos;
 	float sun = smoothstep(.5,.75,uv1.y);
 	vec3 T = normalize(abs(wPos)); float oms = 1.-T.y;
@@ -82,7 +76,7 @@ vec4 water(vec4 col,float weather,float uw,vec3 tex1){
 		vec4 c_ref = mix(col,c_col,max(0.,snoise(skp)*.7+.3)*(oms*.5+.5)*.7);
 		float s_ref = sun*weather*smoothstep(0.,.7,oms)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
 		c_ref = mix(c_ref,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
-		c_ref.rgb = mix(c_ref.rgb,FOG_COLOR.rgb,oms*sun*.8);
+		c_ref = mix(c_ref,FOG_COLOR,r*sun*.8);
 		diffuse = mix(diffuse,c_ref,sun);
 	}
 	return mix(col,diffuse,max(.4,oms));
@@ -167,7 +161,9 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 
 //ESBEwater
 #ifdef FANCY
-	if(wf+uw>.5)diffuse = water(diffuse,weather,1.-uw,tex1.rgb);
+	vec3 n = normalize(cross(dFdx(cPos),dFdy(cPos)));
+	float w_r = 1.-dot(normalize(-wPos),n);w_r=.02+.98*w_r*w_r*w_r*w_r*w_r;
+	if(wf+uw>.5)diffuse = water(diffuse,weather,1.-uw,tex1.rgb,w_r);
 #endif
 
 //ESBE_shadow
@@ -176,7 +172,9 @@ if(color.r==color.g && color.g==color.b)ao = smoothstep(.48*daylight.y,.52*dayli
 
 diffuse.rgb *= 1.-mix(/*影の濃さ*/0.5,0.0,min(sunlight,ao))*(1.-uv1.x)*daylight.x;
 #ifdef FANCY//FLAT_SHADING
-	diffuse.rgb *= mix(1.0,flat_sh(dusk),smoothstep(.7,.95,uv1.y)*min(1.25-uv1.x,1.)*daylight.x);
+	float fl_s = min(1.,dot(n,vec3(0.,.8,.6))*.45+.64);
+ 	fl_s = mix(fl_s,max(dot(n,vec3(.9,.44,0.)),dot(n,vec3(-.9,.44,0.)))*1.3+.2,dusk);
+	diffuse.rgb *= mix(1.0,fl_s,smoothstep(.7,.95,uv1.y)*min(1.25-uv1.x,1.)*daylight.x);
 #endif
 
 //ESBE_sun_ref (unused)
