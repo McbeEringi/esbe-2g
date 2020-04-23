@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css">
 	<style>
 		.swiper-container {
-			width: 90vw;
+			width: 90%;
 			height: auto;
 		}
 
@@ -148,9 +148,16 @@
 	<script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
 	<script>
 		var swiper = new Swiper('.swiper-container', {
-			spaceBetween: 30,
+			slidesPerView: 1,
+			spaceBetween: 0,
+			loop: true,
 			centeredSlides: true,
-			slidesPerView: 2,
+			breakpoints: {
+				480: {
+					slidesPerView: 2,
+					spaceBetween: 30
+				}
+			},
 			autoplay: {
 				delay: 2700,
 				disableOnInteraction: false,
@@ -162,8 +169,7 @@
 			navigation: {
 				nextEl: '.swiper-button-next',
 				prevEl: '.swiper-button-prev',
-			},
-			loop: true,
+			}
 		});
 	</script>
 </body>
