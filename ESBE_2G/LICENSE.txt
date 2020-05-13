@@ -4,7 +4,7 @@ ESBE 2G
 You are allowed to
 	use this shader in your gameplay
 	take photo with this shader and share it
-	share download links below
+	share links below
 	modify this shader in your personal use
 	use this shader for education
 
@@ -19,4 +19,4 @@ links
 	https://mcpedl.com/esbe-2g
 	https://github.com/mcbeeringi/esbe-2g
 
-©2019 @McbeEringi(twitter) All Rights Reserved
+©2019~ @McbeEringi(twitter) All Rights Reserved

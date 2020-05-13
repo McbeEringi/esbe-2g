@@ -1,5 +1,5 @@
 {
-	"namespace": "tabbed_upsell",
+	"namespace": "",
 
 	"esbe_panel": {
 		"type": "stack_panel",
@@ -12,7 +12,7 @@
 					"type": "stack_panel",
 					"size": ["fill","default"],
 					"controls": [
-						{"vc": {"type": "label","font_scale_factor": 1.5,"text": "esbe.vc"}},
+						{"vc": {"type": "label","font_scale_factor": 1.5,"text": "esbe.c"}},
 						{"s": {"type": "panel","size": [4,4]}},
 						{"0": {"type": "label","text": "esbe.c0"}},
 						{"1": {"type": "label","text": "esbe.c1"}},
@@ -28,16 +28,5 @@
 				}
 			}
 		]
-	},
-
-	"scroll@common.scrolling_panel": {
-		"$show_background": false,
-		"$scrolling_content": "tabbed_upsell.esbe_panel"
-	},
-
-	"tabbed_upseel_screen_panel@common_dialogs.main_panel_no_buttons": {
-		"size": ["80%","80%"],
-		"$text_name": "§bESBE_2G §ainfo",
-		"$child_control": "tabbed_upsell.scroll"
 	}
 }

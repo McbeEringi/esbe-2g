@@ -1,6 +1,7 @@
 // __multiversion__
 // This signals the loading code to prepend either #version 100 or #version 300 es as apropriate.
 
+#define USE_NORMAL
 #include "fragmentVersionCentroid.h"
 
 #if __VERSION__ >= 300
@@ -76,7 +77,7 @@ vec4 water(vec4 col,float weather,float uw,vec3 tex1,float r){
 		vec4 c_ref = mix(col,c_col,max(0.,snoise(skp)*.7+.3)*(oms*.5+.5)*.7);
 		float s_ref = sun*weather*smoothstep(0.,.7,oms)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
 		c_ref = mix(c_ref,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
-		c_ref = mix(c_ref,FOG_COLOR,r*sun*.8);
+		c_ref = mix(c_ref,FOG_COLOR,r*sun);
 		diffuse = mix(diffuse,c_ref,sun);
 	}
 	return mix(col,diffuse,max(.4,oms));
@@ -161,8 +162,12 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 
 //ESBEwater
 #ifdef FANCY
-	vec3 n = normalize(cross(dFdx(cPos),dFdy(cPos)));
-	float w_r = 1.-dot(normalize(-wPos),n);w_r=.02+.98*w_r*w_r*w_r*w_r*w_r;
+	#ifdef USE_NORMAL
+		vec3 n = normalize(cross(dFdx(cPos),dFdy(cPos)));
+		float w_r = 1.-dot(normalize(-wPos),n);w_r=(.02+.98*w_r*w_r*w_r*w_r*w_r)*.8;
+	#else
+		float w_r = (1.-abs(normalize(wPos).y))*.5;
+	#endif
 	if(wf+uw>.5)diffuse = water(diffuse,weather,1.-uw,tex1.rgb,w_r);
 #endif
 
@@ -170,9 +175,9 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 float ao = 1.;
 if(color.r==color.g && color.g==color.b)ao = smoothstep(.48*daylight.y,.52*daylight.y,color.g);
 diffuse.rgb *= 1.-mix(/*影の濃さ*/0.5,0.0,min(sunlight,ao))*(1.-uv1.x)*daylight.x;
-#ifdef FANCY//FLAT_SHADING
+#if defined(FANCY) && defined(USE_NORMAL)//FLAT_SHADING
 	float fl_s = min(1.,dot(n,vec3(0.,.8,.6))*.45+.64);
- 	fl_s = mix(fl_s,max(dot(n,vec3(.9,.44,0.)),dot(n,vec3(-.9,.44,0.)))*1.3+.2,dusk);
+	fl_s = mix(fl_s,max(dot(n,vec3(.9,.44,0.)),dot(n,vec3(-.9,.44,0.)))*1.3+.2,dusk);
 	diffuse.rgb *= mix(1.0,fl_s,smoothstep(.7,.95,uv1.y)*min(1.25-uv1.x,1.)*daylight.x);
 #endif
 
