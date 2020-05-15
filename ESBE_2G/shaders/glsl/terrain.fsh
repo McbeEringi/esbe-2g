@@ -1,10 +1,10 @@
 // __multiversion__
 // This signals the loading code to prepend either #version 100 or #version 300 es as apropriate.
 
-#define USE_NORMAL
 #include "fragmentVersionCentroid.h"
 
 #if __VERSION__ >= 300
+	#define USE_NORMAL
 	#ifndef BYPASS_PIXEL_SHADER
 		#if defined(TEXEL_AA) && defined(TEXEL_AA_FEATURE)
 			_centroid in highp vec2 uv0;
