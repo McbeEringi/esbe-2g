@@ -1,8 +1,8 @@
 esbe.c=変更点
 esbe.c0=モバイル端末用にオプションを追加͸
-esbe.c1=͸
-esbe.c2=͸
-esbe.c3=͸
+esbe.c1=一部の古い端末へのサポートを追加͸
+esbe.c2=VR端末で使用するとブロックが透過する問題を解決͸
+esbe.c3= thanks to>> mcpedl.com/esbe-2g/#comment-367682͸
 esbe.c4=͸
 esbe.c5=͸
 esbe.c6=͸
