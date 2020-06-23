@@ -82,6 +82,38 @@ vec4 water(vec4 col,float weather,float uw,vec3 tex1,float r){
 	}
 	return mix(col,diffuse,max(.4,oms));
 }
+/*
+highp float fBM(const int octaves, const float lowerBound, const float upperBound, highp vec2 st) {
+	highp float value = 0.0;
+	highp float amplitude = 0.5;
+	highp float htime = TIME;
+	for (int i = 0; i < octaves; i++) {
+		value += amplitude * (snoise(st) * 0.5 + 0.5);
+		if (value >= upperBound) break;
+		else if (value + amplitude <= lowerBound) break;
+		st        *= 2.0;
+		st.x      -=htime*.002*float(i+1);
+		amplitude *= 0.5;
+	}
+	return smoothstep(lowerBound, upperBound, value);
+}
+vec4 water(vec4 col,float weather,float uw,vec3 tex1,float r){
+	HM float time = TIME; vec3 p = cPos;
+	float sun = smoothstep(.5,.75,uv1.y);
+	vec3 T = normalize(abs(wPos));
+	p.xz = p.xz*vec2(1.0,0.4)+smoothstep(0.,8.,abs(p.y-8.))*.5;
+	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,p.z+time*.5)))+2.;//[0.~4.]
+
+	vec4 diffuse = mix(col,col*mix(1.5,1.3,T.y*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
+	if(bool(uw)){//new C_REF
+		highp vec2 skp = -(wPos.xz+n*2.*(wPos.xz/max(length(wPos.xz),.5)))/wPos.y*.1;
+		vec3 skref = mix(FOG_COLOR.rgb,vec3(.12,.31,.64)*smoothstep(0.15,0.25,FOG_COLOR.g),smoothstep(.9,.2,length(skp))*.3);
+		skref = mix(skref,(tex1+FOG_COLOR.rgb)*.6,fBM(3,.5,.9,skp-time*.002));//c_col
+
+		diffuse = mix(diffuse,vec4(skref,1),sun*.9);
+	}
+	return mix(col,diffuse,max(.4,1.-T.y));
+}*/
 
 void main()
 {

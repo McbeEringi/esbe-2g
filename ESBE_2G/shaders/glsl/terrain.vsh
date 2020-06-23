@@ -34,6 +34,7 @@ varying float wf;
 #include "uniformWorldConstants.h"
 #include "uniformPerFrameConstants.h"
 #include "uniformRenderChunkConstants.h"
+uniform highp float TOTAL_REAL_WORLD_TIME;
 
 attribute POS4 POSITION;
 attribute vec4 COLOR;
@@ -52,7 +53,7 @@ highp float hash11(highp float p){
 }
 
 highp float random(highp float p){
-	p = p/3.0+TIME;
+	p = p/3.+TOTAL_REAL_WORLD_TIME;
 	return mix(hash11(floor(p)),hash11(ceil(p)),smoothstep(0.0,1.0,fract(p)))*2.0;
 }
 
@@ -66,9 +67,8 @@ POS4 worldPos;
 	color = COLOR;
 #endif
 /////waves
-highp float hTime = TIME;
 POS3 p = vec3(POSITION.x==16.?0.:POSITION.x,abs(POSITION.y-8.),POSITION.z==16.?0.:POSITION.z);
-float wav = sin(hTime*3.5+2.*p.x+2.*p.z+p.y);
+float wav = sin(TOTAL_REAL_WORLD_TIME*3.5+2.*p.x+2.*p.z+p.y);
 float rand = random(p.x+p.y+p.z);
 
 #ifdef AS_ENTITY_RENDERER

@@ -47,8 +47,8 @@ float hash11(float p){
 }
 
 float random(float p){
-		p = p/3.0+TIME;
-		return lerp(hash11(floor(p)),hash11(floor(p+1.0)),smoothstep(0.0,1.0,frac(p)))*2.0;
+	p = p/3.0+TOTAL_REAL_WORLD_TIME;
+	return lerp(hash11(floor(p)),hash11(floor(p+1.0)),smoothstep(0.0,1.0,frac(p)))*2.0;
 }
 
 
@@ -63,7 +63,7 @@ PSInput.wf = 0.;
 #endif
 /////waves
 float3 p = float3(VSInput.position.x==16.?0.:VSInput.position.x,abs(VSInput.position.y-8.),VSInput.position.z==16.?0.:VSInput.position.z);
-float wav = sin(TIME*3.5+2.*p.x+2.*p.z+p.y);
+float wav = sin(TOTAL_REAL_WORLD_TIME*3.5+2.*p.x+2.*p.z+p.y);
 float rand = random(p.x+p.y+p.z);
 
 #ifdef AS_ENTITY_RENDERER
