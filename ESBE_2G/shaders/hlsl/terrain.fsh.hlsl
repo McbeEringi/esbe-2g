@@ -43,46 +43,24 @@ float3 tonemap(float3 col, float3 gamma){
 	col = curve((col-luma)*saturation+luma);
 	return col/curve(float3(1./exposure,0.,0.)).r;
 }
-
-float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,float3 tex1,float w_r){
-	sun = smoothstep(.5,.75,sun);
-	float3 T = normalize(abs(wPos)); float oms = 1.-T.y;
-	p.xz = p.xz*float2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
+float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,float3 tex1){
+	sun = smoothstep(.5,.9,sun);
+	float3 T = normalize(abs(wPos)); float cosT = length(T.xz);
+	p.xz = p.xz*float2(1.0,0.4)+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-TIME*.5)+snoise(float2(p.x-TIME,(p.z+TIME)*.5)))+2.;//[0.~4.]
 
-	float4 diffuse = lerp(col,col*lerp(1.5,1.3,(1.-oms)*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
+	float4 diffuse = lerp(col,col*lerp(1.5,1.3,T.y*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
 	if(bool(uw)){//new C_REF
-		float2 skp = (wPos.xz+n*4.*wPos.xz/max(length(wPos.xz),.5))*length(T.xz)*.1;
+		float2 skp = (wPos.xz+n*4.*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;
 		skp.x -= TIME*.05;
-		float4 c_col = float4((tex1+FOG_COLOR.rgb)*.5,oms*.6+.3);
-		float4 c_ref = lerp(col,c_col,max(0.,snoise(skp)*.7+.3)*(oms*.5+.5)*.7);
-		float s_ref = sun*weather*smoothstep(0.,.7,oms)*lerp(.3,1.,smoothstep(1.5,4.,n));
-		c_ref = lerp(c_ref,1.,smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref*.9);
-		c_ref = lerp(c_ref,FOG_COLOR,w_r*sun*.8);
-		diffuse = lerp(diffuse,c_ref,sun);
+		float4 skc = lerp(lerp(col,FOG_COLOR,cosT*.8),float4(lerp(tex1,FOG_COLOR.rgb,cosT*.7),1),smoothstep(0.,1.,snoise(skp)));
+		float s_ref = sun*weather*smoothstep(.7,0.,T.y)*lerp(.3,1.,smoothstep(1.5,4.,n))*.9;
+		skc = lerp(skc,1,smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
+		diffuse = lerp(diffuse,skc,cosT*sun);
 	}
-	return lerp(col,diffuse,max(.4,oms));
+	return lerp(diffuse,col,min(.7,T.y));
 }
-/*TODO
-vec4 water(vec4 col,float weather,float uw,vec3 tex1){
-	HM float time = TIME; vec3 p = cPos;
-	float sun = smoothstep(.5,.9,uv1.y);
-	vec3 T = normalize(abs(wPos)); float cosT = length(T.xz);
-	p.xz = p.xz*vec2(1.0,0.4)+smoothstep(0.,8.,abs(p.y-8.))*.5;
-	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))+2.;//[0.~4.]
 
-	vec4 diffuse = mix(col,col*mix(1.5,1.3,T.y*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
-	if(bool(uw)){//new C_REF
-		highp vec2 skp = (wPos.xz+n*4.*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;
-		skp.x -= time*.05;
-		vec4 skc = mix(mix(col,FOG_COLOR,cosT*.8),vec4(mix(tex1,FOG_COLOR.rgb,cosT*.7),1),smoothstep(0.,1.,snoise(skp)));
-		float s_ref = sun*weather*smoothstep(.7,0.,T.y)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
-		skc = mix(skc,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
-		diffuse = mix(diffuse,skc,cosT*sun);
-	}
-	return mix(diffuse,col,min(.7,T.y));
-}
-*/
 
 ROOT_SIGNATURE
 void main(in PS_Input PSInput, out PS_Output PSOutput)
@@ -164,23 +142,12 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 //ESBEwater
 #ifdef FANCY
 	float3 n = normalize(cross(ddx(-PSInput.cPos),ddy(PSInput.cPos)));
-	float w_r = 1.-dot(normalize(-PSInput.wPos),n);w_r=.02+.98*w_r*w_r*w_r*w_r*w_r;
-	if(PSInput.wf+uw > .5)diffuse = water(diffuse,PSInput.cPos,PSInput.wPos,weather,1.-uw,PSInput.uv1.y,tex1.rgb,w_r);
-#endif
-/*TODO
-#ifdef FANCY
-	#ifdef USE_NORMAL
-		vec3 n = normalize(cross(dFdx(cPos),dFdy(cPos)));
-	#endif
-	if(wf+uw>.5){
-		diffuse = water(diffuse,weather,1.-uw,tex1.rgb);
-		#ifdef USE_NORMAL
-			float w_r = 1.-dot(normalize(-wPos),n);
-			diffuse.a = mix(diffuse.a,1.,.02+.98*w_r*w_r*w_r*w_r*w_r);
-		#endif
+	if(PSInput.wf+uw>.5){
+		diffuse = water(diffuse,PSInput.cPos,PSInput.wPos,weather,1.-uw,PSInput.uv1.y,tex1.rgb);
+		float w_r = 1.-dot(normalize(-PSInput.wPos),n);
+		diffuse.a = lerp(diffuse.a,1.,.02+.98*w_r*w_r*w_r*w_r*w_r);
 	}
 #endif
-*/
 
 //ESBE_shadow
 float ao = 1.;
