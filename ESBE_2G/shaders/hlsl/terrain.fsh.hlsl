@@ -63,6 +63,26 @@ float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,fl
 	}
 	return lerp(col,diffuse,max(.4,oms));
 }
+/*TODO
+vec4 water(vec4 col,float weather,float uw,vec3 tex1){
+	HM float time = TIME; vec3 p = cPos;
+	float sun = smoothstep(.5,.9,uv1.y);
+	vec3 T = normalize(abs(wPos)); float cosT = length(T.xz);
+	p.xz = p.xz*vec2(1.0,0.4)+smoothstep(0.,8.,abs(p.y-8.))*.5;
+	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))+2.;//[0.~4.]
+
+	vec4 diffuse = mix(col,col*mix(1.5,1.3,T.y*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
+	if(bool(uw)){//new C_REF
+		highp vec2 skp = (wPos.xz+n*4.*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;
+		skp.x -= time*.05;
+		vec4 skc = mix(mix(col,FOG_COLOR,cosT*.8),vec4(mix(tex1,FOG_COLOR.rgb,cosT*.7),1),smoothstep(0.,1.,snoise(skp)));
+		float s_ref = sun*weather*smoothstep(.7,0.,T.y)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
+		skc = mix(skc,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
+		diffuse = mix(diffuse,skc,cosT*sun);
+	}
+	return mix(diffuse,col,min(.7,T.y));
+}
+*/
 
 ROOT_SIGNATURE
 void main(in PS_Input PSInput, out PS_Output PSOutput)
@@ -126,7 +146,7 @@ daylight.x *= weather;
 float sunlight = smoothstep(0.865,0.875,PSInput.uv1.y);
 float indoor = smoothstep(1.0,0.5,PSInput.uv1.y);
 float dusk = min(smoothstep(0.4,0.55,daylight.y),smoothstep(0.8,0.65,daylight.y));
-float uw = step(FOG_CONTROL.x,0.);
+float uw = step(FOG_COLOR.a,0.);
 
 //ESBE_tonemap	see http://filmicworlds.com/blog/filmic-tonemapping-operators/
 //1が標準,小…暗,大…明
@@ -147,6 +167,20 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 	float w_r = 1.-dot(normalize(-PSInput.wPos),n);w_r=.02+.98*w_r*w_r*w_r*w_r*w_r;
 	if(PSInput.wf+uw > .5)diffuse = water(diffuse,PSInput.cPos,PSInput.wPos,weather,1.-uw,PSInput.uv1.y,tex1.rgb,w_r);
 #endif
+/*TODO
+#ifdef FANCY
+	#ifdef USE_NORMAL
+		vec3 n = normalize(cross(dFdx(cPos),dFdy(cPos)));
+	#endif
+	if(wf+uw>.5){
+		diffuse = water(diffuse,weather,1.-uw,tex1.rgb);
+		#ifdef USE_NORMAL
+			float w_r = 1.-dot(normalize(-wPos),n);
+			diffuse.a = mix(diffuse.a,1.,.02+.98*w_r*w_r*w_r*w_r*w_r);
+		#endif
+	}
+#endif
+*/
 
 //ESBE_shadow
 float ao = 1.;

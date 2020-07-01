@@ -113,6 +113,11 @@ float cameraDepth = length(relPos);
 	len += RENDER_CHUNK_FOG_ALPHA.r;
 #endif
 	PSInput.fog = clamp((len - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
+	if(.02<FOG_CONTROL.x&&FOG_CONTROL.x<.5)PSInput.position.xy += wav*PSInput.fog*.15
+	#ifdef FANCY
+		*(rand*.5+.5)
+	#endif
+	;
 #endif
 
 ///// leaves

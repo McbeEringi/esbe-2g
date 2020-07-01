@@ -62,58 +62,24 @@ vec3 tonemap(vec3 col, vec3 gamma){
 	return col/curve(vec3(1./exposure));
 }
 
-vec4 water(vec4 col,float weather,float uw,vec3 tex1,float r){
+vec4 water(vec4 col,float weather,float uw,vec3 tex1){
 	HM float time = TIME; vec3 p = cPos;
-	float sun = smoothstep(.5,.75,uv1.y);
-	vec3 T = normalize(abs(wPos)); float oms = 1.-T.y;
+	float sun = smoothstep(.5,.9,uv1.y);
+	vec3 T = normalize(abs(wPos)); float cosT = length(T.xz);
 	p.xz = p.xz*vec2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
 	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,(p.z+time)*.5)))+2.;//[0.~4.]
 
-	vec4 diffuse = mix(col,col*mix(1.5,1.3,(1.-oms)*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
-	if(bool(uw)){//new C_REF
-		highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*length(T.xz)*.1;
-		skp.x -= time*.05;
-		vec4 c_col = vec4((tex1+FOG_COLOR.rgb)*.5,oms*.6+.3);
-		vec4 c_ref = mix(col,c_col,max(0.,snoise(skp)*.7+.3)*(oms*.5+.5)*.7);
-		float s_ref = sun*weather*smoothstep(0.,.7,oms)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
-		c_ref = mix(c_ref,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
-		c_ref = mix(c_ref,FOG_COLOR,r*sun);
-		diffuse = mix(diffuse,c_ref,sun);
-	}
-	return mix(col,diffuse,max(.4,oms));
-}
-/*
-highp float fBM(const int octaves, const float lowerBound, const float upperBound, highp vec2 st) {
-	highp float value = 0.0;
-	highp float amplitude = 0.5;
-	highp float htime = TIME;
-	for (int i = 0; i < octaves; i++) {
-		value += amplitude * (snoise(st) * 0.5 + 0.5);
-		if (value >= upperBound) break;
-		else if (value + amplitude <= lowerBound) break;
-		st        *= 2.0;
-		st.x      -=htime*.002*float(i+1);
-		amplitude *= 0.5;
-	}
-	return smoothstep(lowerBound, upperBound, value);
-}
-vec4 water(vec4 col,float weather,float uw,vec3 tex1,float r){
-	HM float time = TIME; vec3 p = cPos;
-	float sun = smoothstep(.5,.75,uv1.y);
-	vec3 T = normalize(abs(wPos));
-	p.xz = p.xz*vec2(1.0,0.4)+smoothstep(0.,8.,abs(p.y-8.))*.5;
-	float n = (snoise(p.xz-time*.5)+snoise(vec2(p.x-time,p.z+time*.5)))+2.;//[0.~4.]
-
 	vec4 diffuse = mix(col,col*mix(1.5,1.3,T.y*uw),pow(1.-abs(n-2.)*.5,bool(uw)?1.5:2.5));
 	if(bool(uw)){//new C_REF
-		highp vec2 skp = -(wPos.xz+n*2.*(wPos.xz/max(length(wPos.xz),.5)))/wPos.y*.1;
-		vec3 skref = mix(FOG_COLOR.rgb,vec3(.12,.31,.64)*smoothstep(0.15,0.25,FOG_COLOR.g),smoothstep(.9,.2,length(skp))*.3);
-		skref = mix(skref,(tex1+FOG_COLOR.rgb)*.6,fBM(3,.5,.9,skp-time*.002));//c_col
-
-		diffuse = mix(diffuse,vec4(skref,1),sun*.9);
+		highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;
+		skp.x -= time*.05;
+		vec4 skc = mix(mix(col,FOG_COLOR,cosT*.8),vec4(mix(tex1,FOG_COLOR.rgb,cosT*.7),1),smoothstep(0.,1.,snoise(skp)));
+		float s_ref = sun*weather*smoothstep(.7,0.,T.y)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
+		skc = mix(skc,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
+		diffuse = mix(diffuse,skc,cosT*sun);
 	}
-	return mix(col,diffuse,max(.4,1.-T.y));
-}*/
+	return mix(diffuse,col,min(.7,T.y));
+}
 
 void main()
 {
@@ -177,7 +143,8 @@ daylight.x *= weather;
 float sunlight = smoothstep(0.865,0.875,uv1.y);
 float indoor = smoothstep(1.0,0.5,uv1.y);
 float dusk = min(smoothstep(0.4,0.55,daylight.y),smoothstep(0.8,0.65,daylight.y));
-float uw = step(FOG_CONTROL.x,0.);
+float uw = step(FOG_COLOR.a,0.);
+//float nether = step(.02,FOG_CONTROL.x)-step(.5,FOG_CONTROL.x);
 
 //ESBE_tonemap	see http://filmicworlds.com/blog/filmic-tonemapping-operators/
 //1が標準,小…暗,大…明
@@ -196,11 +163,14 @@ diffuse.rgb = tonemap(diffuse.rgb,ambient);
 #ifdef FANCY
 	#ifdef USE_NORMAL
 		vec3 n = normalize(cross(dFdx(cPos),dFdy(cPos)));
-		float w_r = 1.-dot(normalize(-wPos),n);w_r=(.02+.98*w_r*w_r*w_r*w_r*w_r)*.8;
-	#else
-		float w_r = (1.-abs(normalize(wPos).y))*.5;
 	#endif
-	if(wf+uw>.5)diffuse = water(diffuse,weather,1.-uw,tex1.rgb,w_r);
+	if(wf+uw>.5){
+		diffuse = water(diffuse,weather,1.-uw,tex1.rgb);
+		#ifdef USE_NORMAL
+			float w_r = 1.-dot(normalize(-wPos),n);
+			diffuse.a = mix(diffuse.a,1.,.02+.98*w_r*w_r*w_r*w_r*w_r);
+		#endif
+	}
 #endif
 
 //ESBE_shadow
@@ -231,11 +201,16 @@ if(diffuse.a!=0.){
 	HM vec2 subdisp = gl_FragCoord.xy/1024.;
 	if(subdisp.x<1. && subdisp.y<1.){
 		vec3 subback = vec3(1);
-		if(subdisp.x>0. && subdisp.x<=.2 && subdisp.y<=daylight.y)subback.rgb=vec3(1,.7,0);
-		if(subdisp.x>.2 && subdisp.x<=.4 && subdisp.y<=weather)subback.rgb=vec3(.5,.5,1);
-		if(subdisp.x>.4 && subdisp.x<=.6 && subdisp.y<=dusk)subback.rgb=vec3(1,.5,.5);
-		if(subdisp.x>.6 && subdisp.x<=.8 && subdisp.y<=FOG_COLOR.g)subback.rgb=vec3(.5,1,.5);
-		if(subdisp.x>.8 && subdisp.x<=1. && subdisp.y<=FOG_CONTROL.x)subback.rgb=vec3(.5);
+		#define sdif(X,W,Y,C) if(subdisp.x>X && subdisp.x<=X+W && subdisp.y<=Y)subback.rgb=C;
+		sdif(0.,1.,.02,vec3(0))
+		sdif(0.,.2,daylight.y,vec3(1,.7,0))
+		sdif(.2,.2,weather,vec3(.5,.5,1))
+		sdif(.4,.2,dusk,vec3(1.,.5,.2))
+		//fcol
+		sdif(.6,.05,FOG_COLOR.r,vec3(1,.5,.5))sdif(.65,.05,FOG_COLOR.g,vec3(.5,1,.5))
+		sdif(.7,.05,FOG_COLOR.b,vec3(.5,.5,1))sdif(.75,.05,FOG_COLOR.a,vec3(.7))
+		//fctr
+		sdif(.8,.1,FOG_CONTROL.x,vec3(1,.5,.5))sdif(.9,.1,FOG_CONTROL.y,vec3(.5,1,.5))
 		diffuse = mix(diffuse,vec4(subback,1),.5);
 		vec3 tone = tonemap(subdisp.xxx,ambient);
 		if(subdisp.y<=tone.r+.005 && subdisp.y>=tone.r-.005)diffuse.rgb=vec3(1,0,0);
