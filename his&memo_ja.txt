@@ -1,11 +1,18 @@
-ver書き換え
-manifest.json
-ui>start_screen.json l17,53
+ver_loc
+	manifest.json
+	ui>start_screen.json l17,53
 
 snow… texture2D( TEXTURE_2, vec2(.7,.05))
-nether… step(TILE_LIGHT_COLOR.w,0.)
 
 
+5.0
+ ネザーの遠景にゆらぎを追加
+ 水の描写が溶岩の中で表示される問題を修正
+ 水の改良
+ モバイル端末用にオプションを追加
+ 一部の古い端末へのサポートを追加
+ VR端末で発生する描写の問題を修正
+  thanks to>> mcpedl.com/esbe-2g/#comment-367682
 4.3
  作物系のブロックが揺れるように
  より多くのリソースパックに対応
