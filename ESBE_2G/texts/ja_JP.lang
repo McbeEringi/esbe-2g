@@ -1,7 +1,7 @@
 esbe.c=変更点
 esbe.c0=モバイル端末用にオプションを追加͸
 esbe.c1=一部の古い端末へのサポートを追加͸
-esbe.c2=VR端末で使用するとブロックがバグる問題を解決͸
+esbe.c2=VR端末で発生する描写の問題を修正͸
 esbe.c3= thanks to>> mcpedl.com/esbe-2g/#comment-367682͸
 esbe.c4=水の改良͸
 esbe.c5=ネザーの遠景にゆらぎを追加͸

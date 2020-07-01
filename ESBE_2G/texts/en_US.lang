@@ -1,7 +1,7 @@
 esbe.c=Changelog
 esbe.c0=Added option for mobile devices͸
 esbe.c1=Added support for some old devices͸
-esbe.c2=Fixed tranparent bug on VR devices͸
+esbe.c2=Fixed rendering bug on VR devices͸
 esbe.c3= thanks to>> mcpedl.com/esbe-2g/#comment-367682͸
 esbe.c4=Water improvement͸
 esbe.c5=Added wobble effect to Nether͸
