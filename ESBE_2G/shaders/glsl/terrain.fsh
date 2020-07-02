@@ -145,11 +145,12 @@ float indoor = smoothstep(1.0,0.5,uv1.y);
 float dusk = min(smoothstep(0.4,0.55,daylight.y),smoothstep(0.8,0.65,daylight.y));
 float uw = step(FOG_COLOR.a,0.);
 //float nether = step(.02,FOG_CONTROL.x)-step(.5,FOG_CONTROL.x);
+//float nv = step(.9,texture2D(TEXTURE_1,vec2(0)).r);
 
 //ESBE_tonemap	see http://filmicworlds.com/blog/filmic-tonemapping-operators/
 //1が標準,小…暗,大…明
 vec3 ambient = mix(mix(mix(/*雨*/vec3(0.8,0.82,1.0),mix(mix(/*夜*/vec3(0.7,0.72,0.8),/*昼*/vec3(1.57,1.56,1.5),daylight.y),/*日没*/vec3(1.6,1.25,0.8),dusk),weather),/*水*/vec3(1.),wf),/*屋内*/vec3(1.2,1.1,1.0),indoor);
-if(bool(uw))ambient = FOG_COLOR.rgb+.7;
+if(.3>FOG_CONTROL.x)ambient = FOG_COLOR.rgb/dot(FOG_COLOR.rgb,vec3(0.298912, 0.586611, 0.114478))*.1+.9;//fogcolor based tonemap(Nether&Underwater)
 diffuse.rgb = tonemap(diffuse.rgb,ambient);
 
 //ESBE_light
