@@ -203,7 +203,7 @@ if(diffuse.a!=0.){
 	if(subdisp.x<1. && subdisp.y<1.){
 		vec3 subback = vec3(1);
 		#define sdif(X,W,Y,C) if(subdisp.x>X && subdisp.x<=X+W && subdisp.y<=Y)subback.rgb=C;
-		sdif(0.,1.,.02,vec3(0))
+		sdif(0.,1.,.3,vec3(.3))
 		sdif(0.,.2,daylight.y,vec3(1,.7,0))
 		sdif(.2,.2,weather,vec3(.5,.5,1))
 		sdif(.4,.2,dusk,vec3(1.,.5,.2))
