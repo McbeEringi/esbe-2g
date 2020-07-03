@@ -102,11 +102,16 @@ float cameraDepth = length(relPos);
 		len += RENDER_CHUNK_FOG_ALPHA;
 	#endif
 	fog = clamp((len - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
-	if(.02<FOG_CONTROL.x&&FOG_CONTROL.x<.5)gl_Position.xy += wav*fog*.15
-	#ifdef FANCY
-		*(rand*.5+.5)
-	#endif
-	;
+	if(FOG_CONTROL.x<.3)
+		if(.01<FOG_CONTROL.x)gl_Position.xy += wav*fog*.15
+			#ifdef FANCY
+				*(rand*.5+.5)
+			#endif
+			;else gl_Position.x += wav*fog*.1
+			#ifdef FANCY
+				*rand
+			#endif
+			;
 #endif
 
 ///// leaves
@@ -126,12 +131,6 @@ float cameraDepth = length(relPos);
 		float alphaFadeOut = clamp(cameraDist, 0.0, 1.0);
 		color.a = mix(color.a*.6, 1.5, alphaFadeOut);
 	}
-	///// under water
-	if(FOG_CONTROL.x<.0001)gl_Position.x += wav*.02*PROJ[0].x
-	#ifdef FANCY
-		*rand
-	#endif
-	;
 #endif
 
 #ifndef BYPASS_PIXEL_SHADER

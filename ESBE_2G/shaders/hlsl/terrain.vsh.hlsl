@@ -113,11 +113,16 @@ float cameraDepth = length(relPos);
 	len += RENDER_CHUNK_FOG_ALPHA.r;
 #endif
 	PSInput.fog = clamp((len - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
-	if(.02<FOG_CONTROL.x&&FOG_CONTROL.x<.5)PSInput.position.xy += wav*PSInput.fog*.15
-	#ifdef FANCY
-		*(rand*.5+.5)
-	#endif
-	;
+	if(FOG_CONTROL.x<.3)
+		if(.01<FOG_CONTROL.x)PSInput.position.xy += wav*PSInput.fog*.15
+			#ifdef FANCY
+				*(rand*.5+.5)
+			#endif
+			;else PSInput.position.x += wav*PSInput.fog*.1
+			#ifdef FANCY
+				*rand
+			#endif
+			;
 #endif
 
 ///// leaves
@@ -137,11 +142,5 @@ float cameraDepth = length(relPos);
 		float alphaFadeOut = clamp(cameraDist, 0.0, 1.0);
 		PSInput.color.a = lerp(VSInput.color.a*.6, 1.5, alphaFadeOut);
 	}
-	///// under water
-	if(FOG_CONTROL.x<.0001)PSInput.position.x += wav*.02*PROJ[0].x
-	#ifdef FANCY
-		*rand
-	#endif
-	;
 #endif
 }

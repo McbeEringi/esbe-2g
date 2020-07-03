@@ -9,6 +9,7 @@
 #ifdef USE_SKINNING
 #include "uniformAnimationConstants.h"
 #endif
+uniform highp float TOTAL_REAL_WORLD_TIME;
 
 #line 13
 
@@ -151,4 +152,9 @@ void main()
 	//fog
 	fogColor.rgb = FOG_COLOR.rgb;
 	fogColor.a = clamp(((pos.z / RENDER_DISTANCE) - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
+	#ifdef FANCY
+		vec4 p = POSITION*WORLD;
+		float wav = sin(TOTAL_REAL_WORLD_TIME*3.5+2.*p.x+2.*p.z+p.y)*fogColor.a;
+		if(FOG_CONTROL.x<.3)if(.01<FOG_CONTROL.x)gl_Position.xy+=wav*.15;else gl_Position.x+=wav*.1;
+	#endif
 }
