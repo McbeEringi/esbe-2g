@@ -175,7 +175,7 @@ void main(in VS_Input VSInput, out PS_Input PSInput) {
 	PSInput.fogColor.rgb = FOG_COLOR.rgb;
 	PSInput.fogColor.a = clamp(((PSInput.position.z / RENDER_DISTANCE) - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
 	#ifdef FANCY
-		float4 p = mul(POSITION,WORLD);
+		float4 p = mul(VSInput.position,WORLD);
 		float wav = sin(TOTAL_REAL_WORLD_TIME*3.5+2.*p.x+2.*p.z+p.y)*PSInput.fogColor.a;
 		if(FOG_CONTROL.x<.3)if(.01<FOG_CONTROL.x)PSInput.position.xy+=wav*.15;else PSInput.position.x+=wav*.1;
 	#endif
