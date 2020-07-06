@@ -76,18 +76,13 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 	float4 diffuse = TEXTURE_0.Sample(TextureSampler0, PSInput.uv0);
 #endif
 
-#ifdef SEASONS_FAR
-	diffuse.a = 1.0f;
-#endif
-
 #if USE_ALPHA_TEST
 	#ifdef ALPHA_TO_COVERAGE
 		#define ALPHA_THRESHOLD 0.05
 	#else
-		#define ALPHA_THRESHOLD 0.6
+		#define ALPHA_THRESHOLD 0.52
 	#endif
-	if(diffuse.a < ALPHA_THRESHOLD)
-		discard;
+	if(diffuse.a < ALPHA_THRESHOLD)discard;
 #endif
 
 #ifdef BLEND
