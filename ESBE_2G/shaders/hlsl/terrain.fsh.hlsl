@@ -53,7 +53,8 @@ float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,fl
 	if(bool(uw)){//new C_REF
 		float2 skp = (wPos.xz+n*4.*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;
 		skp.x -= TIME*.05;
-		float4 skc = lerp(lerp(col,FOG_COLOR,cosT*.8),float4(lerp(tex1,FOG_COLOR.rgb,cosT*.7),1),smoothstep(0.,1.,snoise(skp)));
+		float2 ssreff = lerp(float2(.7,.7),float2(.8,.6),clamp(FOG_COLOR.r-FOG_COLOR.g,0.,.4)*2.5);
+		float4 skc = lerp(lerp(col,FOG_COLOR,cosT*ssreff.x),float4(lerp(tex1,FOG_COLOR.rgb,cosT*ssreff.y),1),smoothstep(0.,1.,snoise(skp)));
 		float s_ref = sun*weather*smoothstep(.7,0.,T.y)*lerp(.3,1.,smoothstep(1.5,4.,n))*.9;
 		skc = lerp(skc,1,smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
 		diffuse = lerp(diffuse,skc,cosT*sun);

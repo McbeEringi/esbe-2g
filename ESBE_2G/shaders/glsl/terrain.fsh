@@ -73,6 +73,7 @@ vec4 water(vec4 col,float weather,float uw,vec3 tex1){
 	if(bool(uw)){//new C_REF
 		highp vec2 skp = (wPos.xz+n*4./*波の高さ*/*wPos.xz/max(length(wPos.xz),.5))*cosT*.1;
 		skp.x -= time*.05;
+		vec2 ssreff = mix(vec2(.7,.7),vec2(.8,.6),clamp(FOG_COLOR.r-FOG_COLOR.g,0.,.4)*2.5);
 		vec4 skc = mix(mix(col,FOG_COLOR,cosT*.8),vec4(mix(tex1,FOG_COLOR.rgb,cosT*.7),1),smoothstep(0.,1.,snoise(skp)));
 		float s_ref = sun*weather*smoothstep(.7,0.,T.y)*mix(.3,1.,smoothstep(1.5,4.,n))*.9;
 		skc = mix(skc,vec4(1),smoothstep(3.+abs(wPos.y)*.3,0.,abs(wPos.z))*s_ref);
@@ -201,7 +202,8 @@ if(diffuse.a!=0.){
 		sdif(0.,1.,.3,vec3(.3))
 		sdif(0.,.2,daylight.y,vec3(1,.7,0))
 		sdif(.2,.2,weather,vec3(.5,.5,1))
-		sdif(.4,.2,dusk,vec3(1.,.5,.2))
+		sdif(.4,.1,dusk,vec3(1.,.5,.2))
+		sdif(.5,.1,clamp(FOG_COLOR.r-FOG_COLOR.g,0.,.4)*2.5,vec3(1.,.5,.2))
 		//fcol
 		sdif(.6,.05,FOG_COLOR.r,vec3(1,.5,.5))sdif(.65,.05,FOG_COLOR.g,vec3(.5,1,.5))
 		sdif(.7,.05,FOG_COLOR.b,vec3(.5,.5,1))sdif(.75,.05,FOG_COLOR.a,vec3(.7))
