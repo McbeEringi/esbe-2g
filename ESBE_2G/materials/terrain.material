@@ -1,1 +1,1 @@
-{"materials":{"version":"1.0.0","terrain_base":{"vertexShader":"shaders/terrain.vsh","fragmentShader":"shaders/terrain.fsh"},"terrain_far:terrain_alpha":{},"terrain_seasons_far_alpha:terrain_alpha_seasons":{}}}
+{"materials":{"version":"1.0.0","terrain_base":{"vertexShader":"shaders/terrain.vsh","fragmentShader":"shaders/terrain.fsh"}}}

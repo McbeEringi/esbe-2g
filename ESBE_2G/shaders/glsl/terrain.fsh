@@ -95,6 +95,10 @@ void main()
 	HM vec4 diffuse = texture2D(TEXTURE_0, uv0);
 #endif
 
+#ifdef SEASONS_FAR
+	diffuse.a = 1.0;
+#endif
+
 #if USE_ALPHA_TEST
 	#ifdef ALPHA_TO_COVERAGE
 	#define ALPHA_THRESHOLD 0.05
