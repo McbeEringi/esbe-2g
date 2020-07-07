@@ -7,5 +7,5 @@ esbe.c4=Water animation no longer appears in lava͸
 esbe.c5=Added support for some devices͸
 esbe.c6=Fixed rendering bug on VR devices͸
 esbe.c7= thanks to>> mcpedl.com/esbe-2g/#comment-367682͸
-esbe.c8=Improved tone mapping of entity͸
-esbe.c9=͸
+esbe.c8=Improved tone mapping of entities͸
+esbe.c9=Improved lighting of entities͸

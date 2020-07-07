@@ -55,8 +55,8 @@ struct PS_Input {
 
 static const float AMBIENT = 0.45;
 
-static const float XFAC = -0.1;
-static const float ZFAC = 0.1;
+static const float XFAC = 0.1;
+static const float ZFAC = -0.1;
 
 
 float4 TransformRGBA8_SNORM(const float4 RGBA8_SNORM) {
@@ -86,11 +86,9 @@ float lightIntensity(const float4x4 worldMat, const float4 position, const float
 	float def = yLight * (1.0 - AMBIENT) + N.x*N.x * XFAC + N.z*N.z * ZFAC + AMBIENT;
 
 	//FLAT_SHADING
-	float dusk = smoothstep(0.8,0.6,TILE_LIGHT_COLOR.b);
-	float s = min(1.,dot(N,float3(0.,.8,.6))*.45+.64);
-	float esbe = lerp(s,max(dot(N,float3(.9,.44,0.)),dot(N,float3(-.9,.44,0.)))*1.3+.2,dusk);
+	float esbe = min(1.,dot(N,float3(0.,.8,.6))*.45+.64);
 
-	return lerp(def,esbe,smoothstep(0.5,0.75,TILE_LIGHT_COLOR.b));
+	return lerp(def,esbe,smoothstep(.6,.8,TILE_LIGHT_COLOR.b));
 #else
 	return .9;
 #endif
