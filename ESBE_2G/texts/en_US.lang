@@ -1,11 +1,11 @@
 esbe.c=Changelog
 esbe.c0=Added wobble effect to entities and nether view͸
-esbe.c1=Added coloring for Nether and underwater͸
+esbe.c1=Added tone mapping for Nether and underwater͸
 esbe.c2=Improved rendering of nether particle͸
 esbe.c3=Some tweaks of water͸
 esbe.c4=Water animation no longer appears in lava͸
 esbe.c5=Added support for some devices͸
 esbe.c6=Fixed rendering bug on VR devices͸
 esbe.c7= thanks to>> mcpedl.com/esbe-2g/#comment-367682͸
-esbe.c8=͸
+esbe.c8=Improved tone mapping of entity͸
 esbe.c9=͸
