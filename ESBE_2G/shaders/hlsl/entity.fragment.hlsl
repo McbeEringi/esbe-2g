@@ -185,6 +185,9 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 	color *= PSInput.light;
 #endif
 
+	//TONEMAP
+	color.rgb = tonemap(color.rgb);
+
 	//apply fog
 	color.rgb = lerp( color.rgb, PSInput.fogColor.rgb, PSInput.fogColor.a );
 
