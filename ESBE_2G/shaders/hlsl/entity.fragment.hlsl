@@ -65,12 +65,12 @@ float3 curve(float3 x){
 
 float3 tonemap(float3 col){
 	static const float saturation = 1.2;
-	static const float exposure = 1.0;
-	/*float3 gamma = float3(1.,1.,1.);
-	col = pow(col,1./gamma);*/
-	float luma = dot(col, float3(0.298912, 0.586611, 0.114478));
+	//static const float exposure = 1.0;
+	static const float3 ntsc = float3(0.298912, 0.586611, 0.114478);
+	col = lerp(pow(col,10./(FOG_COLOR.rgb/dot(FOG_COLOR.rgb,ntsc)+9.)),col,step(.3,FOG_CONTROL.x));
+	float luma = dot(col,ntsc);
 	col = curve((col-luma)*saturation+luma);
-	return col/curve(float3(1./exposure,0.,0.)).r;
+	return col/curve(float3(1./*1./exposure*/,0.,0.)).r;
 }
 
 

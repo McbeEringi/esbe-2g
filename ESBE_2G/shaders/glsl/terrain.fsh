@@ -55,11 +55,11 @@ vec3 curve(vec3 x){
 
 vec3 tonemap(vec3 col, vec3 gamma){
 	const float saturation = 1.2;
-	const float exposure = 1.0;
+	//const float exposure = 1.0;
 	col = pow(col,1./gamma);
 	float luma = dot(col, vec3(0.298912, 0.586611, 0.114478));
 	col = curve((col-luma)*saturation+luma);
-	return col/curve(vec3(1./exposure));
+	return col/curve(vec3(1/*1./exposure*/));
 }
 
 vec4 water(vec4 col,float weather,float uw,vec3 tex1){

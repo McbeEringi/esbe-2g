@@ -37,11 +37,11 @@ float3 curve(float3 x){
 
 float3 tonemap(float3 col, float3 gamma){
 	static const float saturation = 1.2;
-	static const float exposure = 1.0;
+	//static const float exposure = 1.0;
 	col = pow(col,1./gamma);
 	float luma = dot(col, float3(0.298912, 0.586611, 0.114478));
 	col = curve((col-luma)*saturation+luma);
-	return col/curve(float3(1./exposure,0.,0.)).r;
+	return col/curve(float3(1./*1./exposure*/,0.,0.)).r;
 }
 float4 water(float4 col,float3 p,float3 wPos,float weather,float uw,float sun,float3 tex1){
 	sun = smoothstep(.5,.9,sun);
