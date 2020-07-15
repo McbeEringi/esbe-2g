@@ -75,7 +75,7 @@ void main()
 #endif
 
 	//fog
-    fogColor.rgb = FOG_COLOR.rgb;
+	fogColor.rgb = FOG_COLOR.rgb;
 	fogColor.a = clamp(((bottom.z / RENDER_DISTANCE) - FOG_CONTROL.x) / (FOG_CONTROL.y - FOG_CONTROL.x), 0.0, 1.0);
 
 	worldPositionBottom.xz += VIEW_POSITION.xz;
