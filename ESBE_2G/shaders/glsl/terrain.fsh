@@ -35,9 +35,11 @@ varying HM vec3 cPos;
 varying HM vec3 wPos;
 varying float wf;
 
-#include "uniformPerFrameConstants.h"
 #include "util.h"
 #include "snoise.h"
+uniform HM float TOTAL_REAL_WORLD_TIME;
+uniform vec4 FOG_COLOR;
+uniform vec2 FOG_CONTROL;
 
 LAYOUT_BINDING(0) uniform sampler2D TEXTURE_0;
 LAYOUT_BINDING(1) uniform sampler2D TEXTURE_1;
@@ -63,7 +65,7 @@ vec3 tonemap(vec3 col, vec3 gamma){
 }
 
 vec4 water(vec4 col,float weather,float uw,vec3 tex1){
-	HM float time = TIME; vec3 p = cPos;
+	HM float time = TOTAL_REAL_WORLD_TIME; vec3 p = cPos;
 	float sun = smoothstep(.5,.9,uv1.y);
 	vec3 T = normalize(abs(wPos)); float cosT = length(T.xz);
 	p.xz = p.xz*vec2(1.0,0.4)/*縦横比*/+smoothstep(0.,8.,abs(p.y-8.))*.5;
@@ -203,7 +205,7 @@ if(diffuse.a!=0.){
 	if(subdisp.x<1. && subdisp.y<1.){
 		vec3 subback = vec3(1);
 		#define sdif(X,W,Y,C) if(subdisp.x>X && subdisp.x<=X+W && subdisp.y<=Y)subback.rgb=C;
-		sdif(0.,1.,.3,vec3(.3))
+		sdif(0.,1.,.5,vec3(.5))
 		sdif(0.,.2,daylight.y,vec3(1,.7,0))
 		sdif(.2,.2,weather,vec3(.5,.5,1))
 		sdif(.4,.1,dusk,vec3(1.,.5,.2))

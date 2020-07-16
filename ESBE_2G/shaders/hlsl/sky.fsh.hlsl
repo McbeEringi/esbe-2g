@@ -21,7 +21,7 @@ float fBM(int octaves, float lowerBound, float upperBound, float2 st) {
 		if (value >= upperBound) break;
 		else if (value + amplitude <= lowerBound) break;
 		st        *= 2.0;
-		st.x      -=TIME*.002*float(i+1);
+		st.x      -=TOTAL_REAL_WORLD_TIME*.002*float(i+1);
 		amplitude *= 0.5;
 	}
 	return smoothstep(lowerBound, upperBound, value);
@@ -45,9 +45,9 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 		//AURORA
 		float aflag = (1.-day)*weather;
 		if(aflag > 0.){
-			float2 apos = float2(PSInput.pos.x-TIME*.004,PSInput.pos.y*10.);
-			apos.y += sin(PSInput.pos.x*20.+TIME*.1)*.15;
-			float3 ac = lerp(/*オーロラ色1*/float3(0.,.8,.4),/*オーロラ色2*/float3(.4,.2,.8),sin(apos.x+apos.y+TIME*.01)*.5+.5);
+			float2 apos = float2(PSInput.pos.x-TOTAL_REAL_WORLD_TIME*.004,PSInput.pos.y*10.);
+			apos.y += sin(PSInput.pos.x*20.+TOTAL_REAL_WORLD_TIME*.1)*.15;
+			float3 ac = lerp(/*オーロラ色1*/float3(0.,.8,.4),/*オーロラ色2*/float3(.4,.2,.8),sin(apos.x+apos.y+TOTAL_REAL_WORLD_TIME*.01)*.5+.5);
 			float am = fBM(4,.5,1.,apos);
 			col.rgb += ac*am*smoothstep(.5,0.,length(PSInput.pos))*aflag;
 		}
@@ -55,9 +55,9 @@ void main(in PS_Input PSInput, out PS_Output PSOutput)
 		//CLOUDS
 		float3 cc = lerp(/*雨*/lerp(.2,.9,day),lerp(lerp(/*夜*/float3(.1,.18,.38),/*昼*/float3(.97,.96,.90),day),/*日没*/float3(.97,.72,.38),ss),weather);
 		float lb = lerp(.1,.5,weather);
-		float cm = fBM(uw?4:6,lb,.8,PSInput.pos*3.-TIME*.002);
+		float cm = fBM(uw?4:6,lb,.8,PSInput.pos*3.-TOTAL_REAL_WORLD_TIME*.002);
 		if(cm>0.){
-			float br = fBM(uw?2:4,lb,.9,PSInput.pos*2.6-TIME*.002);
+			float br = fBM(uw?2:4,lb,.9,PSInput.pos*2.6-TOTAL_REAL_WORLD_TIME*.002);
 			cc *= lerp(1.03,.8,br*(1.-ss*.7));
 		}
 		col.rgb = lerp(col.rgb,cc,cm);

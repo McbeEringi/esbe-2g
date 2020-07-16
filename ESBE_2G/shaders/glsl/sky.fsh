@@ -9,10 +9,15 @@
 #else
 #endif
 
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+	#define HM highp
+#else
+	#define HM mediump
+#endif
 uniform vec4 FOG_COLOR;
 uniform vec2 FOG_CONTROL;
 uniform vec4 CURRENT_COLOR;
-uniform highp float TIME;
+uniform HM float TOTAL_REAL_WORLD_TIME;
 
 varying float fog;
 varying highp vec2 pos;
@@ -27,7 +32,7 @@ highp float fBM(const int octaves, const float lowerBound, const float upperBoun
 		if (value >= upperBound) break;
 		else if (value + amplitude <= lowerBound) break;
 		st        *= 2.0;
-		st.x      -=TIME*.002*float(i+1);
+		st.x      -=TOTAL_REAL_WORLD_TIME*.002*float(i+1);
 		amplitude *= 0.5;
 	}
 	return smoothstep(lowerBound, upperBound, value);
@@ -50,9 +55,9 @@ void main()
 		//AURORA
 		float aflag = (1.-day)*weather;
 		if(aflag > 0.){
-			vec2 apos = vec2(pos.x-TIME*.004,pos.y*10.);
-			apos.y += sin(pos.x*20.+TIME*.1)*.15;
-			vec3 ac = mix(/*オーロラ色1*/vec3(0.,.8,.4),/*オーロラ色2*/vec3(.4,.2,.8),sin(apos.x+apos.y+TIME*.01)*.5+.5);
+			vec2 apos = vec2(pos.x-TOTAL_REAL_WORLD_TIME*.004,pos.y*10.);
+			apos.y += sin(pos.x*20.+TOTAL_REAL_WORLD_TIME*.1)*.15;
+			vec3 ac = mix(/*オーロラ色1*/vec3(0.,.8,.4),/*オーロラ色2*/vec3(.4,.2,.8),sin(apos.x+apos.y+TOTAL_REAL_WORLD_TIME*.01)*.5+.5);
 			float am = fBM(4,.5,1.,apos);
 			col.rgb += ac*am*smoothstep(.5,0.,length(pos))*aflag;
 		}
@@ -60,9 +65,9 @@ void main()
 		//CLOUDS
 		vec3 cc = mix(/*雨*/vec3(mix(.2,.9,day)),mix(mix(/*夜*/vec3(.1,.18,.38),/*昼*/vec3(.97,.96,.90),day),/*日没*/vec3(.97,.72,.38),ss),weather);
 		float lb = mix(.1,.5,weather);
-		float cm = fBM(uw?4:6,lb,.8,pos*3.-TIME*.002);
+		float cm = fBM(uw?4:6,lb,.8,pos*3.-TOTAL_REAL_WORLD_TIME*.002);
 		if(cm>0.){
-			float br = fBM(uw?2:4,lb,.9,pos*2.6-TIME*.002);
+			float br = fBM(uw?2:4,lb,.9,pos*2.6-TOTAL_REAL_WORLD_TIME*.002);
 			cc *= mix(1.03,.8,br*(1.-ss*.7));
 		}
 		col.rgb = mix(col.rgb,cc,cm);

@@ -7,13 +7,17 @@
 #else
 #endif
 
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+	#define HM highp
+#else
+	#define HM mediump
+#endif
 uniform MAT4 WORLDVIEWPROJ;
-
 attribute mediump vec4 POSITION;
 attribute vec4 COLOR;
 
 varying float fog;
-varying highp vec2 pos;
+varying HM vec2 pos;
 
 void main()
 {
