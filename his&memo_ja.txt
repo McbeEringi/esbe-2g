@@ -3,8 +3,12 @@ ver_loc
 	ui>start_screen.json l17,53
 
 snow… texture2D( TEXTURE_2, vec2(.7,.05))
+mcpedl.com/esbe-2g/#comment-396324
 
 
+5.1
+ 水の描写のラグを修正
+ 空が描写されない原因と思われる箇所を修正
 5.0
  ネザーの遠景とエンティティにゆらぎを追加
  ネザーと水中に新しいトーンマップを追加
