@@ -115,7 +115,7 @@ float4 tex1 = TEXTURE_1.Sample(TextureSampler1, PSInput.uv1);
 //DATABASE
 float weather =
 #ifdef FOG
-	smoothstep(.7,1.,FOG_CONTROL.y);
+	smoothstep(.7,.96,FOG_CONTROL.y);
 #else
 	1.;
 #endif
