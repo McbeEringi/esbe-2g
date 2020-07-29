@@ -4,7 +4,7 @@
 	"esbe_panel":{
 		"type":"stack_panel",
 		"orientation":"horizontal",
-		"size":["100%",256],
+		"size":["100%+8px","100%+8px"],
 		"offset":[4,4],
 		"controls":[
 			{"l":{
@@ -19,11 +19,10 @@
 			}},
 			{"r":{
 				"type":"stack_panel",
-				"size":["fill","100%"],
 				"controls":[
 					{"r":{
 						"type":"stack_panel",
-						"size":["fill",134],
+						"size":["100%",134],
 						"controls":[
 							{"n":{"type":"label","font_scale_factor":1.5,"text":"§bEntropyShader\n§7for§bBedrockEdition\n2ndGeneration\n"}},
 							{"l":{"type":"label","text":"©2019~§b@McbeEringi(twitter)\n§rAllRightsReserved.\nSee'LICENSE.txt'.\n\n§6URL"}},
@@ -45,14 +44,16 @@
 		]
 	},
 	"esbe_scroll@common.scrolling_panel":{"$show_background":false,"$scrolling_content":"start.esbe_panel"},
-	"esbe_main@common_dialogs.main_panel_no_buttons":{"size":["80%","80%"],"$text_name":"§bESBE_2G§ainfo","$child_control":"start.esbe_scroll"},
+	"esbe_fsc@common.fullscreen_header":{"$back_button_has_title":true,"$button_text":"§bESBE§ainfo","$child_control":"start.esbe_scroll"},
+	"esbe_main@common.base_screen":{"button_mappings":[{"from_button_id":"button.menu_cancel","to_button_id":"button.menu_exit","mapping_type":"global"}],"$screen_bg_content":"persona.persona_screen_background_content","$screen_content":"start.esbe_fsc"},
+
 
 	"esbe_start":{
 		"type":"stack_panel",
 		"orientation":"horizontal",
 		"controls":[
 			{"ico":{"type":"image","texture":"ESBE_2G","size":[20,20]}},
-			{"ver":{"type":"label","text":"§bESBE_2G\n§av5.1"}}
+			{"ver":{"type":"label","text":" §bESBE_2G\n §av5.1"}}
 		]
 	},
 	"copyright@common_buttons.light_content_button":{
