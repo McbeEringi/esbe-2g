@@ -3,7 +3,7 @@
 
 	"esbe_panel":{
 		"type":"stack_panel","orientation":"horizontal",
-		"size":["100%+8px","100%+8px"],"offset":[4,4],
+		"size":["100%+8px","100%+31px"],"offset":[4,4],
 		"controls":[
 			{"l":{
 				"type":"stack_panel","size":[132,"100%"],
