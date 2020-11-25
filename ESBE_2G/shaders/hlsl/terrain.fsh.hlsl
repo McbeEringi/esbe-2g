@@ -124,7 +124,7 @@ daylight.x *= weather;
 float sunlight = smoothstep(0.865,0.875,PSInput.uv1.y);
 float indoor = smoothstep(1.0,0.5,PSInput.uv1.y);
 float dusk = min(smoothstep(0.4,0.55,daylight.y),smoothstep(0.8,0.65,daylight.y));
-float uw = step(FOG_COLOR.a,0.);
+float uw = step(FOG_CONTROL.x,0.);
 float nether = FOG_CONTROL.x/FOG_CONTROL.y;nether=step(.1,nether)-step(.12,nether);
 
 //ESBE_tonemap	see http://filmicworlds.com/blog/filmic-tonemapping-operators/
