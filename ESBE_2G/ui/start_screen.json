@@ -10,7 +10,7 @@
 				"controls":[
 					{"i":{"type":"image","texture":"ESBE_2G","size":[128,128]}},
 					{"s":{"type":"panel","size":[6,6]}},
-					{"v":{"type":"label","font_scale_factor":1.5,"text":"§bESBE_2G§av5.1"}},
+					{"v":{"type":"label","font_scale_factor":1.5,"text":"§bESBE_2G§av5.2"}},
 					{"c":{"type":"label","font_scale_factor":1.2,"text":"esbe.c"}}
 				]
 			}},
@@ -44,7 +44,7 @@
 		"type":"stack_panel","orientation":"horizontal",
 		"controls":[
 			{"ico":{"type":"image","texture":"ESBE_2G","size":[20,20]}},
-			{"ver":{"type":"label","text":" §bESBE_2G\n §av5.1"}}
+			{"ver":{"type":"label","text":" §bESBE_2G\n §av5.2"}}
 		]
 	},
 	"copyright@common_buttons.light_content_button":{

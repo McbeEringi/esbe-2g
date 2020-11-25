@@ -1,6 +1,6 @@
 esbe.c=Changelog
-esbe.c0=Fixed "laggy" water͸
-esbe.c1=Fixed some codes that may cause sky being invisible͸
+esbe.c0=Fixed a bug that water caustic effect disappeared in 1.16.100͸
+esbe.c1=Fixed tonemapping when rain͸
 esbe.c2=͸
 esbe.c3=I'll soon discontinue the development of ESBE_2G.͸
 esbe.c4=Don't worry, I'll make another shader may be called "ESBE_3G".͸
